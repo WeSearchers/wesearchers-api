@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
-
+import json
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -79,21 +79,19 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+credentials = json.loads(open(BASE_DIR + "/project/credentials.json").read())
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'WeSearchers.Database',
-        'USER': 'postgres',
-        'PASSWORD': '****',
-        'HOST': '127.0.0.1',
-    }
+    'default': credentials["DATABASE"]
 }
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = '****'
-EMAIL_HOST_PASSWORD = '****'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+smtp = credentials["SMTP"]
+
+EMAIL_HOST = smtp["EMAIL_HOST"]
+EMAIL_HOST_USER = smtp["EMAIL_HOST_USER"]
+EMAIL_HOST_PASSWORD = smtp["EMAIL_HOST_PASSWORD"]
+EMAIL_PORT = smtp["EMAIL_PORT"]
+EMAIL_USE_TLS = smtp["EMAIL_USE_TLS"]
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
