@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import ModelForm, forms, EmailField
+from django.core.files.images import get_image_dimensions
 
 from .models import Profile
 
@@ -30,6 +31,7 @@ class ProfileForm(ModelForm):
     error_messages = {
         'bio_too_long': "The bio exceeds the 240 character limit",
         'orcid_format': "The specified orcid is invalid",
+        'image_too_large': "The specified image exceeds the maximum dimensions"
     }
 
     class Meta:
@@ -53,3 +55,13 @@ class ProfileForm(ModelForm):
                 code='bio_too_long',
             )
         return bio
+
+    def clean_image(self):
+        image = self.cleaned_data.get("image")
+        w, h = get_image_dimensions(image)
+        if w > 500 or h > 500:
+            raise forms.ValidationError(
+                self.error_messages['image_too_large'],
+                code='image_too_large',
+            )
+        return image

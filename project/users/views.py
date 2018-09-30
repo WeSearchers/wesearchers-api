@@ -1,13 +1,14 @@
 from django.db import IntegrityError
 from django.http import *
 from django.contrib.auth import authenticate, login
+from django.conf import settings
+from django.core.mail import send_mail
+from django.views.decorators.csrf import csrf_exempt
 
-from project.project import settings
-from project.users.validators import PasswordValidator
+from .validators import PasswordValidator
 from .decorators import require_login
 from .forms import ProfileForm, UserCreationForm, UserUpdateForm
 from .models import *
-from django.core.mail import send_mail
 
 
 # Create your views here.
@@ -17,32 +18,42 @@ def index(request):
         if request.user.is_authenticated:
             return update(request)
         else:
-            user_form = UserCreationForm(request.POST)
-            if user_form.is_valid():
-                user = user_form.save(commit=False)
-                institution = Institution.objects.filter(id=int(request.POST["institution"])).first()
-                if institution is not None:
-                    profile_form = ProfileForm(request.POST, request.FILES)
-                    if profile_form.is_valid():
-                        interests = request.POST["interests"].split(",")
-                        if len(interests) >= 6:
-                            user.is_active = False
-                            user.save()
-                            for interest in interests:
-                                user_interest = UserInterest(interest=interest)
-                                user_interest.user = user
-                                user_interest.save()
-                            profile = profile_form.save(commit=False)
-                            profile.user = user
-                            profile.institution = institution
-                            profile.save()
-                            send_mail("WeSearchers account activation",
-                                      settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid,
-                                      "activate@wesearchers.pt", [user.email])
-                    return HttpResponse("Request badly formatted")
-            return HttpResponseBadRequest()
+            try:
+                user_form = UserCreationForm(request.POST)
+                if user_form.is_valid():
+                    user = user_form.save(commit=False)
+                    institution = Institution.objects.filter(id=int(request.POST["institution"])).first()
+                    if institution is not None:
+                        profile_form = ProfileForm(request.POST, request.FILES)
+                        if profile_form.is_valid():
+                            interests = request.POST["interests"].split(",")
+                            if len(interests) >= 6:
+                                user.is_active = False
+                                user.save()
+                                for interest in interests:
+                                    user_interest = UserInterest(interest=interest)
+                                    user_interest.user = user
+                                    user_interest.save()
+                                profile = profile_form.save(commit=False)
+                                profile.user = user
+                                profile.institution = institution
+                                profile.save()
+                                send_mail("WeSearchers account activation",
+                                          settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid,
+                                          "activate@wesearchers.pt", [user.email])
+                                return JsonResponse(user.id, safe=False)
+            except KeyError:
+                return HttpResponseBadRequest("Request badly formatted")
+            return HttpResponseBadRequest("Request badly formatted")
     else:
         return HttpResponseNotAllowed("Method not Allowed")
+
+
+@require_login
+def get_user_info(request, user_id):
+    user = User.objects.filter(id=user_id).first()
+    if user is not None:
+        return JsonResponse(user.profile.to_json())
 
 
 def login_session(request):
@@ -72,7 +83,7 @@ def update(request):
 
 
 def guid_check(request):
-    return HttpResponse(Profile.objects.filter(email_guid=request.GET["guid"]).first() is not None)
+    return JsonResponse(Profile.objects.filter(email_guid=request.GET["guid"]).first() is not None, safe=False)
 
 
 def send_reset_password_email(request):

@@ -18,11 +18,8 @@ from django.urls import include, path
 from django.contrib import admin
 from django.views.generic import TemplateView
 
-from project.users.views import login_session
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/login', login_session).
-    path("api/user", include('users.urls')),
-    url(r'^(?:.*)/?$', TemplateView.as_view(template_name="index.html")),
+    path("api/user/", include('users.urls')),
+    path("", TemplateView.as_view(template_name="index.html")),
 ]
