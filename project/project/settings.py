@@ -83,6 +83,8 @@ credfile = open(BASE_DIR + "/project/credentials.json")
 credentials = json.loads(credfile.read())
 credfile.close()
 
+RUNNING_HOST = credentials["RUNNING_HOST"]
+
 DATABASES = {
     'default': credentials["DATABASE"]
 }

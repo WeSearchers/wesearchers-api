@@ -3,6 +3,8 @@ import random
 from django.contrib.auth.models import User
 from django.db import models
 
+from project.guid import new_guid
+
 
 class Institution(models.Model):
     name = models.CharField(max_length=255)
@@ -12,7 +14,7 @@ class Institution(models.Model):
 class Profile(models.Model):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.email_guid = hashlib.sha1(str(random.random()).encode('utf-8')).hexdigest()
+        self.email_guid = new_guid()
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name="profile")
     orcid = models.CharField(max_length=16)

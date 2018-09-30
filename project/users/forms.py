@@ -20,6 +20,12 @@ class UserCreationForm(UserCreationForm):
         return user
 
 
+class UserUpdateForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ("first_name", "last_name")
+
+
 class ProfileForm(ModelForm):
     error_messages = {
         'bio_too_long': "The bio exceeds the 240 character limit",
