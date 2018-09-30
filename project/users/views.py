@@ -26,7 +26,7 @@ def index(request):
                     if institution is not None:
                         profile_form = ProfileForm(request.POST, request.FILES)
                         if profile_form.is_valid():
-                            interests = request.POST["interests"].split(",")
+                            interests = request.POST["interests"].split()
                             if len(interests) >= 6:
                                 user.is_active = False
                                 user.save()
@@ -50,23 +50,25 @@ def index(request):
 
 
 @require_login
-def get_user_info(request, user_id):
-    user = User.objects.filter(id=user_id).first()
+def get_user_info(request, params):
+    user = User.objects.filter(id=params["user_id"]).first()
     if user is not None:
         return JsonResponse(user.profile.to_json())
+    else:
+        return HttpResponseNotFound()
 
 
 def login_session(request):
     if request.method == "POST":
         try:
-            user = authenticate(request, username=request.POST["name"], password=request.POST["password"])
+            user = authenticate(username=request.POST["username"], password=request.POST["password"])
         except KeyError:
             return HttpResponseBadRequest("Request badly formatted")
         if user is not None:
             login(request, user)
             return HttpResponse()
         else:
-            return Http404("User Doesn't Exist")
+            return HttpResponseNotFound()
     else:
         return HttpResponseNotAllowed("Method not Allowed")
 

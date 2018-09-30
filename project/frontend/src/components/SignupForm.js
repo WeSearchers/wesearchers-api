@@ -28,6 +28,7 @@ class SignupForm extends Component {
         password1: "",
         password2: "",
         orcid: "",
+        interests: "",
         bio: "",
         image: null,
     };
@@ -54,8 +55,8 @@ class SignupForm extends Component {
                 }
                 fd.append("institution", "1");
                 let request = new XMLHttpRequest();
-                request.open("POST",this.props.endpoint);
-                request.setRequestHeader("X-CSRFToken",getCookie('csrftoken'));
+                request.open("POST", this.props.endpoint);
+                request.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
                 request.send(fd);
                 break;
         }
@@ -94,12 +95,19 @@ class SignupForm extends Component {
                        name="orcid"
                        placeholder="ORCID"
                        onChange={this.handleChange}
-                /><input className="input"
-                         type="text"
-                         name="bio"
-                         placeholder="Bio"
-                         onChange={this.handleChange}
-            />
+                />
+                <input className="input"
+                       type="text"
+                       name="interests"
+                       placeholder="interests"
+                       onChange={this.handleChange}
+                />
+                <input className="input"
+                       type="text"
+                       name="bio"
+                       placeholder="Bio"
+                       onChange={this.handleChange}
+                />
                 <input className="input"
                        type="file"
                        name="image"
