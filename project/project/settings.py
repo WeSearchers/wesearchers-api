@@ -79,7 +79,9 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-credentials = json.loads(open(BASE_DIR + "/project/credentials.json").read())
+credfile = open(BASE_DIR + "/project/credentials.json")
+credentials = json.loads(credfile.read())
+credfile.close()
 
 DATABASES = {
     'default': credentials["DATABASE"]
@@ -98,17 +100,8 @@ EMAIL_USE_TLS = smtp["EMAIL_USE_TLS"]
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+        'NAME': "users.validators.PasswordValidator"
+    }
 ]
 
 # Internationalization

@@ -68,3 +68,5 @@ fabric.properties
 project/project/credentials\.json
 
 *.pyc
+
+project/profile/avatar/

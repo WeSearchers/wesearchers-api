@@ -1,9 +1,9 @@
-import json
 from django.db import IntegrityError
 from django.http import *
 from django.contrib.auth import authenticate, login
-from rest_framework.decorators import api_view
 
+from .decorators import require_login
+from .forms import ProfileForm, UserCreationForm
 from .models import *
 from django.core.mail import send_mail
 
@@ -12,22 +12,29 @@ from django.core.mail import send_mail
 
 def index(request):
     if request.method == "POST":
-        body_unicode = request.body.decode('utf-8')
-        body = json.loads(body_unicode)
-        try:
-            user = User.objects.create_user(body["name"], body["email"], body["password"])
-            user.is_active = False
-            user.save()
-            email_guid = EmailGuid(user=user)
-            email_guid.save()
-            send_mail("django test", "localhost:8000/user/validate?guid=" + email_guid.guid,
-                      "validate@mail.wesearchers.pt",
-                      [user.email])
-            return HttpResponse()
-        except KeyError:
-            return HttpResponseBadRequest("Request badly formatted")
-        except IntegrityError:
-            return HttpResponseBadRequest("User already exists")
+        user_form = UserCreationForm(request.POST)
+        if user_form.is_valid():
+            user = user_form.save(commit=False)
+            institution = Institution.objects.get(id=int(request.POST["institution"]))
+            if institution is not None:
+                profile_form = ProfileForm(request.POST, request.FILES)
+                if profile_form.is_valid():
+                    interests = request.POST["interests"].split(",")
+                    if len(interests) >= 6:
+                        user.is_active = False
+                        user.save()
+                        for interest in interests:
+                            user_interest = UserInterest(interest=interest)
+                            user_interest.user = user
+                            user_interest.save()
+                        profile = profile_form.save(commit=False)
+                        profile.user = user
+                        profile.institution = institution
+                        profile.save()
+                        # send_mail("WeSearchers account activation", "<running url>", "activate@wesearchers.pt", [user.email])
+                return HttpResponse("Request badly formatted")
+
+        return HttpResponseBadRequest()
     elif request.method == "GET":
         try:
             user = authenticate(request, username=request.GET["name"], password=request.GET["password"])
@@ -42,16 +49,19 @@ def index(request):
         return HttpResponseNotAllowed("Method not Allowed")
 
 
+@require_login
+def update(request):
+    pass
+
 def validate(request):
     try:
-        guid = EmailGuid.objects.get(guid=request.GET["guid"])
+        profile = Profile.objects.get(email_guid=request.GET["guid"])
     except KeyError:
         return HttpResponseBadRequest("Request badly formatted")
-    if guid is not None:
-        user = guid.user
+    if profile is not None and profile.user.is_active is False:
+        user = profile.user
         user.is_active = True
         user.save()
-        guid.delete()
         return HttpResponse()
     else:
         return HttpResponseNotFound()
