@@ -8,15 +8,12 @@ import twitter from "../../images/twitter-logo-button.png";
 class Popup extends React.Component {
   render() {
     return (
-      <div className="  m-5 d-flex flex-column mr-auto ml-auto ">
-        <div className=" d-flex flex-row justify-content-end">
-          <div className="close-image ml-3 mt-3 mr-3" />
-        </div>
+      <div className="  m-2 d-flex flex-column  ">
         <div className=" mt-4 mr-auto ml-auto  d-flex flex-column justify-content-center">
-          <h2 className="font-weight-bold">
+          <h4 className="font-weight-bold">
             Like this post? Share with the world
-          </h2>
-          <p className="font-weight-light">
+          </h4>
+          <p className="font-weight-light mb-3">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -24,7 +21,7 @@ class Popup extends React.Component {
             adipiscing elit, sed do eiusmod
           </p>
         </div>
-        <div className=" d-flex flex-row justify-content-center">
+        <div className=" d-flex flex-row justify-content-center mb-4">
           <img
             className="mr-2 ml-4 mt-1 opacity"
             src={fb}

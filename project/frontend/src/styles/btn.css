@@ -29,12 +29,17 @@ btn:focus {
   height: 30px;
   border: 0;
   background-color: #efefef;
+  cursor: pointer;
 }
 .img-btn:focus {
   outline: none !important;
   border-color: grey;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
 }
+
+.popbtn .btn-publish {
+  font-size: 10px;
+}
+
 .close-image {
   background-image: url("../images/Ellipse.png");
   background-position: center;
