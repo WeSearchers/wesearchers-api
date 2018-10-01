@@ -111,7 +111,7 @@
   font-size: 15px;
 }
 
-/*ProfileAbout*/
+/*Sub-Section ProfileAbout*/
 
 /* -- identification */
 
@@ -159,7 +159,7 @@
   border-bottom: 1px solid #ccc;
 }
 
-/*ProfileNetwork*/
+/*Sub-Section ProfileNetwork*/
 
 .section-card.network-advisor:first-child {
   margin-top: 20px;
@@ -228,6 +228,47 @@
 
 .network-user-container .user-network:last-child {
   padding-bottom: 30px;
+}
+
+/*Sub-Section Publication*/
+.publication {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  max-width: 700px;
+}
+
+.publication .photo {
+  border: 1px solid;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  background-image: url("./Media/user.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-right: 30px;
+  margin-left: 10px;
+}
+
+.publication .info {
+  width: calc(100% - 80px - 60px);
+}
+
+.publication .info .title-and-author {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.title-and-author .title {
+  font-weight: 500;
+  margin-right: 20px;
+}
+
+.title-and-author .author {
+  font-weight: 500;
+  color: #999;
+  margin-right: 20px;
 }
 
 /*MARGINS & PADDINGS*/
