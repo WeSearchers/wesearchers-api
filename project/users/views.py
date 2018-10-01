@@ -141,3 +141,29 @@ def validate(request):
         return HttpResponse()
     else:
         return HttpResponseNotFound()
+
+@require_login
+def edit_profile(request):
+    
+    return HttpResponse()
+
+
+@require_login
+def get_followers(request):
+    #insert code here
+    return HttpResponse()
+
+@require_login
+def get_following(request):
+    #insert code here
+    return HttpResponse()
+
+@require_login
+def get_collaborators(request):
+    #insert code here
+    return HttpResponse()
+
+@require_login
+def get_mentor(request):
+    #insert code here
+    return HttpResponse()
