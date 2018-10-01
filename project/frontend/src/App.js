@@ -1,31 +1,26 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './App.css';
-import SignupForm from "./components/SignupForm";
 import {
-    BrowserRouter as Router,
-    Route,
-    Switch,
+  BrowserRouter as Router,
+  Route,
+  Switch,
 } from 'react-router-dom'
-import Validator from "./components/Validator";
-import queryString from 'query-string'
+import LoginMain from './components/Login/LoginMain';
+import LoginForm from './components/Login/LoginForm';
 
 class App extends Component {
-    render() {
-        return (
-            <Router>
-                <div className="App">
-                    <Switch>
-                        <Route path="/user/validate" render={() => (
-                            <Validator endpoint="/api/user/validate" code={queryString.parse(window.location.search).guid}/>
-                        )}/>
-                        <Route render={() => (
-                            <SignupForm endpoint="/api/user/" method="post"/>
-                        )}/>
-                    </Switch>
-                </div>
-            </Router>
-        );
-    }
+  render() {
+    return (
+      <Router>
+        <div className="App">
+          <Switch>
+            <Route exact path="/" component={LoginMain} />
+            <Route path="/LoginForm" component={LoginForm} />
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
 }
 
 export default App;
