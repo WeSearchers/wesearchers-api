@@ -8,8 +8,8 @@ class UserProfileMenuSection extends Component {
     return (
       <div className="container user-profile-menu-section">
         <div className="row">
-          <ProfileAbout />
-          {/* <ProfileNetwork />*/}
+          {/*<ProfileAbout />*/}
+          <ProfileNetwork />
         </div>
       </div>
     );
