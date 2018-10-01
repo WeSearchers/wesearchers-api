@@ -23,31 +23,42 @@ class SignupForm extends Component {
         method: PropTypes.string.isRequired,
     };
     state = {
-        name: "",
+        username: "",
         email: "",
-        password: "",
+        password1: "",
+        password2: "",
+        orcid: "",
+        interests: "",
+        bio: "",
+        image: null,
     };
     handleChange = e => {
-        this.setState({[e.target.name]: e.target.value});
+        if (e.target.name === "image")
+            this.setState({["image"]: e.target.files[0]});
+        else
+            this.setState({[e.target.name]: e.target.value});
     };
 
 
     handleSubmit = e => {
         e.preventDefault();
-        const {name, email, password} = this.state;
         let conf;
-        switch (this.props.method){
+        switch (this.props.method) {
             case "post":
-                const state = {name, email, password};
-                conf = {
-                    method: this.props.method,
-                    body: JSON.stringify(state),
-                    headers: new Headers({"Content-Type": "application/json", 'X-CSRFToken': getCookie('csrftoken')})
-                };
-                fetch(this.props.endpoint, conf).then(response => console.log(response));
+                const fd = new FormData();
+                let state = this.state;
+                for (let elem in state) {
+                    if (state[elem].filename !== undefined)
+                        fd.append(elem, state[elem], state[elem].filename);
+                    else
+                        fd.append(elem, state[elem]);
+                }
+                fd.append("institution", "1");
+                let request = new XMLHttpRequest();
+                request.open("POST", this.props.endpoint);
+                request.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                request.send(fd);
                 break;
-            case "get":
-                fetch(this.props.endpoint + "?name=" + name + "&password=" + password).then(response => console.log(response))
         }
 
     };
@@ -57,7 +68,7 @@ class SignupForm extends Component {
             <form onSubmit={this.handleSubmit}>
                 <input className="input"
                        type="text"
-                       name="name"
+                       name="username"
                        placeholder="Name"
                        onChange={this.handleChange}
                 />
@@ -69,8 +80,37 @@ class SignupForm extends Component {
                 />
                 <input className="input"
                        type="text"
-                       name="password"
+                       name="password1"
                        placeholder="Password"
+                       onChange={this.handleChange}
+                />
+                <input className="input"
+                       type="text"
+                       name="password2"
+                       placeholder="Verify Password"
+                       onChange={this.handleChange}
+                />
+                <input className="input"
+                       type="text"
+                       name="orcid"
+                       placeholder="ORCID"
+                       onChange={this.handleChange}
+                />
+                <input className="input"
+                       type="text"
+                       name="interests"
+                       placeholder="interests"
+                       onChange={this.handleChange}
+                />
+                <input className="input"
+                       type="text"
+                       name="bio"
+                       placeholder="Bio"
+                       onChange={this.handleChange}
+                />
+                <input className="input"
+                       type="file"
+                       name="image"
                        onChange={this.handleChange}
                 />
                 <button type="submit" className="button is-info">

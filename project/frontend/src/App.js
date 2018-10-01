@@ -19,7 +19,7 @@ class App extends Component {
                             <Validator endpoint="/api/user/validate" code={queryString.parse(window.location.search).guid}/>
                         )}/>
                         <Route render={() => (
-                            <SignupForm endpoint="/api/user" method="post"/>
+                            <SignupForm endpoint="/api/user/" method="post"/>
                         )}/>
                     </Switch>
                 </div>
