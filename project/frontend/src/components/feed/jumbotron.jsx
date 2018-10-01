@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import photo from "../images/images.png";
-import group from "../images/group.png";
-import local from "../images/mappin.png";
-import clip from "../images/clip.png";
+import photo from "../../images/images.png";
+import group from "../../images/group.png";
+import local from "../../images/mappin.png";
+import clip from "../../images/clip.png";
 
 class Jumbotron extends Component {
   render() {

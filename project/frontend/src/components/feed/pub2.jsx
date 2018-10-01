@@ -1,9 +1,29 @@
 import React, { Component } from "react";
-import arrow from "../images/up-arrow.png";
-import share from "../images/share.png";
-import balloon from "../images/balloon.png";
+import arrow from "../../images/up-arrow.png";
+import share from "../../images/share.png";
+import balloon from "../../images/balloon.png";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import fb from "../../images/facebook-logo-button.png";
+import google from "../../images/google-plus-logo-button.png";
+import linkedin from "../../images/linkedin-logo-button.png";
+import twitter from "../../images/twitter-logo-button.png";
 
-class Pub2 extends Component {
+class Pub2 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal: false
+    };
+
+    this.toggle = this.toggle.bind(this);
+  }
+
+  toggle() {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+
   render() {
     return (
       <div className="pub2 bg-grey m-5 d-flex flex-column mr-auto ml-auto ">
@@ -47,12 +67,41 @@ class Pub2 extends Component {
               width="18"
               height="18"
             />
-            <button className="img-btn">
+            <button className="img-btn " onClick={this.toggle}>
               <img className="opacity" src={share} width="14" height="14" />
+              {this.props.buttonLabel}
             </button>
-            <button className="img-btn">
+            <Modal
+              isOpen={this.state.modal}
+              toggle={this.toggle}
+              className={this.props.className}
+            >
+              <ModalHeader toggle={this.toggle} />
+              <ModalBody> sbsdjhefhe </ModalBody>
+              <ModalFooter />
+            </Modal>
+
+            <button className="img-btn" onClick={this.toggle}>
               <img className="opacity" src={balloon} width="14" height="14" />
+              {this.props.buttonLabel}
             </button>
+            <Modal
+              isOpen={this.state.modal}
+              toggle={this.toggle}
+              className={this.props.className}
+            >
+              <ModalHeader toggle={this.toggle} />
+              <ModalBody>
+                <div className="background-image-profile mr-5" />
+                <textarea
+                  class="form-control-coment form-coment z-depth-1"
+                  id="exampleFormControlTextarea6"
+                  rows="3"
+                  placeholder="Add new coment..."
+                />
+              </ModalBody>
+              <ModalFooter />
+            </Modal>
           </div>
           <div className=" d-flex flex-row justify-content-end hashtags mr-4">
             <p className="bg-secondary text-white text-center align-middle mr-1  first m-2">

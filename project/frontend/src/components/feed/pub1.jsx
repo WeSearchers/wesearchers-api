@@ -1,9 +1,45 @@
 import React, { Component } from "react";
-import arrow from "../images/up-arrow.png";
-import share from "../images/share.png";
-import balloon from "../images/balloon.png";
+import uparrow from "../../images/up-arrow.png";
+import downarrow from "../../images/down-arrow.png";
+import share from "../../images/share.png";
+import balloon from "../../images/balloon.png";
+import Popup from "./popup";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import fb from "../../images/facebook-logo-button.png";
+import google from "../../images/google-plus-logo-button.png";
+import linkedin from "../../images/linkedin-logo-button.png";
+import twitter from "../../images/twitter-logo-button.png";
+import AddComent from "./addcoment";
 
-class Pub1 extends Component {
+function lel(response) {
+  response.data.image, response.data.bio;
+}
+
+fetch("/api/user/37").then(response => lel);
+
+class Pub1 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal1: false,
+      modal2: false
+    };
+
+    this.togglemodal1 = this.togglemodal1.bind(this);
+    this.togglemodal2 = this.togglemodal2.bind(this);
+  }
+
+  togglemodal1() {
+    this.setState({
+      modal1: !this.state.modal1
+    });
+  }
+  togglemodal2() {
+    this.setState({
+      modal2: !this.state.modal2
+    });
+  }
+
   render() {
     return (
       <div className="pub1 bg-grey m-5 d-flex flex-column mr-auto ml-auto ">
@@ -41,23 +77,51 @@ class Pub1 extends Component {
           <div className="icons d-flex flex-row mb-4">
             <img
               className="mr-1 ml-3 mt-1"
-              src={arrow}
+              src={uparrow}
               width="18"
               height="18"
             />
             <p className=" mt-1">600</p>
             <img
-              className="mr-2 mt-1 opacity"
-              src={arrow}
+              className="ml-2 mt-2 opacity"
+              src={downarrow}
               width="18"
               height="18"
             />
-            <button className="img-btn">
+
+            <button className="img-btn " onClick={this.togglemodal2}>
               <img className="opacity" src={share} width="14" height="14" />
+              {this.props.buttonLabel}
             </button>
-            <button className="img-btn">
+            <Modal
+              isOpen={this.state.modal2}
+              toggle={this.togglemodal2}
+              className={this.props.className}
+            >
+              <ModalHeader toggle={this.togglemodal2} />
+              <ModalBody>
+                {" "}
+                <Popup />{" "}
+              </ModalBody>
+              <ModalFooter />
+            </Modal>
+
+            <button className="img-btn" onClick={this.togglemodal1}>
               <img className="opacity" src={balloon} width="14" height="14" />
+              {this.props.buttonLabel}
             </button>
+            <Modal
+              isOpen={this.state.modal1}
+              toggle={this.togglemodal1}
+              className={this.props.className}
+            >
+              <ModalHeader toggle={this.togglemodal1} />
+              <ModalBody>
+                {" "}
+                <AddComent />{" "}
+              </ModalBody>
+              <ModalFooter />
+            </Modal>
           </div>
           <div className=" d-flex flex-row justify-content-end hashtags mr-4">
             <p className="bg-secondary text-white text-center align-middle mr-1  first m-2">
