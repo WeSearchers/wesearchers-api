@@ -13,8 +13,8 @@ class SubSection extends Component {
           className="network-sub-section"
           onClick={() => this.props.turnVisible(this.props.subSection)}
         >
-          <div className="value">6</div>
-          <div className="title">Colaboradores</div>
+          <div className="value">2</div>
+          <div className="title">{this.props.title}</div>
         </a>
         <Users visible={this.props.visible} />
       </React.Fragment>

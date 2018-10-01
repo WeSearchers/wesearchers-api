@@ -201,6 +201,7 @@
   align-items: center;
   background-color: rgb(200, 200, 200);
   padding: 15px 25px;
+  transition: 0.25s;
 }
 
 .user-profile-menu-section .network-sub-section:nth-child(3) {
@@ -229,6 +230,12 @@
 .network-user-container .user-network:last-child {
   padding-bottom: 30px;
 }
+.user-profile-menu-section .network-sub-section:nth-child(1):hover,
+.user-profile-menu-section .network-sub-section:nth-child(3):hover,
+.user-profile-menu-section .network-sub-section:nth-child(5):hover,
+.user-profile-menu-section .network-sub-section:nth-child(7):hover {
+  background: rgb(122, 144, 151);
+}
 
 /*Sub-Section Publication*/
 .publication {
@@ -236,7 +243,7 @@
   align-items: center;
   padding: 20px;
   max-width: 700px;
-  margin-top: 15px;
+  margin-top: 20px;
 }
 
 .publication .photo {

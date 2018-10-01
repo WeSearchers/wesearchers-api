@@ -5,10 +5,10 @@ import User from "./network/user";
 class ProfileNetwork extends Component {
   state = {
     subSections: [
-      { id: "1", title: "mentors", visible: "hidden" },
-      { id: "2", title: "mentors", visible: "hidden" },
-      { id: "3", title: "mentors", visible: "hidden" },
-      { id: "4", title: "mentors", visible: "hidden" }
+      { id: "1", title: "Mentors", visible: "hidden" },
+      { id: "2", title: "Contributors", visible: "hidden" },
+      { id: "3", title: "Followers", visible: "hidden" },
+      { id: "4", title: "Following", visible: "hidden" }
     ]
   };
 
@@ -34,6 +34,7 @@ class ProfileNetwork extends Component {
         {this.state.subSections.map(subSection => (
           <SubSection
             key={subSection.id}
+            title={subSection.title}
             subSection={subSection}
             turnVisible={this.handleTurnVisible}
             visible={subSection.visible}

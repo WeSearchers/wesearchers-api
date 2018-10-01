@@ -3,7 +3,7 @@ import UserProfileMenuSection from "./userProfileMenuSection";
 
 class UserProfileMenu extends Component {
   state = {
-    showSection: "network"
+    showSection: "about"
   };
 
   handleShowSubSection(section) {

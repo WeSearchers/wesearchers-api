@@ -20,6 +20,10 @@ li {
   color: #fff;
 }
 
+.nav-bar ul {
+  margin: 0;
+}
+
 .nav-bar-container {
   display: flex;
   justify-content: space-between;
@@ -55,7 +59,40 @@ li {
 }
 
 .hamb-menu {
+  position: relative;
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+
+.hamb-menu .hamb-navigation {
+  z-index: 90;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 300px;
+  background: #777;
+  transition: 0.25s;
+}
+
+.hamb-navigation ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-top: 1px solid #fff;
+}
+
+.hamb-navigation ul li:first-child {
+  padding: 10px 20px;
+  border-top: transparent;
+}
+
+.hamb-navigation ul li .fa {
+  font-size: 15px;
+}
+
+.hamb-navigation ul li:hover {
+  background: #999;
+  cursor: pointer;
 }
