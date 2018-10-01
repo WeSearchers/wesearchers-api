@@ -68,3 +68,7 @@ fabric.properties
 project/project/credentials\.json
 
 *.pyc
+
+project/media/
+
+project/webpack-stats\.dev\.json
