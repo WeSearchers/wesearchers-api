@@ -3,9 +3,14 @@ import React, { Component } from "react";
 class ProfileAbout extends Component {
   state = {};
   render() {
+    console.log("props", this.props);
     return (
       <React.Fragment>
-        <div className="col-md-12">
+        <div
+          className={
+            "col-md-12 " + (this.props.toShow === "about" ? "show" : "hidden")
+          }
+        >
           <div className="section-title">Identification</div>
           <div className="section-card identification">
             <ul>

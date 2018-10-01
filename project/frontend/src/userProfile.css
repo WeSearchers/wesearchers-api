@@ -203,15 +203,15 @@
   padding: 15px 25px;
 }
 
-.user-profile-menu-section .network-sub-section:nth-child(2) {
+.user-profile-menu-section .network-sub-section:nth-child(3) {
   background-color: rgb(180, 180, 180);
 }
 
-.network-sub-section:nth-child(3) {
+.user-profile-menu-section .network-sub-section:nth-child(5) {
   background-color: rgb(160, 160, 160);
 }
 
-.network-sub-section:nth-child(4) {
+.user-profile-menu-section .network-sub-section:nth-child(7) {
   background-color: rgb(140, 140, 140);
 }
 
@@ -236,6 +236,7 @@
   align-items: center;
   padding: 20px;
   max-width: 700px;
+  margin-top: 15px;
 }
 
 .publication .photo {
@@ -270,6 +271,16 @@
   font-weight: 500;
   color: #999;
   margin-right: 20px;
+}
+
+/*ProfileMenuSubSections*/
+
+.show {
+  display: block;
+}
+
+.hidden {
+  display: none;
 }
 
 /*MARGINS & PADDINGS*/

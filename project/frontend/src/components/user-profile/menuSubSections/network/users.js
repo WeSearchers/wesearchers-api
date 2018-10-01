@@ -5,9 +5,12 @@ class Users extends Component {
   state = {};
   render() {
     return (
-      <div className="network-user-container">
-        <User />
-        <User />
+      <div
+        className={
+          "network-user-container " +
+          (this.props.visible == "show" ? "show" : "hidden")
+        }
+      >
         <User />
         <User />
       </div>

@@ -3,43 +3,55 @@ import UserProfileMenuSection from "./userProfileMenuSection";
 
 class UserProfileMenu extends Component {
   state = {
-    networkclicked: false
+    showSection: "network"
   };
 
-  handleAddSectionNetwork() {
-    this.setState({
-      networkclicked: true
-    });
+  handleShowSubSection(section) {
+    if (this.state.showSection !== section) {
+      this.setState({
+        showSection: section
+      });
+      console.log(this.state.showSection);
+    }
   }
+
   render() {
     return (
       <React.Fragment>
         <div className="container profile-menu">
           <div className="row menu-row">
             <div className="col-md-3 pd10">
-              <div className="menu-item" onClick={this.handleAddSectionNetwork}>
+              <a
+                className="menu-item"
+                onClick={() => this.handleShowSubSection("about")}
+              >
                 <i className="fa fa-user" />
-              </div>
+              </a>
             </div>
             <div className="col-md-3 pd10">
-              <div className="menu-item">
+              <a
+                className="menu-item"
+                onClick={() => this.handleShowSubSection("network")}
+              >
                 <i className="fa fa-users" />
-              </div>
+              </a>
             </div>
             <div className="col-md-3 pd10">
-              <div className="menu-item">
+              <a className="menu-item ">
                 <i className="fa fa-bar-chart" />
-              </div>
+              </a>
             </div>
             <div className="col-md-3 pd10">
-              <div className="menu-item">
+              <a
+                className="menu-item"
+                onClick={() => this.handleShowSubSection("posts")}
+              >
                 <i className="fa fa-file-text-o" />
-              </div>
+              </a>
             </div>
           </div>
         </div>
-        <UserProfileMenuSection />
-        {/*{this.state.networkclicked ? <UserProfileMenuSection /> : null}*/}
+        <UserProfileMenuSection toShow={this.state.showSection} />
       </React.Fragment>
     );
   }

@@ -9,13 +9,14 @@ class SubSection extends Component {
 
     return (
       <React.Fragment>
-        <div className="col-md-12">
-          <a className="network-sub-section">
-            <div className="value">6</div>
-            <div className="title">Colaboradores</div>
-          </a>
-          <Users />
-        </div>
+        <a
+          className="network-sub-section"
+          onClick={() => this.props.turnVisible(this.props.subSection)}
+        >
+          <div className="value">6</div>
+          <div className="title">Colaboradores</div>
+        </a>
+        <Users visible={this.props.visible} />
       </React.Fragment>
     );
   }
