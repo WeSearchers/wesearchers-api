@@ -11,18 +11,14 @@ import linkedin from "../../images/linkedin-logo-button.png";
 import twitter from "../../images/twitter-logo-button.png";
 import AddComent from "./addcoment";
 
-function lel(response) {
-  response.data.image, response.data.bio;
-}
-
-fetch("/api/user/37").then(response => lel);
-
 class Pub1 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       modal1: false,
-      modal2: false
+      modal2: false,
+      isLoading: true,
+      contacts: []
     };
 
     this.togglemodal1 = this.togglemodal1.bind(this);
@@ -39,14 +35,43 @@ class Pub1 extends React.Component {
       modal2: !this.state.modal2
     });
   }
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    fetch("https://randomuser.me/api/?results=1&nat=us,dk,fr,gb")
+      .then(response => response.json())
+      .then(parseJSON =>
+        parseJSON.results.map(user => ({
+          name: `${user.name.first} ${user.name.last}`,
+          gender: `${user.gender}`
+        }))
+      )
+      .then(contacts =>
+        this.setState({
+          contacts,
+          isLoading: false
+        })
+      )
+      .catch(error => console.log("parsing failed", error));
+  }
 
   render() {
+    const { isLoading, contacts } = this.state;
     return (
       <div className="pub1 bg-grey m-5 d-flex flex-column mr-auto ml-auto ">
         <div className=" d-flex flex-row align-content-baseline">
           <div className="background-image-profile ml-3 mt-3" />
           <div className=" mt-4 ml-4  d-flex flex-column justify-content-center">
-            <p className="font-weight-bold mb-0">Name Surname</p>
+            <p className="font-weight-bold mb-0">
+              {!isLoading && contacts.length > 0
+                ? contacts.map(contact => {
+                    const { name } = contact;
+                    return <p> {name} </p>;
+                  })
+                : null}
+            </p>
             <p className="font-weight-light mb-0">Date and hour</p>
           </div>
         </div>

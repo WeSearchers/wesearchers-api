@@ -15,7 +15,7 @@ class Jumbotron extends Component {
               class="form-control z-depth-1"
               id="exampleFormControlTextarea6"
               rows="3"
-              placeholder="Write something here..."
+              placeholder="Create a new post..."
             />
           </div>
         </div>
@@ -27,17 +27,17 @@ class Jumbotron extends Component {
 
           <button type="button" class="btn-foto btn btn-light m-1">
             <img className="pr-1" src={photo} width="18" height="18" />
-            Foto/Vídeo
+            Image / Video
           </button>
 
           <button type="button" class="btn-id btn btn-light m-1">
             <img className="pr-1" src={group} width="18" height="18" />
-            Identificar (...)
+            Identify (...)
           </button>
 
           <button type="button" class="btn-local btn btn-light m-1">
             <img className="pr-1" src={local} width="18" height="18" />
-            Localização
+            Location
           </button>
 
           <button
