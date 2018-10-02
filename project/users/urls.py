@@ -8,14 +8,10 @@ urlpatterns = [
     re_path('resetpw', views.send_reset_password_email),
     re_path('reset', views.reset_password),
     re_path('password', views.change_password),
-<<<<<<< Updated upstream
-=======
     re_path('followers', views.get_followers),
     re_path('following',views.get_following),
-    re_path('collaborators',views.get_collaborators),
-    re_path('editprofile',views.edit_profile),
-    re_path('mentor',views.get_mentor),
->>>>>>> Stashed changes
+    #re_path('<int:user_id>/collaborators',views.get_collaborators),
+    re_path('follow',views.follow),
     path('<int:user_id>', views.get_user_info),
     path('', views.index),
 ]
