@@ -22,7 +22,10 @@ class UserProfileMenu extends Component {
           <div className="row menu-row">
             <div className="col-md-3 pd10">
               <a
-                className="menu-item"
+                className={
+                  "menu-item " +
+                  (this.state.showSection == "about" ? "link-selected" : "")
+                }
                 onClick={() => this.handleShowSubSection("about")}
               >
                 <i className="fa fa-user" />
@@ -30,20 +33,32 @@ class UserProfileMenu extends Component {
             </div>
             <div className="col-md-3 pd10">
               <a
-                className="menu-item"
+                className={
+                  "menu-item " +
+                  (this.state.showSection == "network" ? "link-selected" : "")
+                }
                 onClick={() => this.handleShowSubSection("network")}
               >
                 <i className="fa fa-users" />
               </a>
             </div>
             <div className="col-md-3 pd10">
-              <a className="menu-item ">
+              <a
+                className={
+                  "menu-item " +
+                  (this.state.showSection == "project" ? "link-selected" : "")
+                }
+                onClick={() => this.handleShowSubSection("project")}
+              >
                 <i className="fa fa-bar-chart" />
               </a>
             </div>
             <div className="col-md-3 pd10">
               <a
-                className="menu-item"
+                className={
+                  "menu-item " +
+                  (this.state.showSection == "posts" ? "link-selected" : "")
+                }
                 onClick={() => this.handleShowSubSection("posts")}
               >
                 <i className="fa fa-file-text-o" />

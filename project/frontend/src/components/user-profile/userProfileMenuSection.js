@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ProfileAbout from "./menuSubSections/profileAbout";
 import ProfileNetwork from "./menuSubSections/profileNetwork";
 import ProfilePublication from "./menuSubSections/profilePublication";
+import ProfileProject from "./menuSubSections/profileProject";
 
 class UserProfileMenuSection extends Component {
   state = {};
@@ -11,6 +12,7 @@ class UserProfileMenuSection extends Component {
         <div className="row">
           <ProfileAbout toShow={this.props.toShow} />
           <ProfileNetwork toShow={this.props.toShow} />
+          <ProfileProject toShow={this.props.toShow} />
           <ProfilePublication toShow={this.props.toShow} />
         </div>
       </div>

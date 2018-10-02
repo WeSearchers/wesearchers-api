@@ -5,7 +5,7 @@ import User from "./network/user";
 class ProfileNetwork extends Component {
   state = {
     subSections: [
-      { id: "1", title: "Mentors", visible: "hidden" },
+      { id: "1", title: "Advisors", visible: "hidden" },
       { id: "2", title: "Contributors", visible: "hidden" },
       { id: "3", title: "Followers", visible: "hidden" },
       { id: "4", title: "Following", visible: "hidden" }

@@ -241,6 +241,15 @@
 }
 
 /*Sub-Section Publication*/
+
+.project .project-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  color: #999;
+}
+
+/*Sub-Section Publication*/
 .publication {
   display: flex;
   align-items: center;
