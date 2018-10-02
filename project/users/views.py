@@ -94,6 +94,9 @@ def send_reset_password_email(request):
         send_mail("WeSearchers Password Reset",
                   settings.RUNNING_HOST + "/resetpw?guid=" + user.profile.email_guid,
                   "reset_password@wesearchers.pt", [user.email])
+        return HttpResponse()
+    else:
+        return HttpResponseNotFound()
 
 
 def reset_password(request):

@@ -49,7 +49,7 @@ class Profile(models.Model):
 
 
 class UserInterest(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="interests")
     interest = models.CharField(max_length=50)
 
 class UserFollow(models.Model):
