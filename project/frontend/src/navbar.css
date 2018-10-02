@@ -75,24 +75,31 @@ li {
   transition: 0.25s;
 }
 
-.hamb-navigation ul li {
+.hamb-navigation ul {
+  display: flex;
+  flex-direction: column;
+}
+
+.hamb-navigation ul a {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
   border-top: 1px solid #fff;
+  color: #fff;
+  text-decoration-line: none;
 }
 
-.hamb-navigation ul li:first-child {
+.hamb-navigation ul a:first-child {
   padding: 10px 20px;
   border-top: transparent;
 }
 
-.hamb-navigation ul li .fa {
+.hamb-navigation ul a .fa {
   font-size: 15px;
 }
 
-.hamb-navigation ul li:hover {
+.hamb-navigation ul a:hover {
   background: #999;
   cursor: pointer;
 }

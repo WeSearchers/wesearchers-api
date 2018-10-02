@@ -10,13 +10,9 @@ class UserProfileHeader extends Component {
           <div className="user-info section-card">
             <div className="user-name">
               Michael Jordan
-              <i className="edit-profile fa fa-pencil-square-o" />
+              <a href="/edit" className="edit-profile fa fa-pencil-square-o" />
             </div>
             <ul className="user-aux-info">
-              <li>
-                <span className="label">Age:</span>
-                20
-              </li>
               <li>
                 <span className="label">Course:</span>
                 Design and Multimedia

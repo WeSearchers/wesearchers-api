@@ -39,29 +39,29 @@ class NavBar extends Component {
             <i className="fa fa-bars" onClick={this.handleClickHamb} />
             <div className={"hamb-navigation " + this.state.hambState}>
               <ul>
-                <li>
+                <a>
                   <span>Requests</span> <i className="fa  fa-chevron-right" />
-                </li>
-                <li>
+                </a>
+                <a>
                   <span>Network</span> <i className="fa  fa-chevron-right" />
-                </li>
-                <li>
+                </a>
+                <a>
                   <span>Community</span> <i className="fa  fa-chevron-right" />
-                </li>
-                <li>
+                </a>
+                <a>
                   <span>Settings and Privacy</span>{" "}
                   <i className="fa  fa-chevron-right" />
-                </li>
-                <li>
+                </a>
+                <a>
                   <span>Help</span> <i className="fa  fa-chevron-right" />
-                </li>
-                <li>
+                </a>
+                <a>
                   <span>About the Platform</span>{" "}
                   <i className="fa  fa-chevron-right" />
-                </li>
-                <li>
-                  <span>Logout</span> <i className="fa  fa-chevron-right" />
-                </li>
+                </a>
+                <a href="/sign">
+                  <span>Logout*</span> <i className="fa  fa-chevron-right" />
+                </a>
               </ul>
             </div>
           </div>

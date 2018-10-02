@@ -28,7 +28,8 @@ class ProfileNetwork extends Component {
     return (
       <div
         className={
-          "col-md-12 " + (this.props.toShow == "network" ? "show" : "hidden")
+          "col-md-12 mt40 " +
+          (this.props.toShow == "network" ? "show" : "hidden")
         }
       >
         {this.state.subSections.map(subSection => (

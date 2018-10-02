@@ -57,7 +57,7 @@ class ProfileAbout extends Component {
             </div>
             <div className="multi-choice-area">
               <i>#</i>
-              Fuscealiquamvestibulumipsum
+              Cience
             </div>
           </div>
           <div className="section-title">languages</div>

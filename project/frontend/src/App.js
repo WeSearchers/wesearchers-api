@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import "./App.css";
 import "./userProfile.css";
+import "./editUserProfileForm.css";
 import SignupForm from "./components/SignupForm";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Validator from "./components/Validator";
 import queryString from "query-string";
 import UserProfile from "./views/userProfile";
+import EditUserProfileForm from "./components/user-profile/editUserProfileForm";
 import "bootstrap/dist/css/bootstrap.css";
 
 class App extends Component {
@@ -15,6 +17,8 @@ class App extends Component {
         <div className="App">
           <Switch>
             <Route path="/user/profile" component={UserProfile} />
+            <Route path="/edit" component={EditUserProfileForm} />
+            <Route path="/sign" component={SignupForm} />
           </Switch>
         </div>
       </Router>
