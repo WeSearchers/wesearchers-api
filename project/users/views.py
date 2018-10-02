@@ -168,7 +168,7 @@ def get_collaborators(request):
 """
 
 @require_login
-def follow(request)
+def follow(request):
     if request.method == "POST":
         try:
             followed = User.objects.filter(id=request.POST["user_id"]).first()
