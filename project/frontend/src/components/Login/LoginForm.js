@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import { Form, Text, formState } from 'informed';
-import axios from 'axios';
-
+import Request from "../../request";
 
 class LoginForm extends Component {
 
@@ -37,12 +36,11 @@ class LoginForm extends Component {
 
   formSubmit = (info, submitClick) => {
     if (info.values === null || info.values === undefined ) { return; }
-    const data = {
-      username: info.values.username,
-      password: info.values.password,
-    }
+    const data = new FormData();
+    data.append("username", info.values.username);
+    data.append("password", info.values.password);
     console.log(data);
-    axios.post(`/api/user/login`, {data} ).then (res => {
+    Request.post("/api/user/login", data ).then (res => {
       console.log(res);
       console.log(res.data);
     })
