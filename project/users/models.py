@@ -56,6 +56,8 @@ class UserFollow(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following_user")
     followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followed")
 
+"""
 class UserMentor(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
     mentor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="mentor")
+"""

@@ -143,27 +143,44 @@ def validate(request):
         return HttpResponseNotFound()
 
 @require_login
-def edit_profile(request):
-    
-    return HttpResponse()
-
-
-@require_login
 def get_followers(request):
-    #insert code here
-    return HttpResponse()
+    if request.method == "GET":
+        if "user_id" not in request.GET.keys():
+            followers = list(map(lambda user: user.profile.to_json(), UserFollow.objects.filter(followed=request.user)))
+        else:
+            followers = list(map(lambda user: user.profile.to_json(), UserFollow.objects.filter(followed_id=int(request.GET["user_id"]))))
+        return JsonResponse(followers,safe=False)
+    else:
+        return HttpResponseNotAllowed()
 
 @require_login
 def get_following(request):
-    #insert code here
-    return HttpResponse()
-
+    if request.method == "GET":
+        if "user_id" not in request.GET.keys():
+            following = list(map(lambda user: user.profile.to_json(), UserFollow.objects.filter(user=request.user)))
+        else:
+            following = list(map(lambda user: user.profile.to_json(), UserFollow.objects.filter(user_id=int(request.GET["user_id"]))))
+        return JsonResponse(following,safe=False)
+    else:
+        return HttpResponseNotAllowed()
+"""
 @require_login
 def get_collaborators(request):
     #insert code here
     return HttpResponse()
+"""
 
 @require_login
-def get_mentor(request):
-    #insert code here
-    return HttpResponse()
+def follow(request):
+    if request.method == "POST":
+        try:
+            followed = User.objects.filter(id=request.POST["user_id"]).first()
+            if followed is not None:
+                follow = UserFollow(user=request.user, followed=followed)
+                return HttpResponse()
+            else:
+                return HttpResponseNotFound()
+        except KeyError:
+            return HttpResponseBadRequest()
+    else:
+        return HttpResponseNotAllowed()

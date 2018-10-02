@@ -10,9 +10,8 @@ urlpatterns = [
     re_path('password', views.change_password),
     re_path('followers', views.get_followers),
     re_path('following',views.get_following),
-    re_path('collaborators',views.get_collaborators),
-    re_path('editprofile',views.edit_profile),
-    re_path('mentor',views.get_mentor),
+    #re_path('<int:user_id>/collaborators',views.get_collaborators),
+    re_path('follow',views.follow),
     path('<int:user_id>', views.get_user_info),
     path('', views.index),
 ]
