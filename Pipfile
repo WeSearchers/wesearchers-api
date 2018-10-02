@@ -9,6 +9,7 @@ djangorestframework = "*"
 django-webpack-loader = "*"
 "psycopg2" = "*"
 "psycopg2-binary" = "*"
+pillow = "*"
 
 [dev-packages]
 
