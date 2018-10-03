@@ -11,12 +11,14 @@ import linkedin from "../../images/linkedin-logo-button.png";
 import twitter from "../../images/twitter-logo-button.png";
 import AddComent from "./addcoment";
 
-class Pub2 extends React.Component {
+class Pub1 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       modal1: false,
-      modal2: false
+      modal2: false,
+      isLoading: true,
+      contacts: []
     };
 
     this.togglemodal1 = this.togglemodal1.bind(this);
@@ -33,19 +35,45 @@ class Pub2 extends React.Component {
       modal2: !this.state.modal2
     });
   }
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    fetch("https://randomuser.me/api/?results=1&nat=us,dk,fr,gb")
+      .then(response => response.json())
+      .then(parseJSON =>
+        parseJSON.results.map(user => ({
+          name: `${user.name.first} ${user.name.last}`,
+          gender: `${user.gender}`
+        }))
+      )
+      .then(contacts =>
+        this.setState({
+          contacts,
+          isLoading: false
+        })
+      )
+      .catch(error => console.log("parsing failed", error));
+  }
 
   render() {
+    const { isLoading, contacts } = this.state;
     return (
-      <div className="pub2 bg-grey m-5 d-flex flex-column mr-auto ml-auto ">
+      <div className="pub1 bg-grey m-5 d-flex flex-column mr-auto ml-auto ">
         <div className=" d-flex flex-row align-content-baseline">
           <div className="background-image-profile ml-3 mt-3" />
           <div className=" mt-4 ml-4  d-flex flex-column justify-content-center">
-            <p className="font-weight-bold mb-0">Name Surname</p>
+            <p className="font-weight-bold mb-0">
+Name Surname
+            </p>
+          { /*Ze monteiro colocar nome a partir do fetch*/}
             <p className="font-weight-light mb-0">Date and hour</p>
+            {/*Ze monteiro colocar hora e data a partir do fetch*/}
           </div>
         </div>
         <div className="content d-flex flex-row justify-content-center bg-white mr-2 ml-2 mt-4 mr-auto ml-auto">
-          <p className="font-weight-light m-2 ml-4 mr-4 mt-2 mb-4">
+          <p className="font-weight-light m-2 ml-4 mr-4 mt-4 mb-4">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -53,6 +81,7 @@ class Pub2 extends React.Component {
             adipiscing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua. Ut enim ad minim (...)
           </p>
+          {/*Ze monteiro colocar conteudo a partir do fetch*/}
         </div>
         <div className="pub-btn d-flex flex-row justify-content-end ">
           <button
@@ -61,6 +90,11 @@ class Pub2 extends React.Component {
           >
             See more
           </button>
+        </div>
+        <div className="anexo d-flex flex-row justify-content-center mr-2 ml-2 mt-5 mr-auto ml-auto text-black-50">
+          <p className="font-weight-light opacity align-middle m-2 ml-4 mr-4 mt-4 ">
+            Attachment <br /> (image / video)
+          </p>
         </div>
         <div className="barra d-flex flex-row ml-4 mt-3">
           <div className="icons d-flex flex-row mb-4">
@@ -132,4 +166,4 @@ class Pub2 extends React.Component {
   }
 }
 
-export default Pub2;
+export default Pub1;
