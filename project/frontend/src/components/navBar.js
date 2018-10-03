@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../navbar.css";
+import "../styles/navbar.css";
 
 class NavBar extends Component {
   state = {
@@ -59,7 +59,7 @@ class NavBar extends Component {
                   <span>About the Platform</span>{" "}
                   <i className="fa  fa-chevron-right" />
                 </a>
-                <a href="/sign">
+                <a href="/login">
                   <span>Logout*</span> <i className="fa  fa-chevron-right" />
                 </a>
               </ul>

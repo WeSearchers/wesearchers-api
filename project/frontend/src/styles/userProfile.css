@@ -13,7 +13,7 @@
   height: 130px;
   width: 130px;
   border-radius: 50%;
-  background-image: url("./Media/user.jpg");
+  background-image: url("../Media/user.jpg");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -185,7 +185,7 @@
   height: 80px;
   width: 80px;
   border-radius: 50%;
-  background-image: url("./Media/user.jpg");
+  background-image: url("../Media/user.jpg");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -263,7 +263,7 @@
   height: 80px;
   width: 80px;
   border-radius: 50%;
-  background-image: url("./Media/user.jpg");
+  background-image: url("../Media/user.jpg");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -309,17 +309,6 @@
 
 .mt40 {
   margin-top: 40px;
-}
-
-/* General rules */
-
-a:hover {
-  cursor: pointer;
-  background: #999;
-}
-
-a.fa {
-  color: #000;
 }
 
 /* General media queries */

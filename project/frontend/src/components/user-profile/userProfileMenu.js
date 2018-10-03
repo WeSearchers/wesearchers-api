@@ -50,7 +50,7 @@ class UserProfileMenu extends Component {
                 }
                 onClick={() => this.handleShowSubSection("project")}
               >
-                <i className="fa fa-bar-chart" />
+                <i className="fa fa-archive" />
               </a>
             </div>
             <div className="col-md-3 pd10">
@@ -61,7 +61,7 @@ class UserProfileMenu extends Component {
                 }
                 onClick={() => this.handleShowSubSection("posts")}
               >
-                <i className="fa fa-file-text-o" />
+                <i className="fa fa-file-text" />
               </a>
             </div>
           </div>
