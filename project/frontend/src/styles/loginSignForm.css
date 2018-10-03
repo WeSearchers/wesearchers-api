@@ -80,6 +80,7 @@
 
 .forgot-password .title {
   font-size: 28px;
+  margin-bottom: 20px;
 }
 
 .forgot-password .sub-title {
@@ -93,8 +94,27 @@
   border-radius: 0;
   box-shadow: 0px 2px 0px 0px #eee;
   height: fit-content;
-  margin-bottom: 40px;
-  margin-top: 20px;
+  margin: 40px 0;
+  margin-bottom: 60px;
   text-align: center;
   padding: 0;
+}
+
+/* ConfirmAccount / ActivateAccount*/
+
+.login-page .confirm-account,
+.login-page .activate-account {
+  color: #333;
+  margin-top: -100px;
+}
+
+.login-page .confirm-account .welcome,
+.login-page .activate-account .title {
+  font-size: 30px;
+  margin-bottom: 40px;
+}
+
+.login-page .confirm-account .message,
+.login-page .activate-account .message {
+  text-align: center;
 }

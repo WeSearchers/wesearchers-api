@@ -8,6 +8,8 @@ import UserProfile from "./views/userProfile";
 import EditUserProfileForm from "./components/user-profile/editUserProfileForm";
 import UserLogin from "./components/Login/userLogin";
 import ForgotPassword from "./components/Login/forgotPassword";
+import ConfirmAccount from "./components/Login/confirmAccount";
+import ActivateAccount from "./components/Login/activateAccount";
 import "bootstrap/dist/css/bootstrap.css";
 
 class App extends Component {
@@ -19,7 +21,9 @@ class App extends Component {
             <Route path="/user/profile" component={UserProfile} />
             <Route path="/edit" component={EditUserProfileForm} />
             <Route path="/login" component={UserLogin} />
+            <Route path="/confirm" component={ConfirmAccount} />
             <Route path="/forgotpass" component={ForgotPassword} />
+            <Route path="/activate" component={ActivateAccount} />
           </Switch>
         </div>
       </Router>

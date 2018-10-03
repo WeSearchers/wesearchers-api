@@ -14,6 +14,7 @@ class User extends Component {
             </div>
             <div className="network-user-info">
               <div className="photo" />
+              {/* jmmonteiro (recapitular o que disse na page profileNetwork.js) colocar instituição do user do fetch */}
               <div className="section-card institution">
                 Universidade de Coimbra
               </div>
