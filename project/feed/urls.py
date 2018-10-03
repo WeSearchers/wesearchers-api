@@ -20,9 +20,9 @@ from . import views
 urlpatterns = [
     re_path('articlebyinterests', views.article_by_interests),
     path('article/<int:article_id>', views.get_article),
-    re_path('article', views.post_article),
-    path('comment/<int:comment_id>', views.get_comment),
     path('commentsbyarticle/<int:article_id>', views.comments_by_article),
+    path('comment/<int:comment_id>', views.get_comment),
+    re_path('article', views.post_article),
     re_path('comment', views.post_comment),
     re_path('vote', views.vote_view),
 ]
