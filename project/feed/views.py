@@ -29,9 +29,9 @@ def post_comment(request):
 
 
 @require_login
-def get_comment(request):
+def get_comment(request, comment_id):
     if request.method == "GET":
-        comment = Comment.objects.filter(id=request.GET["comment_id"]).first()
+        comment = Comment.objects.filter(id=comment_id).first()
         if comment is not None:
             return JsonResponse(comment.serialize())
         else:
@@ -68,14 +68,14 @@ def vote_view(request):
 
 @require_login
 def get_article(request, article_id):
-    try:
+    if request.method == "GET":
         article = Article.objects.filter(id=article_id).first()
-    except KeyError:
-        return HttpResponseBadRequest()
-    if article is not None:
-        return JsonResponse(article.serialize())
+        if article is not None:
+            return JsonResponse(article.serialize())
+        else:
+            return HttpResponseNotFound()
     else:
-        return HttpResponseNotFound()
+        return HttpResponseNotAllowed()
 
 
 @require_login
@@ -99,14 +99,11 @@ def post_article(request):
 
 
 @require_login
-def comments_by_article(request, params):
-    article = Article.objects.filter(id=params["article_id"]).first()
+def comments_by_article(request, article_id):
+    article = Article.objects.filter(id=article_id).first()
     if article is not None:
-        comments = Comment.objects.filter(article__id=article.id)
-        comm_list = []
-        for comment in comments:
-            comm_list.append(comment.serialize())
-        return JsonResponse(comm_list, safe=False)
+        comments = list(map(lambda x : comment.serialize(), Comment.objects.filter(article=article)))
+        return JsonResponse(comments, safe=False)
     else:
         return HttpResponseNotFound()
 
