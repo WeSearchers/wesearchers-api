@@ -7,6 +7,7 @@ class EditUserProfileForm extends Component {
       <div className="edit-user-profile section-card">
         <h3>Edit Profile</h3>
         <a href="/user/profile" className="fa fa-times" />
+
         <form action="#">
           <label>Name</label>
           <input type="text" placeholder="..." />

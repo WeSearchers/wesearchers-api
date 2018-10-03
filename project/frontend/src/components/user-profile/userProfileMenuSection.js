@@ -10,6 +10,8 @@ class UserProfileMenuSection extends Component {
     return (
       <div className="container user-profile-menu-section">
         <div className="row">
+          {/* jmmonteiro aqui são chamadas as sub-secções do perfil */}
+          {/* jmmonteiro talvez passes a informação por aqui através do props */}
           <ProfileAbout toShow={this.props.toShow} />
           <ProfileNetwork toShow={this.props.toShow} />
           <ProfileProject toShow={this.props.toShow} />

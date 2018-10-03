@@ -15,14 +15,17 @@ class ProfileAbout extends Component {
           <div className="section-card identification">
             <ul>
               <li>
+                {/* jmmonteiro colocar ORCID através do fetch */}
                 <span className="label">ORCID</span>
                 0000-0000-0000-0000
               </li>
               <li>
+                {/* jmmonteiro colocar Email através do fetch */}
                 <span className="label">Email</span>
                 nomesobrenome@email.com
               </li>
               <li>
+                {/* jmmonteiro colocar Skype através do fetch */}
                 <span className="label">Skype</span>
                 @nomeSobrenome1111
               </li>
@@ -30,6 +33,7 @@ class ProfileAbout extends Component {
           </div>
           <div className="section-title">Presentation</div>
           <div className="section-card">
+            {/* jmmonteiro colocar texto de apresentação do utilizador através do fetch */}
             <div className="sub-text">
               Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Quisque
               tincidunt scelerisque libero. Nunca dapibus tortor vel mi dapibus
@@ -43,6 +47,7 @@ class ProfileAbout extends Component {
           </div>
           <div className="section-title">Areas of Interest</div>
           <div className="section-card interest-area">
+            {/* jmmonteiro colocar areas de interesse do utilizador através do fetch */}
             <div className="multi-choice-area">
               <i>#</i>
               Design
@@ -64,6 +69,7 @@ class ProfileAbout extends Component {
           <div className="section-card languages">
             <div className="row">
               <div className="col-md-3 p10">
+                {/* jmmonteiro colocar linguas faladas pelo utilizador através do fetch */}
                 <div className="language">Portuguese</div>
               </div>
               <div className="col-md-3 p10">

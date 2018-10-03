@@ -32,6 +32,7 @@ class ProfileNetwork extends Component {
           (this.props.toShow == "network" ? "show" : "hidden")
         }
       >
+        {/* jmmonteiro passar os utilizadores (ex: colaboradores / seguidores..) para a secção correspondente como podes ver no state acima, através do fetch */}
         {this.state.subSections.map(subSection => (
           <SubSection
             key={subSection.id}

@@ -7,6 +7,8 @@ class User extends Component {
       <React.Fragment>
         <div className="col-md-12 user-network">
           <div className="section-user-network">
+            {/* jmmonteiro (recapitular o que disse na page profileNetwork.js) colocar nome do tipo de user do fetch */}
+
             <div className="section-card network-advisor">
               Nome do Tipo de Orientador 1
             </div>

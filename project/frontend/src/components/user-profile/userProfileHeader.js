@@ -8,15 +8,13 @@ class UserProfileHeader extends Component {
         <div className="row user-header">
           <div className="user-photo" />
           <div className="user-info section-card">
+            {/* jmmonteiro colocar nome do utilizador através do fetch */}
             <div className="user-name">
               Michael Jordan
               <a href="/edit" className="edit-profile fa fa-pencil-square-o" />
             </div>
             <ul className="user-aux-info">
-              <li>
-                <span className="label">Course:</span>
-                Design and Multimedia
-              </li>
+              {/* jmmonteiro colocar informação curricular através do fetch */}
               <li>
                 <span className="label">Institution:</span>
                 Universidade de Coimbra

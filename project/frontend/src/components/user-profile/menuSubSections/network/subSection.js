@@ -13,6 +13,8 @@ class SubSection extends Component {
           className="network-sub-section"
           onClick={() => this.props.turnVisible(this.props.subSection)}
         >
+          {/* jmmonteiro relativo à page profileNetwork colocar valor de users associado ao tipo de subSecção (ex: advisor etc) com fetch */}
+
           <div className="value">2</div>
           <div className="title">{this.props.title}</div>
         </a>

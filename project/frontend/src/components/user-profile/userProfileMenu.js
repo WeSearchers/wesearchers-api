@@ -18,6 +18,8 @@ class UserProfileMenu extends Component {
   render() {
     return (
       <React.Fragment>
+        {/* jmmonteiro aqui estão as secções que ativam cada sub-secção do perfil de utilizador: about network etc...*/}
+        {/* jmmonteiro ao clicar em cada um deve conter já a informação renderizada */}
         <div className="container profile-menu">
           <div className="row menu-row">
             <div className="col-md-3 pd10">
