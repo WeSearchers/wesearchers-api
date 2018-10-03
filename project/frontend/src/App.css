@@ -29,6 +29,10 @@
 
 /*general*/
 
+body {
+  font-family: avenir-book !important;
+}
+
 .link-selected {
   background: #999 !important;
   border: 1px solid black !important;
@@ -48,4 +52,21 @@ button:focus {
 
 a.fa {
   color: #000;
+}
+
+/*font*/
+
+@font-face {
+  src: url(./Fonts/AvenirLTStd-Book.otf);
+  font-family: avenir-book;
+}
+
+@font-face {
+  src: url(./Fonts/AvenirLTStd-Light.otf);
+  font-family: avenir-light;
+}
+
+@font-face {
+  src: url(./Fonts/AvenirLTStd-Black.otf);
+  font-family: avenir-black;
 }
