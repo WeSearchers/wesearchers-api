@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import UserProfile from "./views/userProfile";
 import EditUserProfileForm from "./components/user-profile/editUserProfileForm";
 import UserLogin from "./components/Login/userLogin";
+import ForgotPassword from "./components/Login/forgotPassword";
 import "bootstrap/dist/css/bootstrap.css";
 
 class App extends Component {
@@ -18,6 +19,7 @@ class App extends Component {
             <Route path="/user/profile" component={UserProfile} />
             <Route path="/edit" component={EditUserProfileForm} />
             <Route path="/login" component={UserLogin} />
+            <Route path="/forgotpass" component={ForgotPassword} />
           </Switch>
         </div>
       </Router>
