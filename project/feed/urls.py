@@ -18,10 +18,11 @@ from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
-    re_path('article/<int:article_id>', views.article),
-    re_path('comment/<int:comment_id>', views.comment),
-    re_path('article_by_interests/<int:user_id>', views.article_by_interests)
-    re_path('comments_by_article/<int:article_id>', views.comments_by_article)
-    re_path('vote', views.vote),
-    path('admin/', admin.site.urls),
+    re_path('articlebyinterests', views.article_by_interests),
+    path('article/<int:article_id>', views.get_article),
+    re_path('article', views.post_article),
+    path('comment/<int:comment_id>', views.get_comment),
+    path('commentsbyarticle/<int:article_id>', views.comments_by_article),
+    re_path('comment', views.post_comment),
+    re_path('vote', views.vote_view),
 ]

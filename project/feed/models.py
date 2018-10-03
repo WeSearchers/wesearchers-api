@@ -15,48 +15,45 @@ class Article(models.Model):
     title = models.CharField(max_length=255)
     text = models.TextField()
     date = models.DateField()
-    score = models.IntegerField()
     url = models.URLField()
 
-    def update_score(self):
+    def calc_score(self):
         temp = 0
-        for vote in Vote.objects.filter(article__id=self.id):
-            if vote.score:
-                temp += 1
-            else:
-                temp -= 1
-        self.score = temp
-        self.save()
+        for vote in Vote.objects.filter(article=self):
+            temp += vote.score
+        return temp
 
     def serialize(self):
         return {
+            "id": self.id,
             "user_id": self.user.id,
             "title": self.title,
             "text": self.text,
             "date": self.date,
-            "score": self.score,
+            "score": self.calc_score(),
             "url": self.url
         }
 
 
 class ArticleInterest(models.Model):
     interest = models.CharField(max_length=255)
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="interests")
 
 
 class Vote(models.Model):
-    score = models.BooleanField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    score = models.IntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="votes")
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="votes")
 
 
 class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
     text = models.CharField(max_length=7900)
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comments")
 
     def serialize(self):
         return {
+            "id": self.id,
             "user_id": self.user.id,
             "article_id": self.article.id,
             "text": self.text
