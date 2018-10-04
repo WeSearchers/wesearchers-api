@@ -1,0 +1,21 @@
+.bg-grey {
+  background-color: #efefef;
+}
+.bg-grey2 {
+  background-color: #ced4da;
+}
+.opacity {
+  opacity: 0.5;
+}
+.boder-radius-xs {
+  border-radius: 5.5px;
+}
+.boder-radius-sm {
+  border-radius: 12.5px;
+}
+.boder-radius-md {
+  border-radius: 62.5px;
+}
+.boder-radius-lg {
+  border-radius: 82.5px;
+}
