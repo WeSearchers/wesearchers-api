@@ -19,7 +19,8 @@ class NavBar extends Component {
       <div className="nav-bar">
         <div className="container nav-bar-container">
           <ul className="menu">
-            <li>
+            <li className="logo-nav" />
+            <li className>
               <i className="fa fa-window-maximize" />
             </li>
             <li>

@@ -58,6 +58,19 @@ li {
   color: #ccc;
 }
 
+.menu .logo-nav {
+  height: 30px;
+  width: 30px;
+  background-image: url("../Media/logo_nav.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.menu .logo-nav:hover {
+  opacity: 0.5;
+}
+
 .hamb-menu {
   position: relative;
   display: flex;

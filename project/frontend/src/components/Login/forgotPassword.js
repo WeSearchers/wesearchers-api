@@ -14,9 +14,15 @@ class ForgotPassword extends Component {
             <div className="sub-title">
               We will help you to have a new one with your email
             </div>
-            <input className="input-email" type="text" placeholder="" />
-            {/* jmmonteiro enviar email de recuperação de password */}
             <form action="/changePasswordMessage">
+              <input
+                className="input-email"
+                type="text"
+                placeholder=""
+                required
+              />
+              {/* jmmonteiro enviar email de recuperação de password */}
+
               <button type="submit" href="/user/profile">
                 send email
               </button>
