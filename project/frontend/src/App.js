@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import "./App.css";
 import Feed from "./views/feed";
+import SignUp from "./views/signup";
 class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <Feed />
+        <SignUp/>
       </React.Fragment>
     );
   }
