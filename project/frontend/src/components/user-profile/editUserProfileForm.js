@@ -11,26 +11,26 @@ class EditUserProfileForm extends Component {
         <form action="#">
           <label>Name</label>
           <input type="text" placeholder="..." />
-          <label>Course</label>
-          <input type="text" placeholder="..." />
-          <label>Institution</label>
-          <input type="text" placeholder="..." />
           <label>ORCID</label>
+          <input type="text" placeholder="..." />
+          <label>Affiliation</label>
+          <input type="text" placeholder="..." />
+          <label>Research unit</label>
           <input type="text" placeholder="..." />
           <label>Email</label>
           <input type="text" placeholder="..." />
           <label>Skype</label>
           <input type="text" placeholder="..." />
-          <label>Presentation</label>
+          <label>Biography</label>
           <textarea type="text" placeholder="..." />
-          <label>Areas of Interest</label>
+          <label>Research interests</label>
           <select multiple>
             <option value="volvo">Design</option>
             <option value="saab">Economy</option>
             <option value="opel">Food</option>
             <option value="audi">Cience</option>
           </select>
-          <label>Languages</label>
+          <label>language</label>
           <input type="text" placeholder="..." />
           <button type="submit" value="">
             save changes
