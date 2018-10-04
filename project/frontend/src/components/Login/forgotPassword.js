@@ -5,6 +5,7 @@ class ForgotPassword extends Component {
   render() {
     return (
       <div className="login-page">
+        <a href="/login" className="general-btn back-login" />
         <div className="container">
           <div className="forgot-password login-form">
             <div className="title">

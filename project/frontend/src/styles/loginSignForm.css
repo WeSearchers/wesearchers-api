@@ -1,8 +1,9 @@
 .login-page {
-  height: 100vh;
-  background: #fafafa;
+  position: relative;
   display: flex;
   align-items: center;
+  height: 100vh;
+  background: #fafafa;
 }
 
 .login-page .container {
@@ -128,4 +129,15 @@
 .login-page .confirm-account .message,
 .login-page .activate-account .message {
   text-align: center;
+}
+
+/* general */
+
+.login-page a.back-login {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
 }
