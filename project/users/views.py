@@ -77,11 +77,20 @@ def update(request):
     user_form = UserUpdateForm(request.POST, instance=request.user)
     profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
     institution = Institution.objects.filter(id=int(request.POST["institution"])).first()
-    if user_form.is_valid() and profile_form.is_valid() and institution is not None:
+    interests = request.POST["interests"].split()
+    if user_form.is_valid() and profile_form.is_valid() and institution is not None and len(interests) >= 6:
+        for interest in request.user.interests:
+            interest.delete()
+        for interest in interests:
+            user_interest = UserInterest(interest=interest)
+            user_interest.user = request.user
+            user_interest.save()
         user_form.save()
         profile = profile_form.save(commit=False)
         profile.institution = institution
         profile.save()
+        return HttpResponse()
+    return HttpResponseBadRequest()
 
 
 def guid_check(request):
@@ -128,27 +137,30 @@ def change_password(request):
 
 
 def validate(request):
-    try:
-        profile = Profile.objects.filter(email_guid=request.GET["guid"]).first()
-    except KeyError:
-        return HttpResponseBadRequest("Request badly formatted")
-    if profile is not None and profile.user.is_active is False:
-        user = profile.user
-        user.is_active = True
-        user.save()
-        profile.email_guid = new_guid()
-        profile.save()
-        return HttpResponse()
+    if request.method == "POST":
+        try:
+            profile = Profile.objects.filter(email_guid=request.POST["guid"]).first()
+        except KeyError:
+            return HttpResponseBadRequest("Request badly formatted")
+        if profile is not None and profile.user.is_active is False:
+            user = profile.user
+            user.is_active = True
+            user.save()
+            profile.email_guid = new_guid()
+            profile.save()
+            return HttpResponse()
+        else:
+            return HttpResponseNotFound()
     else:
-        return HttpResponseNotFound()
+        return HttpResponseNotAllowed()
 
 @require_login
 def get_followers(request):
     if request.method == "GET":
         if "user_id" not in request.GET.keys():
-            followers = list(map(lambda user: user.profile.to_json(), UserFollow.objects.filter(followed=request.user)))
+            followers = list(map(lambda user: user.user.profile.to_json(), UserFollow.objects.filter(followed=request.user)))
         else:
-            followers = list(map(lambda user: user.profile.to_json(), UserFollow.objects.filter(followed_id=int(request.GET["user_id"]))))
+            followers = list(map(lambda user: user.user.profile.to_json(), UserFollow.objects.filter(followed_id=int(request.GET["user_id"]))))
         return JsonResponse(followers,safe=False)
     else:
         return HttpResponseNotAllowed()
@@ -157,9 +169,9 @@ def get_followers(request):
 def get_following(request):
     if request.method == "GET":
         if "user_id" not in request.GET.keys():
-            following = list(map(lambda user: user.profile.to_json(), UserFollow.objects.filter(user=request.user)))
+            following = list(map(lambda user: user.followed.profile.to_json(), UserFollow.objects.filter(user=request.user)))
         else:
-            following = list(map(lambda user: user.profile.to_json(), UserFollow.objects.filter(user_id=int(request.GET["user_id"]))))
+            following = list(map(lambda user: user.followed.profile.to_json(), UserFollow.objects.filter(user_id=int(request.GET["user_id"]))))
         return JsonResponse(following,safe=False)
     else:
         return HttpResponseNotAllowed()
@@ -171,12 +183,13 @@ def get_collaborators(request):
 """
 
 @require_login
-def follow(request):
+def follow_view(request):
     if request.method == "POST":
         try:
             followed = User.objects.filter(id=request.POST["user_id"]).first()
             if followed is not None:
                 follow = UserFollow(user=request.user, followed=followed)
+                follow.save()
                 return HttpResponse()
             else:
                 return HttpResponseNotFound()
