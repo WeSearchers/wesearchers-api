@@ -40,7 +40,9 @@ class UserLogin extends Component {
     console.log(data)
     Request.post('api/user/login',data).then(
       response => {
+        console.log(response)
         if (response.status === 200) {
+          //Request.get('api/user/profile/0', {}).then(response => console.log(response))
           //login com sucesso, manda para a proxima página
           window.location.assign(window.location.origin + "/user/profile")
         }

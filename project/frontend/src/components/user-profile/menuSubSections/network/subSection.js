@@ -2,7 +2,12 @@ import React, { Component } from "react";
 import Users from "./users";
 
 class SubSection extends Component {
-  state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      
+    }
+  }
 
   render() {
     var displayElm = false;

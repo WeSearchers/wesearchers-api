@@ -51,10 +51,13 @@ def index(request):
 
 
 @require_login
-def get_user_info(request, params):
-    user = User.objects.filter(id=params["user_id"]).first()
+def get_user_info(request, user_id):
+    if user_id == 0:
+        user = request.user
+    else:
+        user = User.objects.filter(id=user_id).first()
     if user is not None:
-        return JsonResponse(user.profile.to_json())
+        return JsonResponse(user.profile.to_json(), safe=False)
     else:
         return HttpResponseNotFound()
 

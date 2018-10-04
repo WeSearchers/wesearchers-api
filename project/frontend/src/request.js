@@ -13,7 +13,7 @@ class Request {
             body: data,
             headers: {"X-CSRFToken": ca}
         };
-        return fetch(url, conf);
+        return fetch(window.location.protocol + "//" + window.location.host + "/" + url, conf);
     }
 
     static get(url, data) {
@@ -22,7 +22,7 @@ class Request {
             urlend += elem + "=" + data[elem] + "&";
         }
         urlend = urlend.slice(0, -1);
-        return fetch(url + urlend);
+        return fetch(window.location.protocol + "//" + window.location.host + "/" + url + urlend);
     }
 }
 

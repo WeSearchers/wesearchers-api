@@ -20,7 +20,7 @@ class NavBar extends Component {
         <div className="container nav-bar-container">
           <ul className="menu">
             <li className="logo-nav" />
-            <li className>
+            <li>
               <i className="fa fa-window-maximize" />
             </li>
             <li>

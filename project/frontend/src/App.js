@@ -4,7 +4,7 @@ import "./styles/userProfile.css";
 import "./styles/editUserProfileForm.css";
 import "./styles/loginSignForm.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import UserProfile from "./views/userProfile";
+import UserProfileMain from "./components/user-profile/userProfileMain";
 import EditUserProfileForm from "./components/user-profile/editUserProfileForm";
 import UserLogin from "./components/Login/userLogin";
 import ForgotPassword from "./components/Login/forgotPassword";
@@ -15,13 +15,14 @@ import changePasswordMessage from "./components/Login/changePasswordMessage";
 import "bootstrap/dist/css/bootstrap.css";
 import LoginSignUp from "./components/Login/LoginSignUp";
 
+
 class App extends Component {
   render() {
     return (
       <Router>
         <div className="App">
           <Switch>
-            <Route path="/user/profile" component={UserProfile} />
+            <Route path="/user/profile" component={UserProfileMain} />
             <Route path="/register" component={LoginSignUp} />
             <Route path="/edit" component={EditUserProfileForm} />
             <Route path="/login" component={UserLogin} />

@@ -2,10 +2,13 @@ import React, { Component } from "react";
 import UserProfileMenuSection from "./userProfileMenuSection";
 
 class UserProfileMenu extends Component {
-  state = {
-    showSection: "about"
-  };
-
+  constructor(props){
+    super(props);
+    this.state = {
+      showSection: "about"
+    };  
+  }
+ 
   handleShowSubSection(section) {
     if (this.state.showSection !== section) {
       this.setState({
@@ -68,7 +71,7 @@ class UserProfileMenu extends Component {
             </div>
           </div>
         </div>
-        <UserProfileMenuSection toShow={this.state.showSection} />
+        <UserProfileMenuSection data={this.props.data} toShow={this.state.showSection} />
       </React.Fragment>
     );
   }

@@ -43,7 +43,8 @@ class Profile(models.Model):
             "orcid": p.orcid,
             "bio": p.bio,
             "image_data": path_to_base64(p.image.path),
-            "institution": p.institution_id
+            "institution": p.institution_id,
+            "interests": list(map(lambda i: i.interest, list(UserInterest.objects.filter(user=u))))
         }
 
 

@@ -12,6 +12,6 @@ urlpatterns = [
     re_path('following', views.get_following),
     # re_path('<int:user_id>/collaborators',views.get_collaborators),
     re_path('follow', views.follow_view),
-    path('<int:user_id>', views.get_user_info),
+    path('profile/<int:user_id>', views.get_user_info),
     path('', views.index),
 ]
