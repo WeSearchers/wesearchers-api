@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Request from '../../request';
+import PropTypes from "prop-types";
+
 
 class UserLogin extends Component {
   constructor(props) {
@@ -10,6 +12,11 @@ class UserLogin extends Component {
 
     }
   }
+
+  static contextTypes = {
+    router: PropTypes.object
+  }
+
 
   handlechange = event => {
     this.setState(
@@ -35,6 +42,7 @@ class UserLogin extends Component {
       response => {
         if (response.status === 200) {
           //login com sucesso, manda para a proxima página
+          window.location.assign(window.location.origin + "/user/profile")
         }
         else {
           //erro no login, do smth
@@ -72,7 +80,7 @@ class UserLogin extends Component {
             </div>
               <button onClick={this.handleLogin} type="submit">log in</button>
             <div>Don't you have an account?</div>
-            <a href="#">sign up</a>
+            <a href="/register">sign up</a>
           </div>
         </div>
       </div>

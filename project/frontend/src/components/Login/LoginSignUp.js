@@ -80,7 +80,7 @@ class LoginSignUp extends Component {
                 Upload
               </button>
               */}
-              <input type='file' name="image" accept="image/*" />
+              <input onChange={this.handlechange} type='file' name="image" accept="image/*" />
             </div>
 
             <div className="d-flex flex-column justify-content-right ml-5 mt-2" >
