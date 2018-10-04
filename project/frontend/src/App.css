@@ -71,6 +71,7 @@ a.fa {
 .container-see-more {
   display: flex;
   justify-content: flex-end;
+  max-width: 700px;
 }
 
 .see-more {
