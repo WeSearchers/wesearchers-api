@@ -13,6 +13,7 @@ import ActivateAccount from "./components/Login/activateAccount";
 import ChangePassword from "./components/Login/changePassword";
 import changePasswordMessage from "./components/Login/changePasswordMessage";
 import "bootstrap/dist/css/bootstrap.css";
+import LoginSignUp from "./components/Login/LoginSignUp";
 
 class App extends Component {
   render() {
@@ -21,6 +22,7 @@ class App extends Component {
         <div className="App">
           <Switch>
             <Route path="/user/profile" component={UserProfile} />
+            <Route path="/register" component={LoginSignUp} />
             <Route path="/edit" component={EditUserProfileForm} />
             <Route path="/login" component={UserLogin} />
             <Route path="/confirm" component={ConfirmAccount} />

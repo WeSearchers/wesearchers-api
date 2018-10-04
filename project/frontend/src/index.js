@@ -1,8 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import registerServiceWorker from "./registerServiceWorker";
 import "./styles/feed/index.css";
 import "./styles/feed/utilities.css";
 import "./styles/feed/btn.css";

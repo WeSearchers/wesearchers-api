@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Fetch from '../../request';
+import Request from '../../request';
 
 class UserLogin extends Component {
   constructor(props) {
@@ -21,12 +21,17 @@ class UserLogin extends Component {
   }
 
   handleLogin = event => {
+    /*
     let data = {
       username: this.state.username,
       pasword: this.state.password,
-    }
+    }*/
+    let data = new FormData();
+    data.append('username', this.state.username);
+    data.append('password', this.state.password);
+
     console.log(data)
-    Fetch.post('api/user/login', JSON.stringify(data)).then(
+    Request.post('api/user/login',data).then(
       response => {
         if (response.status === 200) {
           //login com sucesso, manda para a proxima página
