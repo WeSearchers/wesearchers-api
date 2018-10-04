@@ -16,43 +16,80 @@ class LoginSignUp extends Component {
       <div className = "d-flex flex-column justify-content-start align-content-start" >
       <div className = "background-image-profile ml-2" / >
       <button type = "button"
-      class = "upload-btn text-white btn btn-secondary mt-2" >
+      class = "upload-btn text-white btn btn-secondary mt-2 mb-4" >
       Upload
       </button>
       </div>
       <div className = "d-flex flex-column justify-content-right ml-5 mt-2" >
       <div className="name ">
-      <p className = "bg-light boder-radius-sm p-2 "> Your name </p>
+      <textarea
+        class="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
+        id="exampleFormControlTextarea6"
+        rows="3"
+        placeholder="Your name"
+      />
       </div>
       <div className="orcid">
-      <p className = " bg-light boder-radius-sm p-2 mb-5 " > orcid ID </p>
+      <textarea
+        class="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
+        id="exampleFormControlTextarea6"
+        rows="3"
+        placeholder="orcid ID"
+      />
       </div>
       </div>
       </div>
-      <div className = "d-flex flex-column justify-content-right " >
+      <div className = "d-flex flex-column justify-content-right mb-3" >
       <div className="email ">
-      <p className = "bg-light boder-radius-sm p-2 "> email </p>
+      <textarea
+        class="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
+        id="exampleFormControlTextarea6"
+        rows="3"
+        placeholder="email"
+      />
       </div>
       </div>
 
-      <div className = "d-flex flex-column justify-content-right " >
+      <div className = "d-flex flex-column justify-content-right mb-3" >
       <div className="password ">
-      <p className = "bg-light boder-radius-sm p-2"> password </p>
+      <textarea
+        class="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
+        id="exampleFormControlTextarea6"
+        rows="3"
+        placeholder="password"
+      />
+
       </div>
       </div>
-      <div className = "d-flex flex-column justify-content-right" >
+      <div className = "d-flex flex-column justify-content-right mb-3" >
       <div className="institution">
-      <p className = "bg-light boder-radius-sm p-2 "> institution </p>
+      <textarea
+        class="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
+        id="exampleFormControlTextarea6"
+        rows="3"
+        placeholder="institution"
+      />
       </div>
       </div>
-      <div className = "d-flex flex-column justify-content-right" >
+      <div className = "d-flex flex-column justify-content-right mb-3" >
       <div className="bio">
-      <p className = "bg-light boder-radius-sm p-2 "> bio/description </p>
+      <textarea
+        class="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
+        id="exampleFormControlTextarea6"
+        rows="3"
+        column="10"
+        placeholder="bio/description"
+      />
       </div>
       </div>
       <div className = "d-flex flex-column justify-content-right " >
       <div className="hash">
-      <p className = "bg-light boder-radius-sm p-2 "> # </p>
+      <textarea
+        class="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
+        id="exampleFormControlTextarea6"
+        rows="3"
+        placeholder="#"
+      />
       </div>
       </div>
       <div className = "d-flex flex-column justify-content-right" >

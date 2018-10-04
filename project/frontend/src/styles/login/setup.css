@@ -9,3 +9,21 @@
 .name p, .orcid p, .email p, .password p, .institution p, .bio p, .hash p{
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
 }
+.bio p{
+  height: 150px;
+}
+.name .form-control-coment , .orcid .form-control-coment, .email .form-control-coment,
+.password .form-control-coment, .institution .form-control-coment, .bio .form-control-coment, .hash .form-control-coment{
+height: 34px;
+font-size: 12px;
+}
+.email .form-control-coment,
+.password .form-control-coment, .institution .form-control-coment, .bio .form-control-coment, .hash .form-control-coment{
+  width: 100%;
+}
+.name .form-control-coment , .orcid .form-control-coment{
+width: 100%;
+}
+.bio .form-control-coment{
+  height: 90px;
+}
