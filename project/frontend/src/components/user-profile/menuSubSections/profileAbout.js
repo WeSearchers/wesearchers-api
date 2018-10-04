@@ -15,11 +15,6 @@ class ProfileAbout extends Component {
           <div className="section-card identification">
             <ul>
               <li>
-                {/* jmmonteiro colocar ORCID através do fetch */}
-                <span className="label">ORCID</span>
-                0000-0000-0000-0000
-              </li>
-              <li>
                 {/* jmmonteiro colocar Email através do fetch */}
                 <span className="label">Email</span>
                 nomesobrenome@email.com
@@ -31,7 +26,7 @@ class ProfileAbout extends Component {
               </li>
             </ul>
           </div>
-          <div className="section-title">Presentation</div>
+          <div className="section-title">Biography</div>
           <div className="section-card">
             {/* jmmonteiro colocar texto de apresentação do utilizador através do fetch */}
             <div className="sub-text">
@@ -45,7 +40,7 @@ class ProfileAbout extends Component {
               Et harum quidem rerum facilis est et expedita distinctio.
             </div>
           </div>
-          <div className="section-title">Areas of Interest</div>
+          <div className="section-title">Research interests</div>
           <div className="section-card interest-area">
             {/* jmmonteiro colocar areas de interesse do utilizador através do fetch */}
             <div className="multi-choice-area">
@@ -65,7 +60,7 @@ class ProfileAbout extends Component {
               Cience
             </div>
           </div>
-          <div className="section-title">languages</div>
+          <div className="section-title">language</div>
           <div className="section-card languages">
             <div className="row">
               <div className="col-md-3 p10">

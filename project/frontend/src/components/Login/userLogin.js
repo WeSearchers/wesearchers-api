@@ -19,9 +19,10 @@ class UserLogin extends Component {
               </a>
             </div>
             {/* jmmonteiro verificar se está tudo ok ao clicar no button login */}
-            <button type="button" href="/user/profile">
-              log in
-            </button>
+
+            <form action="/user/profile">
+              <button type="submit">log in</button>
+            </form>
             <div>Don't you have an account?</div>
             <a href="#">sign up</a>
           </div>

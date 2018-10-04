@@ -15,10 +15,9 @@ class UserProfileHeader extends Component {
             </div>
             <ul className="user-aux-info">
               {/* jmmonteiro colocar informação curricular através do fetch */}
-              <li>
-                <span className="label">Institution:</span>
-                Universidade de Coimbra
-              </li>
+              <li>ORCID</li>
+              <li>Affiliation</li>
+              <li>Research unit</li>
             </ul>
           </div>
         </div>

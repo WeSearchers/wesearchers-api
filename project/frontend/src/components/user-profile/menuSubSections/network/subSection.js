@@ -18,7 +18,7 @@ class SubSection extends Component {
           <div className="value">2</div>
           <div className="title">{this.props.title}</div>
         </a>
-        <Users visible={this.props.visible} />
+        <Users visible={this.props.visible} title={this.props.title} />
       </React.Fragment>
     );
   }

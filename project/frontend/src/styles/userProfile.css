@@ -1,9 +1,5 @@
 /*UserProfileHeader*/
 
-.user-profile {
-  position: relative;
-}
-
 .user-profile .user-header {
   margin: 40px 0;
 }
@@ -50,6 +46,13 @@
   margin-top: 0;
   padding-bottom: 15px;
   width: calc(100% - 130px - 60px);
+}
+
+.user-aux-info li {
+  border-bottom: 1px solid #ccc;
+  height: 30px;
+  display: flex;
+  align-items: flex-end;
 }
 
 /*UserProfileMenu*/
@@ -142,6 +145,9 @@
   padding: 10px 5px;
   display: flex;
   flex-wrap: wrap;
+  background: transparent;
+  border: transparent;
+  box-shadow: none;
 }
 
 .multi-choice-area {
@@ -165,13 +171,16 @@
 /*Sub-Section ProfileNetwork*/
 
 .section-card.network-advisor:first-child {
-  margin-top: 20px;
+  margin-top: 0px;
 }
 
 .section-user-network {
   max-width: 500px;
-  padding: 15px;
-  padding-bottom: 10px;
+  padding-bottom: 30px;
+}
+
+.network-user-container {
+  padding-top: 30px;
 }
 
 .network-user-info {
@@ -182,8 +191,8 @@
 
 .network-user-info .photo {
   border: 1px solid;
-  height: 80px;
-  width: 80px;
+  height: 65px;
+  width: 65px;
   border-radius: 50%;
   background-image: url("../Media/user.jpg");
   background-position: center;
@@ -193,8 +202,8 @@
 }
 
 .network-user-info .institution {
-  width: calc(100% - 80px - 40px);
-  min-height: 80px;
+  width: calc(100% - 80px - 20px);
+  min-height: 65px;
   display: flex;
   align-items: center;
 }
@@ -230,14 +239,42 @@
   background: #f1f1f1;
 }
 
-.network-user-container .user-network:last-child {
-  padding-bottom: 30px;
-}
 .user-profile-menu-section .network-sub-section:nth-child(1):hover,
 .user-profile-menu-section .network-sub-section:nth-child(3):hover,
 .user-profile-menu-section .network-sub-section:nth-child(5):hover,
 .user-profile-menu-section .network-sub-section:nth-child(7):hover {
   background: rgb(122, 144, 151);
+}
+
+/*-- follower */
+
+.follower {
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.follower > * {
+  margin-right: 15px;
+}
+.follower > *:last-child {
+  margin: 0;
+}
+
+.follower .photo {
+  border: 1px solid;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background-image: url("../Media/user.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: #333;
+}
+
+.follower .orcid {
+  color: #999;
 }
 
 /*Sub-Section Publication*/
