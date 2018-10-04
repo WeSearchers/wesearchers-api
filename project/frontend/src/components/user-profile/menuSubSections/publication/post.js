@@ -7,13 +7,10 @@ class Post extends Component {
       <React.Fragment>
         {/* jmmonteiro array de publicações através do fetch, que renderize todas como está em baixo*/}
         <div className="section-card publication">
-          <div className="photo" />
           <div className="info">
-            <div className="title-and-author">
-              {/* jmmonteiro colocar titulo da publicação através do fetch */}
-              <div className="title">Publication title </div>
-              {/* jmmonteiro colocar autor da publicação através do fetch */}
-              <div className="author">Author</div>
+            {/* jmmonteiro colocar titulo da publicação através do fetch */}
+            <div className="publication-title">
+              <b>Title </b> (date)
             </div>
             {/* jmmonteiro colocar texto da publicação através do fetch */}
             <div className="text">
@@ -21,6 +18,11 @@ class Post extends Component {
               nulla. Aliquam ante. Nulla accumsan, elit sit amet varius semper,
               nulla mauris mollis quam, tempor suscipit diam nulla vel leo.
               Maecenas sollicitudin. Pellentesque habitant morbi tristique.
+            </div>
+            {/* jmmonteiro colocar autor da publicação através do fetch */}
+            <div className="publication-author">
+              {" "}
+              <i>Author's Name</i>
             </div>
           </div>
         </div>

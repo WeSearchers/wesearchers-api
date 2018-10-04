@@ -11,14 +11,19 @@ class Publication extends Component {
         }
       >
         <div className="section-title">Posts (2)</div>
-        <Post />
-        <Post />
+        <div className="container-posts">
+          <Post />
+          <Post />
+        </div>
+
         <div className="container-see-more">
           <a className="general-btn see-more">see more</a>
         </div>
         <div className="section-title">Articles (2)</div>
-        <Post />
-        <Post />
+        <div className="container-posts">
+          <Post />
+          <Post />
+        </div>
         <div className="container-see-more">
           <a className="general-btn see-more">see more</a>
         </div>

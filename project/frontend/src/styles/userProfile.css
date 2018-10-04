@@ -309,23 +309,24 @@
   background-color: #333;
 }
 
-.publication .info {
-  width: calc(100% - 80px - 60px);
-}
-
-.publication .info .title-and-author {
+.publication .info .publication-title {
   display: flex;
   margin-bottom: 10px;
 }
 
-.title-and-author .title {
+.publication-title {
   font-weight: 500;
   margin-right: 20px;
 }
 
-.title-and-author .author {
-  font-weight: 500;
-  color: #999;
+.publication-title b {
+  margin-right: 10px;
+}
+
+.publication-author {
+  font-size: 15px;
+  float: right;
+  margin-top: 10px;
   margin-right: 20px;
 }
 
