@@ -41,9 +41,9 @@ class Pub2 extends React.Component {
           <div className="background-image-profile ml-3 mt-3" />
           <div className=" mt-4 ml-4  d-flex flex-column justify-content-center">
             <p className="font-weight-bold mb-0">Name Surname</p>
-                      { /*Ze monteiro colocar nome a partir do fetch*/}
+            { /*Ze monteiro colocar nome a partir do fetch*/}
             <p className="font-weight-light mb-0">Date and hour</p>
-                        {/*Ze monteiro colocar hora e data a partir do fetch*/}
+            {/*Ze monteiro colocar hora e data a partir do fetch*/}
           </div>
         </div>
         <div className="content d-flex flex-row justify-content-center bg-white mr-2 ml-2 mt-4 mr-auto ml-auto">
@@ -55,12 +55,12 @@ class Pub2 extends React.Component {
             adipiscing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua. Ut enim ad minim (...)
           </p>
-                    {/*Ze monteiro colocar conteudo a partir do fetch*/}
+          {/*Ze monteiro colocar conteudo a partir do fetch*/}
         </div>
         <div className="pub-btn d-flex flex-row justify-content-end ">
           <button
             type="button"
-            class="btn-seemore text-white btn btn-secondary m-1 mr-4 mt-3"
+            className="btn-seemore text-white btn btn-secondary m-1 mr-4 mt-3"
           >
             See more
           </button>

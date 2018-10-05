@@ -65,28 +65,26 @@ class Pub1 extends React.Component {
           <div className="background-image-profile ml-3 mt-3" />
           <div className=" mt-4 ml-4  d-flex flex-column justify-content-center">
             <p className="font-weight-bold mb-0">
-Name Surname
+              {"Name Surname"/*por favor alguem me acrescente os campos first_name e last_name ao request quando se pedem artigos, thx*/}
             </p>
-          { /*Ze monteiro colocar nome a partir do fetch*/}
-            <p className="font-weight-light mb-0">Date and hour</p>
-            {/*Ze monteiro colocar hora e data a partir do fetch*/}
+            { /*Ze monteiro colocar nome a partir do fetch*/}
+            <p className="font-weight-light mb-0">{/*Date and hour*/}{this.props.data !== undefined && this.props.data !== null ? this.props.data.date : "yyyy/mm/dd"}</p>
           </div>
         </div>
         <div className="content d-flex flex-row justify-content-center bg-white mr-2 ml-2 mt-4 mr-auto ml-auto">
           <p className="font-weight-light m-2 ml-4 mr-4 mt-4 mb-4">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo. Lorem ipsum dolor sit amet, consectetur
-            adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim (...)
+            {
+              this.props.data !== undefined && this.props.data !== null ?
+                this.props.data.text
+                :
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim (...)"
+            }
           </p>
-          {/*Ze monteiro colocar conteudo a partir do fetch*/}
         </div>
         <div className="pub-btn d-flex flex-row justify-content-end ">
           <button
             type="button"
-            class="btn-seemore text-white btn btn-secondary m-1 mr-4 mt-3"
+            className="btn-seemore text-white btn btn-secondary m-1 mr-4 mt-3"
           >
             See more
           </button>
@@ -104,7 +102,7 @@ Name Surname
               width="18"
               height="18"
             />
-            <p className=" mt-1">600</p>
+            <p className=" mt-1">{this.props.data !== undefined && this.props.data !== null ? this.props.data.score : "Score"}</p>
             <img
               className="ml-2 mt-2 opacity"
               src={downarrow}

@@ -14,6 +14,7 @@ import ChangePassword from "./components/Login/changePassword";
 import changePasswordMessage from "./components/Login/changePasswordMessage";
 import "bootstrap/dist/css/bootstrap.css";
 import LoginSignUp from "./components/Login/LoginSignUp";
+import Feed from "./views/feed";
 
 
 class App extends Component {
@@ -30,10 +31,8 @@ class App extends Component {
             <Route path="/forgotpass" component={ForgotPassword} />
             <Route path="/activate" component={ActivateAccount} />
             <Route path="/changepassword" component={ChangePassword} />
-            <Route
-              path="/changepasswordmessage"
-              component={changePasswordMessage}
-            />
+            <Route path="/changepasswordmessage" component={changePasswordMessage} />
+            <Route path="/feed" component={Feed} />
           </Switch>
         </div>
       </Router>
