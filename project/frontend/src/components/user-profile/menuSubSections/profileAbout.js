@@ -10,7 +10,7 @@ class ProfileAbout extends Component {
             "col-md-12 " + (this.props.toShow === "about" ? "show" : "hidden")
           }
         >
-          <div className="section-title">Identification</div>
+          <div className="section-title">Contacts</div>
           <div className="section-card identification">
             <ul>
               <li>
