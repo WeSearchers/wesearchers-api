@@ -13,23 +13,79 @@ class ProfileNetwork extends Component {
         { id: "2", title: "Followers", visible: "hidden" },
         { id: "3", title: "Following", visible: "hidden" }
       ],
-      followers:[],
-      following:[],
+      followers: [
+        /*
+        {
+          bio: "asd",
+          email: "ze_jmm@hotmail.com",
+          first_name: "jose",
+          image_data: "iVBORw0KGgoAAAANSUhEUgAAAQoAAABICAYAAAAOLLsaAAAgAE",
+          institution: 2,
+          last_name: "monteiro",
+          orcid: "1234567890123456",
+          user_id: 1,
+          username: "jmmonteiro",
+        },
+        {
+          bio: "asd",
+          email: "ze_jmm@hotmail.com",
+          first_name: "jose",
+          image_data: "iVBORw0KGgoAAAANSUhEUgAAAQoAAABICAYAAAAOLLsaAAAgAE",
+          institution: 2,
+          last_name: "monteiro",
+          orcid: "1234567890123456",
+          user_id: 1,
+          username: "jmmonteiro",
+        }*/
+      ],
+      following: [
+        /*
+        {
+          bio: "asd",
+          email: "ze_jmm@hotmail.com",
+          first_name: "jose",
+          image_data: "iVBORw0KGgoAAAANSUhEUgAAAQoAAABICAYAAAAOLLsaAAAgAE",
+          institution: 2,
+          last_name: "monteiro",
+          orcid: "1234567890123456",
+          user_id: 1,
+          username: "jmmonteiro",
+        },
+        {
+          bio: "asd",
+          email: "ze_jmm@hotmail.com",
+          first_name: "jose",
+          image_data: "iVBORw0KGgoAAAANSUhEUgAAAQoAAABICAYAAAAOLLsaAAAgAE",
+          institution: 2,
+          last_name: "monteiro",
+          orcid: "1234567890123456",
+          user_id: 1,
+          username: "jmmonteiro",
+        }*/
+      ],
     };
   }
 
 
   componentDidMount() {
-    Request.get("api/user/followers", {}).then( response => {
-      response.json().then( data => {
+    Request.get("api/user/followers", {}).then(response => {
+      response.json().then(data => {
         this.setState(
           {
             followers: data,
           }
         )
       })
-    }
-    )
+    })
+    Request.get("api/user/following", {}).then(response => {
+      response.json().then(data => {
+        this.setState(
+          {
+            following: data,
+          }
+        )
+      })
+    })
   }
 
   handleTurnVisible = section => {
@@ -52,7 +108,7 @@ class ProfileNetwork extends Component {
           (this.props.toShow == "network" ? "show" : "hidden")
         }
       >
-
+        {/*
         <SubSection
           name="Advisors"
           key={this.state.subSections[0].id}
@@ -61,8 +117,10 @@ class ProfileNetwork extends Component {
           turnVisible={this.handleTurnVisible}
           visible={this.state.subSections[0].visible}
         />
+        */}
         <SubSection
           name="Followers"
+          data={this.state.followers}
           key={this.state.subSections[1].id}
           title={this.state.subSections[1].title}
           subSection={this.state.subSections[1]}
@@ -71,6 +129,7 @@ class ProfileNetwork extends Component {
         />
         <SubSection
           name="Following"
+          data={this.state.following}
           key={this.state.subSections[2].id}
           title={this.state.subSections[2].title}
           subSection={this.state.subSections[2]}

@@ -26,6 +26,13 @@ class Users extends Component {
           <Follower />
         ) : null}
         */}
+        
+        {
+          this.props.data.map(person => {
+            console.log(person);
+            return( <Follower person={person} /> )
+          })
+        }
       </div>
     );
   }
