@@ -12,7 +12,6 @@ from .models import *
 
 
 # Create your views here.
-
 def index(request):
     if request.method == "POST":
         if request.user.is_authenticated:
@@ -22,26 +21,28 @@ def index(request):
                 user_form = UserCreationForm(request.POST)
                 if user_form.is_valid():
                     user = user_form.save(commit=False)
-                    institution = Institution.objects.filter(id=int(request.POST["institution"])).first()
-                    if institution is not None:
-                        profile_form = ProfileForm(request.POST, request.FILES)
-                        if profile_form.is_valid():
-                            interests = request.POST["interests"].split()
-                            if len(interests) >= 6:
-                                user.is_active = False
-                                user.save()
-                                for interest in interests:
-                                    user_interest = UserInterest(interest=interest)
-                                    user_interest.user = user
-                                    user_interest.save()
-                                profile = profile_form.save(commit=False)
-                                profile.user = user
-                                profile.institution = institution
-                                profile.save()
-                                send_mail("WeSearchers account activation",
-                                          settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid,
-                                          "activate@wesearchers.pt", [user.email])
-                                return JsonResponse(user.id, safe=False)
+                    profile_form = ProfileForm(request.POST, request.FILES)
+                    if profile_form.is_valid():
+                        interests = request.POST["interests"].split()
+                        if len(interests) >= 6:
+                            institution = Institution.objects.filter(name=request.POST["institution"]).first()
+                            if institution is None:
+                                institution = Institution(name=request.POST["institution"])
+                                institution.save()
+                            user.is_active = False
+                            user.save()
+                            for interest in interests:
+                                user_interest = UserInterest(interest=interest)
+                                user_interest.user = user
+                                user_interest.save()
+                            profile = profile_form.save(commit=False)
+                            profile.user = user
+                            profile.institution = institution
+                            profile.save()
+                            send_mail("WeSearchers account activation",
+                                      settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid,
+                                      "activate@wesearchers.pt", [user.email])
+                            return JsonResponse(user.id, safe=False)
             except KeyError:
                 return HttpResponseBadRequest("Request badly formatted")
             return HttpResponseBadRequest("Request badly formatted")
@@ -50,10 +51,13 @@ def index(request):
 
 
 @require_login
-def get_user_info(request, params):
-    user = User.objects.filter(id=params["user_id"]).first()
+def get_user_info(request, user_id):
+    if user_id == 0:
+        user = request.user
+    else:
+        user = User.objects.filter(id=user_id).first()
     if user is not None:
-        return JsonResponse(user.profile.to_json())
+        return JsonResponse(user.profile.to_json(), safe=False)
     else:
         return HttpResponseNotFound()
 

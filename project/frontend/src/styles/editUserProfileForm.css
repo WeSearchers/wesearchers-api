@@ -1,0 +1,30 @@
+div.edit-user-profile.section-card {
+  position: relative;
+  padding: 40px;
+  margin-top: 0;
+  max-width: 700px;
+  margin: auto;
+}
+
+.edit-user-profile h3 {
+  margin-bottom: 40px;
+}
+
+.edit-user-profile form {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-user-profile form > :nth-child(2n) {
+  margin-bottom: 15px;
+}
+
+.edit-user-profile form button {
+  margin-top: 20px;
+}
+
+.edit-user-profile a {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+}
