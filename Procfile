@@ -1,1 +1,1 @@
-web: gunicorn wesearchers-api.wsgi:application --log-file -
+web: gunicorn project.wsgi:application --log-file -
