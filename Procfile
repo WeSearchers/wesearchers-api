@@ -1,1 +1,1 @@
-web: gunicorn wesearchers-api.wsgi
+web: gunicorn wesearchers.wsgi
