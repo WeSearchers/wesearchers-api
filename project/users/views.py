@@ -158,33 +158,42 @@ def validate(request):
     else:
         return HttpResponseNotAllowed()
 
+
 @require_login
 def get_followers(request):
     if request.method == "GET":
         if "user_id" not in request.GET.keys():
-            followers = list(map(lambda user: user.user.profile.to_json(), UserFollow.objects.filter(followed=request.user)))
+            followers = list(
+                map(lambda user: user.user.profile.to_json(), UserFollow.objects.filter(followed=request.user)))
         else:
-            followers = list(map(lambda user: user.user.profile.to_json(), UserFollow.objects.filter(followed_id=int(request.GET["user_id"]))))
-        return JsonResponse(followers,safe=False)
+            followers = list(map(lambda user: user.user.profile.to_json(),
+                                 UserFollow.objects.filter(followed_id=int(request.GET["user_id"]))))
+        return JsonResponse(followers, safe=False)
     else:
         return HttpResponseNotAllowed()
+
 
 @require_login
 def get_following(request):
     if request.method == "GET":
         if "user_id" not in request.GET.keys():
-            following = list(map(lambda user: user.followed.profile.to_json(), UserFollow.objects.filter(user=request.user)))
+            following = list(
+                map(lambda user: user.followed.profile.to_json(), UserFollow.objects.filter(user=request.user)))
         else:
-            following = list(map(lambda user: user.followed.profile.to_json(), UserFollow.objects.filter(user_id=int(request.GET["user_id"]))))
-        return JsonResponse(following,safe=False)
+            following = list(map(lambda user: user.followed.profile.to_json(),
+                                 UserFollow.objects.filter(user_id=int(request.GET["user_id"]))))
+        return JsonResponse(following, safe=False)
     else:
         return HttpResponseNotAllowed()
+
+
 """
 @require_login
 def get_collaborators(request):
     #insert code here
     return HttpResponse()
 """
+
 
 @require_login
 def follow_view(request):
@@ -201,3 +210,8 @@ def follow_view(request):
             return HttpResponseBadRequest()
     else:
         return HttpResponseNotAllowed()
+
+
+@require_login
+def is_logged_in(request):
+    return HttpResponse()
