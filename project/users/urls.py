@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     re_path('validate', views.validate),
+    re_path('logincheck', views.is_logged_in),
     re_path('login', views.login_session),
     re_path('guidcheck', views.guid_check),
     re_path('resetpw', views.send_reset_password_email),
