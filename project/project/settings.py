@@ -25,7 +25,7 @@ SECRET_KEY = '7z4v2zj#ehp3hf4f_9t8s%&4awby&*7i#_0i1!$4o_xv66&kn%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["0.0.0.0", "localhost"]
 
 # Application definition
 
@@ -78,26 +78,29 @@ WEBPACK_LOADER = {
 
 WSGI_APPLICATION = 'project.wsgi.application'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-credfile = open(BASE_DIR + "/project/credentials.json")
-credentials = json.loads(credfile.read())
-credfile.close()
-
-RUNNING_HOST = credentials["RUNNING_HOST"]
+RUNNING_HOST = os.environ.get("RUNNING_HOST")
 
 DATABASES = {
-    'default': credentials["DATABASE"]
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('DB_NAME', ''),
+        'USER': os.environ.get('DB_USER', ''),
+        'PASSWORD': os.environ.get('DB_PASS', ''),
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
 
-smtp = credentials["SMTP"]
-
-EMAIL_HOST = smtp["EMAIL_HOST"]
-EMAIL_HOST_USER = smtp["EMAIL_HOST_USER"]
-EMAIL_HOST_PASSWORD = smtp["EMAIL_HOST_PASSWORD"]
-EMAIL_PORT = smtp["EMAIL_PORT"]
-EMAIL_USE_TLS = smtp["EMAIL_USE_TLS"]
+EMAIL_HOST = os.environ.get("EMAIL_HOST", '')
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", '')
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", '')
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", ''))
+EMAIL_USE_TLS = True
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
