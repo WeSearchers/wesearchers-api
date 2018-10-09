@@ -2,11 +2,15 @@ import React, { Component } from "react";
 import Users from "./users";
 
 class SubSection extends Component {
-  state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      
+    }
+  }
 
   render() {
     var displayElm = false;
-
     return (
       <React.Fragment>
         <a
@@ -15,10 +19,10 @@ class SubSection extends Component {
         >
           {/* jmmonteiro relativo à page profileNetwork colocar valor de users associado ao tipo de subSecção (ex: advisor etc) com fetch */}
 
-          <div className="value">2</div>
+          <div className="value">{this.props.data.length}</div>
           <div className="title">{this.props.title}</div>
         </a>
-        <Users visible={this.props.visible} title={this.props.title} />
+        <Users data={this.props.data} visible={this.props.visible} title={this.props.title} />
       </React.Fragment>
     );
   }

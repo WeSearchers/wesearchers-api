@@ -13,16 +13,19 @@ class Request {
             body: data,
             headers: {"X-CSRFToken": ca}
         };
-        return fetch(url, conf);
+        return fetch(window.location.protocol + "//" + window.location.host + "/" + url, conf);
     }
 
-    static get(url, data) {
-        let urlend = "?";
-        for (let elem in data) {
-            urlend += elem + "=" + data[elem] + "&";
+    static get(url, data = undefined) {
+        let urlend = "";
+        if (data !== undefined) {
+            urlend = "?";
+            for (let elem in data) {
+                urlend += elem + "=" + data[elem] + "&";
+            }
+            urlend = urlend.slice(0, -1);
         }
-        urlend = urlend.slice(0, -1);
-        return fetch(url + urlend);
+        return fetch(window.location.protocol + "//" + window.location.host + "/" + url + urlend);
     }
 }
 
