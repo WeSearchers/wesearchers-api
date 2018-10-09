@@ -13,7 +13,7 @@ class ArticlePublishingForm(ModelForm):
 
     class Meta:
         model = Article
-        fields = ("title", "text", "url")
+        fields = ("title", "text", "media_url")
 
     def clean_title(self):
         title = self.cleaned_data.get("title")

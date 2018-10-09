@@ -125,7 +125,7 @@ def article_by_interests(request):
 
     user_interests = list(map(lambda interest: interest.interest, UserInterest.objects.filter(user=request.user)))
     articles = list(Article.objects.all())
-    articles.sort(key=lambda x: x.score, reverse=True)
+    articles.sort(key=lambda x: x.calc_score(), reverse=True)
     articles.sort(key=lambda x: match_count(user_interests, x), reverse=True)
     final_list = list(map(lambda x: x.serialize(), articles))
     return JsonResponse(final_list, safe=False)

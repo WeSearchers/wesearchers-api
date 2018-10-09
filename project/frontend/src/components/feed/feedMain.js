@@ -27,6 +27,7 @@ class Feed extends Component {
   }
     
   render() {
+    console.log(this.state.articles);
     return (
       <React.Fragment>
         <NavBar />

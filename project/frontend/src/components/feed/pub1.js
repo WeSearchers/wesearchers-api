@@ -23,6 +23,7 @@ class Pub1 extends React.Component {
 
     this.togglemodal1 = this.togglemodal1.bind(this);
     this.togglemodal2 = this.togglemodal2.bind(this);
+    this.seeMore = this.seeMore.bind(this);
   }
 
   togglemodal1() {
@@ -57,6 +58,11 @@ class Pub1 extends React.Component {
       .catch(error => console.log("parsing failed", error));
   }
 
+  seeMore() {
+      console.log(this.props.data.url);
+      window.open(this.props.data.url, '_blank');
+  }
+
   render() {
     const { isLoading, contacts } = this.state;
     return (
@@ -85,15 +91,19 @@ class Pub1 extends React.Component {
           <button
             type="button"
             className="btn-seemore text-white btn btn-secondary m-1 mr-4 mt-3"
+            onClick={this.seeMore}
           >
             See more
           </button>
         </div>
-        <div className="anexo d-flex flex-row justify-content-center mr-2 ml-2 mt-5 mr-auto ml-auto text-black-50">
-          <p className="font-weight-light opacity align-middle m-2 ml-4 mr-4 mt-4 ">
-            Attachment <br /> (image / video)
-          </p>
-        </div>
+          {
+            this.props.data !== undefined && this.props.data !== null && this.props.data.media_url !== null? (
+                <div className="anexo d-flex flex-row justify-content-center mr-2 ml-2 mt-5 mr-auto ml-auto text-black-50">
+                    <img src={this.props.data.media_url} style={{width: "100%", height: "100%"}}/>
+                </div>
+                )
+            : null
+          }
         <div className="barra d-flex flex-row ml-4 mt-3">
           <div className="icons d-flex flex-row mb-4">
             <img

@@ -9,13 +9,13 @@ class Article(models.Model):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.date = datetime.date.today()
-        self.score = 0
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     text = models.TextField()
     date = models.DateField()
-    url = models.URLField()
+    media_url = models.URLField(null=True)
+    url = models.URLField(null=True)
 
     def calc_score(self):
         temp = 0
@@ -31,6 +31,7 @@ class Article(models.Model):
             "text": self.text,
             "date": self.date,
             "score": self.calc_score(),
+            "media_url": self.media_url,
             "url": self.url
         }
 
