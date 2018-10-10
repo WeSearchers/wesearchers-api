@@ -13,7 +13,7 @@ class UserProfileHeader extends Component {
       <div className="container user-profile">
         <div className="row user-header">
           <div className="user-photo" >
-            <img src={"data:image/png;base64, " + this.props.data.image_data}/>
+            <img src={"data:image/png;base64, " + this.props.data.image_data} width={"100%"}/>
           </div>
 
           <div className="user-info section-card">

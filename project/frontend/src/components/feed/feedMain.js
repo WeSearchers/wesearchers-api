@@ -43,7 +43,6 @@ class Feed extends Component {
         <Pub2 />
         <Pub2 />
         */}
-        <Pub1 />
         </React.Fragment>
     );
   }

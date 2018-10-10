@@ -10,16 +10,19 @@ import google from "../../images/google-plus-logo-button.png";
 import linkedin from "../../images/linkedin-logo-button.png";
 import twitter from "../../images/twitter-logo-button.png";
 import AddComent from "./addcoment";
+import Request from "../../request";
 
 class Pub1 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal1: false,
-      modal2: false,
-      isLoading: true,
-      contacts: []
-    };
+        modal1: false,
+        modal2: false,
+        isLoading: true,
+        contacts: [],
+        userData: null
+    }
+    ;
 
     this.togglemodal1 = this.togglemodal1.bind(this);
     this.togglemodal2 = this.togglemodal2.bind(this);
@@ -36,42 +39,34 @@ class Pub1 extends React.Component {
       modal2: !this.state.modal2
     });
   }
-  componentDidMount() {
-    this.fetchData();
-  }
-
-  fetchData() {
-    fetch("https://randomuser.me/api/?results=1&nat=us,dk,fr,gb")
-      .then(response => response.json())
-      .then(parseJSON =>
-        parseJSON.results.map(user => ({
-          name: `${user.name.first} ${user.name.last}`,
-          gender: `${user.gender}`
-        }))
-      )
-      .then(contacts =>
-        this.setState({
-          contacts,
-          isLoading: false
-        })
-      )
-      .catch(error => console.log("parsing failed", error));
-  }
 
   seeMore() {
-      console.log(this.props.data.url);
       window.open(this.props.data.url, '_blank');
   }
 
+  componentDidMount() {
+    Request.get("api/user/profile/" + this.props.data.user_id).then(response => {
+      response.json().then(userData => {
+        this.setState({userData : userData});
+      })
+    })
+  }
+
   render() {
+
     const { isLoading, contacts } = this.state;
     return (
-      <div className="pub1 bg-grey m-5 d-flex flex-column mr-auto ml-auto ">
+      <div className="pub1 m-5 bg-grey d-flex flex-column mr-auto ml-auto ">
         <div className=" d-flex flex-row align-content-baseline">
-          <div className="background-image-profile ml-3 mt-3" />
+          <div className="background-image-profile ml-3 mt-3" >
+              {this.state.userData !== null ?
+                <img src={"data:image/jpeg;base64, " + this.state.userData.image_data} width={"100%"}/> : null
+              }
+          </div>
           <div className=" mt-4 ml-4  d-flex flex-column justify-content-center">
             <p className="font-weight-bold mb-0">
-              {"Name Surname"/*por favor alguem me acrescente os campos first_name e last_name ao request quando se pedem artigos, thx*/}
+              {this.state.userData !== null ?
+                  this.state.userData.first_name + " " + this.state.userData.last_name : "Name Surname"}
             </p>
             { /*Ze monteiro colocar nome a partir do fetch*/}
             <p className="font-weight-light mb-0">{/*Date and hour*/}{this.props.data !== undefined && this.props.data !== null ? this.props.data.date : "yyyy/mm/dd"}</p>
@@ -99,7 +94,7 @@ class Pub1 extends React.Component {
           {
             this.props.data !== undefined && this.props.data !== null && this.props.data.media_url !== null? (
                 <div className="anexo d-flex flex-row justify-content-center mr-2 ml-2 mt-5 mr-auto ml-auto text-black-50">
-                    <img src={this.props.data.media_url} style={{width: "100%", height: "100%"}}/>
+                    <img src={this.props.data.media_url} style={{width: "100%", height: "auto"}}/>
                 </div>
                 )
             : null
