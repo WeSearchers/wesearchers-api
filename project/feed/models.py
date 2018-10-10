@@ -24,6 +24,7 @@ class Article(models.Model):
         return temp
 
     def serialize(self):
+        interests = list()
         return {
             "id": self.id,
             "user_id": self.user.id,
@@ -32,7 +33,8 @@ class Article(models.Model):
             "date": self.date,
             "score": self.calc_score(),
             "media_url": self.media_url,
-            "url": self.url
+            "url": self.url,
+            "interests": list(map(lambda x: x.interest, ArticleInterest.objects.filter(article=self)))
         }
 
 

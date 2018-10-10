@@ -45,6 +45,7 @@ class Pub1 extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.props.data);
     Request.get("api/user/profile/" + this.props.data.user_id).then(response => {
       response.json().then(userData => {
         this.setState({userData : userData});
@@ -150,15 +151,12 @@ class Pub1 extends React.Component {
             </Modal>
           </div>
           <div className=" d-flex flex-row justify-content-end hashtags mr-4">
-            <p className="bg-secondary text-white text-center align-middle mr-1  first m-2">
-              #LoremIpsu
-            </p>
-            <p className="bg-secondary text-white  text-center align-middle mr-1 first m-2">
-              #LoremIpsu
-            </p>
-            <p className="bg-secondary text-white  text-center align-middle mr-1 first m-2">
-              #LoremIpsu
-            </p>
+            {this.props.data !== undefined && this.props.data !== null ? this.props.data.interests.map(interest => (
+              <p className="bg-secondary text-white  text-center align-middle mr-1 first m-2">
+                #{interest}
+              </p>
+            )) : null
+            }
             <p className="bg-secondary text-white  text-center align-middles mr-1 second  m-2">
               ...
             </p>
