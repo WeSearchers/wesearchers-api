@@ -74,14 +74,15 @@ class Pub1 extends React.Component {
           </div>
         </div>
         <div className="content d-flex flex-row justify-content-center bg-white mr-2 ml-2 mt-4 mr-auto ml-auto">
-          <p className="font-weight-light m-2 ml-4 mr-4 mt-4 mb-4">
+
             {
-              this.props.data !== undefined && this.props.data !== null ?
-                this.props.data.text
-                :
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim (...)"
+              this.props.data !== undefined && this.props.data !== null ? (
+                <p className="font-weight-light m-2 ml-4 mr-4 mt-4 mb-4">
+                  <strong>{this.props.data.title}</strong><br/>{this.props.data.text}
+                </p>
+                )
+                : null
             }
-          </p>
         </div>
         <div className="pub-btn d-flex flex-row justify-content-end ">
           <button

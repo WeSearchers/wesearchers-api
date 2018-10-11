@@ -14,25 +14,35 @@ class NavBar extends Component {
     }
   };
 
+  static clickButton(ev) {
+    switch (ev.currentTarget.id) {
+      case "home":
+        window.location.assign(window.location.origin + "/");
+        break;
+      case "profile":
+        window.location.assign(window.location.origin + "/user/profile");
+    }
+  }
+
   render() {
     return (
       <div className="nav-bar">
         <div className="container nav-bar-container">
           <ul className="menu">
-            <li className="logo-nav" />
-            <li>
+            <li className="logo-nav" id="home" onClick={NavBar.clickButton}/>
+            <li id="" onClick={NavBar.clickButton}>
               <i className="fa fa-window-maximize" />
             </li>
-            <li>
+            <li id="profile" onClick={NavBar.clickButton}>
               <i className="fa fa-user" />
             </li>
-            <li>
+            <li id="" onClick={NavBar.clickButton}>
               <i className="fa fa-comment" />
             </li>
-            <li>
+            <li id="" onClick={NavBar.clickButton}>
               <i className="fa fa-bell" />
             </li>
-            <li>
+            <li id="" onClick={NavBar.clickButton}>
               <i className="fa fa-search" />
             </li>
           </ul>

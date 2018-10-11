@@ -88,13 +88,13 @@ def post_article(request):
     try:
         if article_form.is_valid():
             article = article_form.save(commit=False)
+            article.user = request.user
+            article.save()
             tags = request.POST["tags"].split()
             for tag in tags:
                 article_interest = ArticleInterest(interest=tag)
                 article_interest.article = article
                 article_interest.save()
-            article.user = request.user
-            article.save()
             return JsonResponse(article.id, safe=False)
         else:
             return HttpResponseBadRequest()

@@ -12,18 +12,26 @@ class Feed extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userData : null,
       articles: []
     }
   }
 
   componentDidMount() {
+    Request.get("api/user/profile/0").then( response => {
+      response.json().then( data => {
+        this.setState({
+            userData: data,
+        })
+      })
+    });
     Request.get("api/feed/articlebyinterests").then( response => {
       response.json().then( data => {
         this.setState({
           articles: data,
         })
       })
-    })
+    });
   }
     
   render() {
@@ -31,7 +39,7 @@ class Feed extends Component {
     return (
       <React.Fragment>
         <NavBar />
-        <Jumbotron />
+        <Jumbotron userData={this.state.userData}/>
         {this.state.articles.map( article => (
           <Pub1 data={article}/>
         ))}
