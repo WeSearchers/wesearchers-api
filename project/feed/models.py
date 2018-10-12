@@ -23,18 +23,23 @@ class Article(models.Model):
             temp += vote.score
         return temp
 
-    def serialize(self):
-        interests = list()
+    def serialize(self, user):
+        user_vote = Vote.objects.filter(user=user).first()
+        if user_vote is None:
+            vote = 0
+        else:
+            vote = user_vote.score
         return {
             "id": self.id,
             "user_id": self.user.id,
             "title": self.title,
             "text": self.text,
             "date": self.date,
-            "score": self.calc_score(),
+            "base_score": self.calc_score() - vote,
             "media_url": self.media_url,
             "url": self.url,
-            "interests": list(map(lambda x: x.interest, ArticleInterest.objects.filter(article=self)))
+            "interests": list(map(lambda x: x.interest, ArticleInterest.objects.filter(article=self))),
+            "vote": vote
         }
 
 

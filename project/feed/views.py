@@ -75,7 +75,7 @@ def get_article(request, article_id):
     if request.method == "GET":
         article = Article.objects.filter(id=article_id).first()
         if article is not None:
-            return JsonResponse(article.serialize())
+            return JsonResponse(article.serialize(request.user))
         else:
             return HttpResponseNotFound()
     else:
@@ -127,5 +127,5 @@ def article_by_interests(request):
     articles = list(Article.objects.all())
     articles.sort(key=lambda x: x.calc_score(), reverse=True)
     articles.sort(key=lambda x: match_count(user_interests, x), reverse=True)
-    final_list = list(map(lambda x: x.serialize(), articles))
+    final_list = list(map(lambda x: x.serialize(request.user), articles))
     return JsonResponse(final_list, safe=False)

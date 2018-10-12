@@ -20,10 +20,9 @@ class Pub1 extends React.Component {
         modal2: false,
         isLoading: true,
         contacts: [],
-        userData: null
-    }
-    ;
-
+        userData: null,
+        vote: props.data.vote,
+    };
     this.togglemodal1 = this.togglemodal1.bind(this);
     this.togglemodal2 = this.togglemodal2.bind(this);
     this.seeMore = this.seeMore.bind(this);
@@ -43,6 +42,27 @@ class Pub1 extends React.Component {
   seeMore() {
       window.open(this.props.data.url, '_blank');
   }
+
+  vote = ev => {
+    let vote = 0;
+    if(ev.currentTarget.id === "upvote") {
+        if (this.state.vote === 1)
+          vote = 0;
+        else
+          vote = 1;
+    }
+    else {
+        if (this.state.vote === -1)
+          vote = 0;
+        else
+          vote = -1;
+    }
+    this.setState({vote: vote});
+    let fd = new FormData();
+    fd.append("vote", String(vote));
+    fd.append("article_id", String(this.props.data.id));
+    Request.post("api/feed/vote", fd);
+  };
 
   componentDidMount() {
     console.log(this.props.data);
@@ -104,17 +124,21 @@ class Pub1 extends React.Component {
         <div className="barra d-flex flex-row ml-4 mt-3">
           <div className="icons d-flex flex-row mb-4">
             <img
-              className="mr-1 ml-3 mt-1"
+              className={"mr-1 ml-3 mt-1" + (this.state.vote === 1 ? "" : " opacity")}
               src={uparrow}
               width="18"
               height="18"
+              id="upvote"
+              onClick={this.vote}
             />
-            <p className=" mt-1">{this.props.data !== undefined && this.props.data !== null ? this.props.data.score : "Score"}</p>
+            <p className=" mt-1">{this.props.data !== undefined && this.props.data !== null ? this.props.data.base_score + this.state.vote : "Score"}</p>
             <img
-              className="ml-2 mt-2 opacity"
+              className={"ml-2 mt-2" + (this.state.vote === -1 ? "" : " opacity")}
               src={downarrow}
               width="18"
               height="18"
+              id="downvote"
+              onClick={this.vote}
             />
 
             <button className="img-btn " onClick={this.togglemodal2}>
