@@ -24,7 +24,7 @@ class Article(models.Model):
         return temp
 
     def serialize(self, user):
-        user_vote = Vote.objects.filter(user=user).first()
+        user_vote = Vote.objects.filter(article=self, user=user).first()
         if user_vote is None:
             vote = 0
         else:
