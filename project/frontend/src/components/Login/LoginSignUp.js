@@ -77,7 +77,6 @@ class LoginSignUp extends Component {
         class="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
         id="exampleFormControlTextarea6"
         rows="3"
-        column="10"
         placeholder="bio/description"
       />
       </div>
