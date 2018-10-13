@@ -52,6 +52,7 @@ class App extends Component {
                     <Router>
                         <div className="App">
                             <Switch>
+                                <Route path="/register/success" component={ConfirmAccount}/>
                                 <Route path="/register" component={LoginSignUp}/>
                                 <Route path="/confirm" component={ConfirmAccount}/>
                                 <Route path="/forgotpass" component={ForgotPassword}/>
