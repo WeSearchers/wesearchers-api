@@ -170,7 +170,7 @@ class Pub1 extends React.Component {
               <ModalHeader toggle={this.togglemodal1} />
               <ModalBody>
                 {" "}
-                <AddComent />{" "}
+                <AddComent id={this.props.data.id}/>{" "}
               </ModalBody>
               <ModalFooter />
             </Modal>

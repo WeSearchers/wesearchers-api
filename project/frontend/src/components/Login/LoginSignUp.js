@@ -51,7 +51,7 @@ class LoginSignUp extends Component {
         data.append(elem, this.state[elem]);
     }
 
-    Request.post("/api/user", data).then(response => {
+    Request.post("api/user/register", data).then(response => {
       if (response.status === 200) {
         console.log("yay")
       }

@@ -12,40 +12,37 @@ from .models import *
 
 
 # Create your views here.
-def index(request):
+def register(request):
     if request.method == "POST":
-        if request.user.is_authenticated:
-            return update(request)
-        else:
-            try:
-                user_form = UserCreationForm(request.POST)
-                if user_form.is_valid():
-                    user = user_form.save(commit=False)
-                    profile_form = ProfileForm(request.POST, request.FILES)
-                    if profile_form.is_valid():
-                        interests = request.POST["interests"].split()
-                        if len(interests) >= 6:
-                            institution = Institution.objects.filter(name=request.POST["institution"]).first()
-                            if institution is None:
-                                institution = Institution(name=request.POST["institution"])
-                                institution.save()
-                            user.is_active = False
-                            user.save()
-                            for interest in interests:
-                                user_interest = UserInterest(interest=interest)
-                                user_interest.user = user
-                                user_interest.save()
-                            profile = profile_form.save(commit=False)
-                            profile.user = user
-                            profile.institution = institution
-                            profile.save()
-                            send_mail("WeSearchers account activation",
-                                      settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid,
-                                      "activate@wesearchers.pt", [user.email])
-                            return JsonResponse(user.id, safe=False)
-            except KeyError:
-                return HttpResponseBadRequest("Request badly formatted")
+        try:
+            user_form = UserCreationForm(request.POST)
+            if user_form.is_valid():
+                user = user_form.save(commit=False)
+                profile_form = ProfileForm(request.POST, request.FILES)
+                if profile_form.is_valid():
+                    interests = request.POST["interests"].split()
+                    if len(interests) >= 6:
+                        institution = Institution.objects.filter(name=request.POST["institution"]).first()
+                        if institution is None:
+                            institution = Institution(name=request.POST["institution"])
+                            institution.save()
+                        user.is_active = False
+                        user.save()
+                        for interest in interests:
+                            user_interest = UserInterest(interest=interest)
+                            user_interest.user = user
+                            user_interest.save()
+                        profile = profile_form.save(commit=False)
+                        profile.user = user
+                        profile.institution = institution
+                        profile.save()
+                        send_mail("WeSearchers account activation",
+                                  settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid,
+                                  "activate@wesearchers.pt", [user.email])
+                        return JsonResponse(user.id, safe=False)
+        except KeyError:
             return HttpResponseBadRequest("Request badly formatted")
+        return HttpResponseBadRequest("Request badly formatted")
     else:
         return HttpResponseNotAllowed("Method not Allowed")
 
@@ -77,6 +74,7 @@ def login_session(request):
         return HttpResponseNotAllowed("Method not Allowed")
 
 
+@require_login
 def update(request):
     user_form = UserUpdateForm(request.POST, instance=request.user)
     profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)

@@ -55,6 +55,12 @@ class Vote(models.Model):
 
 
 class Comment(models.Model):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.date = datetime.datetime.today()
+
+    date = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
     text = models.CharField(max_length=7900)
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comments")
@@ -64,5 +70,6 @@ class Comment(models.Model):
             "id": self.id,
             "user_id": self.user.id,
             "article_id": self.article.id,
-            "text": self.text
+            "text": self.text,
+            "date": self.date
         }

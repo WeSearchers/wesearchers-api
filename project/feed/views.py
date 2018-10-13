@@ -15,7 +15,7 @@ def post_comment(request):
     if request.method == "POST":
         try:
             comment_form = CommentPublishingForm(request.POST)
-            article = Article.objects.filter(id=request.POST["article_id"]).first()
+            article = Article.objects.filter(id=int(request.POST["article_id"])).first()
             if article is not None:
                 if comment_form.is_valid():
                     comment = comment_form.save(commit=False)
@@ -106,7 +106,8 @@ def post_article(request):
 def comments_by_article(request, article_id):
     article = Article.objects.filter(id=article_id).first()
     if article is not None:
-        comments = list(map(lambda comment : comment.serialize(), Comment.objects.filter(article=article)))
+        comments = list(map(lambda comment: comment.serialize(), Comment.objects.filter(article=article)))
+        comments.sort(key=lambda x: x["date"], reverse=True)
         return JsonResponse(comments, safe=False)
     else:
         return HttpResponseNotFound()
