@@ -227,8 +227,6 @@ class LoginSignUp extends Component {
             </button>
           </div>
         </div>
-      </div>
-      </div>
       <div className = "d-flex flex-column justify-content-right mb-3" >
       <div className="institution">
       <textarea
@@ -266,7 +264,6 @@ class LoginSignUp extends Component {
       </button>
       </div>
       </div>
-            </div>
     );
   }
 }
