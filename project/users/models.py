@@ -31,7 +31,6 @@ class Profile(models.Model):
     image = models.ImageField(upload_to="media/profile/avatar/")
     email_guid = models.CharField(max_length=40)
 
-
     def to_json(self):
         u = self.user
         p = self
@@ -44,7 +43,8 @@ class Profile(models.Model):
             "orcid": p.orcid,
             "bio": p.bio,
             "image_data": path_to_base64(p.image.path),
-            "institution": p.institution_id
+            "institution": p.institution_id,
+            "interests": list(map(lambda i: i.interest, list(UserInterest.objects.filter(user=u))))
         }
 
 
@@ -52,9 +52,11 @@ class UserInterest(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="interests")
     interest = models.CharField(max_length=50)
 
+
 class UserFollow(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following_user")
     followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followed")
+
 
 """
 class UserMentor(models.Model):

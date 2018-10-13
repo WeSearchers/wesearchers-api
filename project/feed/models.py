@@ -9,55 +9,67 @@ class Article(models.Model):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.date = datetime.date.today()
-        self.score = 0
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     text = models.TextField()
     date = models.DateField()
-    score = models.IntegerField()
-    url = models.URLField()
+    media_url = models.URLField(null=True)
+    url = models.URLField(null=True)
 
-    def update_score(self):
+    def calc_score(self):
         temp = 0
-        for vote in Vote.objects.filter(article__id=self.id):
-            if vote.score:
-                temp += 1
-            else:
-                temp -= 1
-        self.score = temp
-        self.save()
+        for vote in Vote.objects.filter(article=self):
+            temp += vote.score
+        return temp
 
-    def serialize(self):
+    def serialize(self, user):
+        user_vote = Vote.objects.filter(article=self, user=user).first()
+        if user_vote is None:
+            vote = 0
+        else:
+            vote = user_vote.score
         return {
+            "id": self.id,
             "user_id": self.user.id,
             "title": self.title,
             "text": self.text,
             "date": self.date,
-            "score": self.score,
-            "url": self.url
+            "base_score": self.calc_score() - vote,
+            "media_url": self.media_url,
+            "url": self.url,
+            "interests": list(map(lambda x: x.interest, ArticleInterest.objects.filter(article=self))),
+            "vote": vote
         }
 
 
 class ArticleInterest(models.Model):
     interest = models.CharField(max_length=255)
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="interests")
 
 
 class Vote(models.Model):
-    score = models.BooleanField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    score = models.IntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="votes")
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="votes")
 
 
 class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.date = datetime.datetime.today()
+
+    date = models.DateTimeField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
     text = models.CharField(max_length=7900)
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comments")
 
     def serialize(self):
         return {
+            "id": self.id,
             "user_id": self.user.id,
             "article_id": self.article.id,
-            "text": self.text
+            "text": self.text,
+            "date": self.date
         }

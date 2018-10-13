@@ -1,0 +1,367 @@
+/*UserProfileHeader*/
+
+.user-profile .user-header {
+  margin: 40px 0;
+}
+
+.user-profile .user-header .user-photo {
+  border: 1px solid;
+  height: 130px;
+  width: 130px;
+  border-radius: 50%;
+  background-image: url("../Media/user.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.user-header {
+  display: flex;
+}
+.user-header .user-photo {
+  margin-right: 60px;
+}
+
+.user-info .user-name {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  color: #999;
+  margin-right: 10px;
+  width: 70px;
+}
+
+.edit-profile:hover {
+  cursor: pointer;
+  color: #ccc;
+}
+
+.user-profile .section-card {
+  margin-top: 0;
+  padding-bottom: 15px;
+  width: calc(100% - 130px - 60px);
+}
+
+.user-aux-info li {
+  border-bottom: 1px solid #ccc;
+  height: 30px;
+  display: flex;
+  align-items: flex-end;
+}
+
+/*UserProfileMenu*/
+
+.profile-menu .menu-row {
+  padding-top: 15px;
+  border-top: 1px solid #ccc;
+}
+
+.profile-menu .menu-item {
+  border: 1px solid #999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  background: #eee;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.05);
+}
+
+.profile-menu .menu-item:hover {
+  cursor: pointer;
+  background: #999;
+}
+
+.menu-item > .fa {
+  color: #333;
+}
+
+/*UserProfileMenuSection*/
+
+.user-profile-menu-section {
+  /* height: 30em;
+    overflow-y: scroll; */
+  padding: 15px 0;
+}
+
+/*CARD*/
+.section-card {
+  border: 1px solid #999;
+  background: #fafafa;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.05);
+}
+
+.section-card:first-child {
+  margin-top: 40px;
+}
+
+.section-title:first-child {
+  margin-top: 25px;
+}
+.section-title {
+  margin-top: 40px;
+  font-size: 18px;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.section-card .sub-text {
+  font-size: 15px;
+}
+
+/*Sub-Section ProfileAbout*/
+
+/* -- identification */
+
+.section-card.identification {
+  padding: 0px 15px;
+}
+
+.section-card.identification > ul {
+  margin: 0;
+}
+
+.section-card.identification ul > li {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.section-card.identification ul > li:last-child {
+  border-bottom: transparent;
+}
+
+/*-- interest area */
+.section-card.interest-area {
+  padding: 10px 5px;
+  display: flex;
+  flex-wrap: wrap;
+  background: transparent;
+  border: transparent;
+  box-shadow: none;
+}
+
+.multi-choice-area {
+  background: #ccc;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin: 7.5px;
+}
+
+.multi-choice-area .fa {
+  margin-left: 10px;
+  font-size: 15px;
+}
+
+/*-- languages */
+
+.language {
+  border-bottom: 1px solid #ccc;
+}
+
+/*Sub-Section ProfileNetwork*/
+
+.section-card.network-advisor:first-child {
+  margin-top: 0px;
+}
+
+.section-user-network {
+  max-width: 500px;
+  padding-bottom: 30px;
+}
+
+.network-user-container {
+  padding-top: 30px;
+}
+
+.network-user-info {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.network-user-info .photo {
+  border: 1px solid;
+  height: 65px;
+  width: 65px;
+  border-radius: 50%;
+  background-image: url("../Media/user.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 0 20px;
+}
+
+.network-user-info .institution {
+  width: calc(100% - 80px - 20px);
+  min-height: 65px;
+  display: flex;
+  align-items: center;
+}
+
+.network-sub-section {
+  display: flex;
+  align-items: center;
+  background-color: rgb(200, 200, 200);
+  padding: 15px 25px;
+  transition: 0.25s;
+}
+
+.user-profile-menu-section .network-sub-section:nth-child(3) {
+  background-color: rgb(180, 180, 180);
+}
+
+.user-profile-menu-section .network-sub-section:nth-child(5) {
+  background-color: rgb(160, 160, 160);
+}
+
+.user-profile-menu-section .network-sub-section:nth-child(7) {
+  background-color: rgb(140, 140, 140);
+}
+
+.network-sub-section .value {
+  margin-right: 20px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.network-user-container {
+  transition: 0.25s;
+  background: #f1f1f1;
+}
+
+.user-profile-menu-section .network-sub-section:nth-child(1):hover,
+.user-profile-menu-section .network-sub-section:nth-child(3):hover,
+.user-profile-menu-section .network-sub-section:nth-child(5):hover,
+.user-profile-menu-section .network-sub-section:nth-child(7):hover {
+  background: rgb(122, 144, 151);
+}
+
+/*-- follower */
+
+.follower {
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.follower > * {
+  margin-right: 15px;
+}
+.follower > *:last-child {
+  margin: 0;
+}
+
+.follower .photo {
+  border: 1px solid;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background-image: url("../Media/user.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: #333;
+}
+
+.follower .orcid {
+  color: #999;
+}
+
+/*Sub-Section Publication*/
+
+.project .project-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  color: #999;
+}
+
+/*Sub-Section Publication*/
+.publication {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  max-width: 700px;
+  margin-top: 20px;
+}
+
+.publication .photo {
+  border: 1px solid;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  background-image: url("../Media/user.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-right: 30px;
+  margin-left: 10px;
+  background-color: #333;
+}
+
+.publication .info .publication-title {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.publication-title {
+  font-weight: 500;
+  margin-right: 20px;
+}
+
+.publication-title b {
+  margin-right: 10px;
+}
+
+.publication-author {
+  font-size: 15px;
+  float: right;
+  margin-top: 10px;
+  margin-right: 20px;
+}
+
+/*ProfileMenuSubSections*/
+
+.show {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+/*MARGINS & PADDINGS*/
+.pd10 {
+  padding: 5px;
+}
+
+.mt40 {
+  margin-top: 40px;
+}
+
+/* General media queries */
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .user-profile .user-header {
+    flex-direction: column;
+    align-items: center;
+  }
+  .user-header .user-photo {
+    margin: 0;
+    margin-bottom: 20px;
+  }
+
+  .user-profile .section-card {
+    width: 100%;
+  }
+}

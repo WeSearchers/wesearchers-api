@@ -1,123 +1,132 @@
 import datetime
 from django.shortcuts import render
 from django.http import *
-from django.validators import URLValidator
 
+from .decorators import require_login
+from django.apps import apps
 from .models import *
 from .forms import *
 
+UserInterest = apps.get_model('users', 'UserInterest')
+
+
+@require_login
 def post_comment(request):
-    comment_form = CommentPublishingForm(request.POST)
-    try:
-        if comment_form.is_valid():
-            comment = comment_form.save(commit=False)
-            comment.user = User.objects.filter(id=request.POST["user_id"]).first()
-            comment.article = Article.objects.filter(id=request.POST["article_id"]).first()
-            comment.save()
-            return JsonResponse(comment.id, safe=False)
-    except KeyError:
+    if request.method == "POST":
+        try:
+            comment_form = CommentPublishingForm(request.POST)
+            article = Article.objects.filter(id=int(request.POST["article_id"])).first()
+            if article is not None:
+                if comment_form.is_valid():
+                    comment = comment_form.save(commit=False)
+                    comment.user = request.user
+                    comment.article = article
+                    comment.save()
+                    return JsonResponse(comment.id, safe=False)
+            else:
+                return HttpResponseNotFound()
+        except KeyError:
+            return HttpResponseBadRequest("Request badly formatted")
         return HttpResponseBadRequest("Request badly formatted")
-    return HttpResponseBadRequest("Request badly formatted") 
-
-def get_comment(request, params):
-    comment = Comment.objects.filter(id=params["comment_id"]).first()
-    if comment != None:
-        return JsonResponse(comment.to_json())
     else:
-        return HttpResponseNotFound()
+        return HttpResponseNotAllowed()
 
-def comment(request, params={}):
-    if request.method == "POST":
-        post_comment(request)
-    elif request.method == "GET":
-        get_comment(request, params)
-    else:
-        return HttpResponseNotAllowed("Method not allowed")
 
-def vote(request):
-    if request.method == "POST":
-        if vote = Vote.objects.filter(score=bool(request.POST["vote"]), user=User.objects.filter(id=int(request.POST["user_id"])).first(), article=Article.objects.filter(id=int(request.POST["article_id"])).first()).first() is not None:
-            if request.POST["vote"] == 0:
-                vote.delete()
-            else:
-                vote.score = request.POST["vote"]
-                if vote.score > 0:
-                    vote.article.score += 2
-                else
-                    vote.article.score -= 2
-                vote.article.save()
-                vote.save()
+@require_login
+def get_comment(request, comment_id):
+    if request.method == "GET":
+        comment = Comment.objects.filter(id=comment_id).first()
+        if comment is not None:
+            return JsonResponse(comment.serialize())
         else:
-            vote = Vote(score=bool(request.POST["vote"]), user=User.objects.filter(id=int(request.POST["user_id"])).first(), article=Article.objects.filter(id=int(request.POST["article_id"])).first())
-            if vote.score > 0:
-                vote.article.score++
-            else:
-                vote.article.score--
-            vote.article.save()
-            vote.save()
-        return JsonResponse(vote.id, safe=False)
+            return HttpResponseNotFound()
+    else:
+        return HttpResponseNotAllowed()
+
+
+@require_login
+def vote_view(request):
+    if request.method == "POST":
+        try:
+            value = int(request.POST["vote"])
+        except ValueError:
+            return HttpResponseBadRequest()
+        if any([value == 0, value == -1, value == 1]):
+            article = Article.objects.filter(id=int(request.POST["article_id"])).first()
+            if article is not None:
+                vote = Vote.objects.filter(user=request.user, article=article).first()
+                if vote is not None:
+                    if value == 0:
+                        vote.delete()
+                    else:
+                        vote.score = value
+                        vote.save()
+                else:
+                    vote = Vote(score=value, user=request.user, article=article)
+                    vote.save()
+                return JsonResponse(vote.id, safe=False)
+        return HttpResponseBadRequest()
     else:
         return HttpResponseNotAllowed("Method not allowed")
 
-def get_article(request, params):
-    article = Article.objects.filter(id=params["article_id"]).first()
-    if article != None:
-        return JsonResponse(article.to_json())
-    else:
-        return HttpResponseNotFound()
 
+@require_login
+def get_article(request, article_id):
+    if request.method == "GET":
+        article = Article.objects.filter(id=article_id).first()
+        if article is not None:
+            return JsonResponse(article.serialize(request.user))
+        else:
+            return HttpResponseNotFound()
+    else:
+        return HttpResponseNotAllowed()
+
+
+@require_login
 def post_article(request):
     article_form = ArticlePublishingForm(request.POST)
     try:
         if article_form.is_valid():
             article = article_form.save(commit=False)
-            tags = article_form.POST["tags"].split()
+            article.user = request.user
+            article.save()
+            tags = request.POST["tags"].split()
             for tag in tags:
                 article_interest = ArticleInterest(interest=tag)
                 article_interest.article = article
                 article_interest.save()
-            article.user = User.objects.filter(id=request.POST["user_id"]).first()
-            article.save()
             return JsonResponse(article.id, safe=False)
+        else:
+            return HttpResponseBadRequest()
     except KeyError:
         return HttpResponseBadRequest("Request badly formatted")
-    return HttpResponseBadRequest("Request badly formatted")
 
-def article(request, params={}):
-    if request.method == "POST":
-        post_article(request)
-    elif request.method == "GET":
-        get_article(request, params)
-    else:
-        return HttpResponseNotAllowed("Method not allowed")
 
-def comments_by_article(request, params):
-    article = Article.objects.filter(id=params["article_id"]).first()
-    if article != None:
-        comments = Comment.objects.filter(article__id=article.id)
-        comm_list = []
-        for comment in comments:
-            comm_list.append(comment.serialize())
-        return JsonResponse(comm_list, safe=False)
+@require_login
+def comments_by_article(request, article_id):
+    article = Article.objects.filter(id=article_id).first()
+    if article is not None:
+        comments = list(map(lambda comment: comment.serialize(), Comment.objects.filter(article=article)))
+        comments.sort(key=lambda x: x["date"], reverse=True)
+        return JsonResponse(comments, safe=False)
     else:
         return HttpResponseNotFound()
 
-def article_by_interests(request, params):
-    def intersection(l1, l2):
-        temp = set(l2) 
-        l3 = [value for value in l1 if value in temp] 
-        return size(l3)
-    user = User.objects.filter(id=params["user_id"]).first()
-    if user != None:
-        user_interests = list(map(lambda i: i.interest, UserInterest.objects.filter(id=user.id)))
-        l = list(map(lambda a: [a, list((map(lambda y: y.interest, ArticleInterest.objects.filter(id=a.id))))], Article.objects))
-        articles = list(filter(lambda x: intersection(x[1], user_interests) > 0, l))
-        for i in articles:
-            i[1] = intersection(i[1], user_interests)
-        articles.sort(key=lambda x: (x[0].score, x), reverse=True)
-        articles.sort(key=lambda x: (x[1], x), reverse=True)
-        for item in article:
-            final_list.append(item[0].serialize())
-        return JsonResponse(final_list, safe=False)
-    else:
-        return HttpResponseNotFound()
+
+@require_login
+def article_by_interests(request):
+    def intersection_len(l1, l2):
+        temp = set(l2)
+        l3 = [value for value in l1 if value in temp]
+        return len(l3)
+
+    def match_count(interests, article):
+        article_interests = list(map(lambda a: a.interest, ArticleInterest.objects.filter(article=article)))
+        return intersection_len(interests, article_interests)
+
+    user_interests = list(map(lambda interest: interest.interest, UserInterest.objects.filter(user=request.user)))
+    articles = list(Article.objects.all())
+    articles.sort(key=lambda x: x.calc_score(), reverse=True)
+    articles.sort(key=lambda x: match_count(user_interests, x), reverse=True)
+    final_list = list(map(lambda x: x.serialize(request.user), articles))
+    return JsonResponse(final_list, safe=False)
