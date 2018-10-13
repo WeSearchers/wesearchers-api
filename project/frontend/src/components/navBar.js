@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "../styles/navbar.css";
+import Request from "../request";
 
 class NavBar extends Component {
   state = {
@@ -22,6 +23,12 @@ class NavBar extends Component {
       case "profile":
         window.location.assign(window.location.origin + "/user/profile");
     }
+  }
+
+  logout() {
+    Request.post("api/user/logout").then( response => {
+      window.location.assign(window.location.origin + "/");
+    });
   }
 
   render() {
@@ -70,8 +77,8 @@ class NavBar extends Component {
                   <span>About the Platform</span>{" "}
                   <i className="fa  fa-chevron-right" />
                 </a>
-                <a href="/login">
-                  <span>Logout*</span> <i className="fa  fa-chevron-right" />
+                <a onClick={this.logout}>
+                  <span>Logout</span> <i className="fa  fa-chevron-right" />
                 </a>
               </ul>
             </div>

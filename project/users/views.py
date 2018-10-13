@@ -1,6 +1,6 @@
 from django.db import IntegrityError
 from django.http import *
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.conf import settings
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
@@ -212,4 +212,10 @@ def follow_view(request):
 
 @require_login
 def is_logged_in(request):
+    return HttpResponse()
+
+
+@require_login
+def logout_view(request):
+    logout(request)
     return HttpResponse()

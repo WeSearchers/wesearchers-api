@@ -16,4 +16,5 @@ urlpatterns = [
     path('profile/<int:user_id>', views.get_user_info),
     re_path('profile', views.update),
     re_path('register', views.register),
+    re_path('logout', views.logout_view)
 ]
