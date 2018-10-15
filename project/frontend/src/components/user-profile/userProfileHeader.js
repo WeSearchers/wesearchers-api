@@ -19,7 +19,7 @@ class UserProfileHeader extends Component {
           <div className="user-info section-card">
             <div className="user-name">
               {this.props.data.first_name + " " + this.props.data.last_name}
-              <a href="/edit" className="edit-profile fa fa-pencil-square-o" />
+              <a href="/user/edit" className="edit-profile fa fa-pencil-square-o" />
             </div>
             <ul className="user-aux-info">
               {/* jmmonteiro colocar informação curricular através do fetch */}
