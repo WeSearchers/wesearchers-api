@@ -1,3 +1,6 @@
+.main-content-signup{
+  box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.12);
+}
 .name p, .orcid p{
   width: 220px;
 }
@@ -6,24 +9,67 @@
   height: 20%;
   font-size: 10px;
 }
-.name p, .orcid p, .email p, .password p, .institution p, .bio p, .hash p{
+.username p, .orcid p, .email p, .password p, .institution p, .bio p, .hash p{
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
+
 }
 .bio p{
   height: 150px;
 }
-.name .form-control-coment , .orcid .form-control-coment, .email .form-control-coment,
+.username .form-control-coment , .orcid .form-control-coment,.first_name .form-control-coment,.last_name .form-control-coment,.email .form-control-coment,
 .password .form-control-coment, .institution .form-control-coment, .bio .form-control-coment, .hash .form-control-coment{
-height: 34px;
-font-size: 12px;
+height: 44px;
 }
 .email .form-control-coment,
-.password .form-control-coment, .institution .form-control-coment, .bio .form-control-coment, .hash .form-control-coment{
+.password .form-control-coment, .institution .form-control-coment, .bio .form-control-coment, .first_name .form-control-coment,.last_name .form-control-coment,.hash .form-control-coment{
   width: 100%;
 }
-.name .form-control-coment , .orcid .form-control-coment{
+.username .form-control-coment , .orcid .form-control-coment{
 width: 100%;
 }
 .bio .form-control-coment{
   height: 90px;
+}
+
+textarea{
+outline: none;
+}
+label, input {
+  color: #333;
+  font: 14px/20px Arial;
+}label {
+  display: inline-block;
+
+  text-align: right;
+}
+
+/* Hide the file input using
+opacity */
+[type=file] {
+    position: absolute;
+    filter: alpha(opacity=0);
+    opacity: 0;
+}
+input,
+[type=file] + label {
+  border: 1px solid #CCC;
+  border-radius: 3px;
+  text-align: left;
+  padding: 10px;
+  width: 150px;
+  margin: 0;
+  left: 0;
+  position: relative;
+}
+[type=file] + label {
+  text-align: center;  border-radius: 12.5px;
+  top: 0.5em;
+  /* Decorative */
+  background: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+[type=file] + label:hover {
+  background: #6c757d;
 }

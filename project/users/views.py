@@ -9,6 +9,7 @@ from .validators import PasswordValidator
 from .decorators import require_login
 from .forms import ProfileForm, UserCreationForm, UserUpdateForm
 from .models import *
+import sys
 
 
 # Create your views here.
@@ -41,8 +42,9 @@ def register(request):
                                   "activate@wesearchers.pt", [user.email])
                         return JsonResponse(user.id, safe=False)
         except KeyError:
-            return HttpResponseBadRequest("Request badly formatted")
-        return HttpResponseBadRequest("Request badly formatted")
+            return JsonResponse(list(map(lambda error: error.__str__(),list(user_form.errors.values()))),status=400, safe=False)
+        print(user_form.errors.values(), file=sys.stderr)
+        return JsonResponse(list(map(lambda error: error.__str__(),list(user_form.errors.values()))),status=400, safe=False)
     else:
         return HttpResponseNotAllowed("Method not Allowed")
 
