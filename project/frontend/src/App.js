@@ -41,7 +41,7 @@ class App extends Component {
                                 <Route path="/changepassword" component={ChangePassword}/>
                                 <Route path="/changepasswordmessage" component={changePasswordMessage}/>
                                 <Route path="/feed" component={Feed}/>
-                                <Route component={Feed}/>
+                                <Route exact path="/" component={Feed}/>
                             </Switch>
                         </div>
                     </Router>

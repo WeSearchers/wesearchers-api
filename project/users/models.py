@@ -31,7 +31,7 @@ class Profile(models.Model):
     image = models.ImageField(upload_to="media/profile/avatar/")
     email_guid = models.CharField(max_length=40)
 
-    def to_json(self):
+    def serialize(self):
         u = self.user
         p = self
         return {
