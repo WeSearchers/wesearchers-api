@@ -1,4 +1,6 @@
 from django.db import IntegrityError
+from django.forms import ModelForm
+from django.forms.utils import ErrorDict
 from django.http import *
 from django.contrib.auth import authenticate, login, logout
 from django.conf import settings
@@ -11,10 +13,28 @@ from .forms import ProfileForm, UserCreationForm, UserUpdateForm
 from .models import *
 
 
+def error_dict(*args):
+    final = dict()
+    for item in args:
+        if item is not None:
+            if issubclass(type(item), ModelForm):
+                errors = dict()
+                for error in item.errors.keys():
+                    errors[error] = item.errors[error][0]
+                final = {**final, **errors}
+            else:
+                final = {**final, **item}
+    return final
+
+
 # Create your views here.
 def register(request):
+    user_form = None
+    profile_form = None
     if request.method == "POST":
         try:
+
+            request.POST["ASS"]
             user_form = UserCreationForm(request.POST)
             if user_form.is_valid():
                 user = user_form.save(commit=False)
@@ -40,9 +60,9 @@ def register(request):
                                   settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid,
                                   "activate@wesearchers.pt", [user.email])
                         return JsonResponse(user.id, safe=False)
-        except KeyError:
-            return HttpResponseBadRequest("Request badly formatted")
-        return HttpResponseBadRequest("Request badly formatted")
+        except KeyError as k:
+            return JsonResponse(error_dict(user_form, profile_form, {k.args[0]: "field missing in form"}), status=400)
+        return JsonResponse(error_dict(user_form, profile_form), status=400)
     else:
         return HttpResponseNotAllowed("Method not Allowed")
 
@@ -54,7 +74,7 @@ def get_user_info(request, user_id):
     else:
         user = User.objects.filter(id=user_id).first()
     if user is not None:
-        return JsonResponse(user.profile.to_json(), safe=False)
+        return JsonResponse(user.profile.serialize(), safe=False)
     else:
         return HttpResponseNotFound()
 
@@ -63,8 +83,8 @@ def login_session(request):
     if request.method == "POST":
         try:
             user = authenticate(username=request.POST["username"], password=request.POST["password"])
-        except KeyError:
-            return HttpResponseBadRequest("Request badly formatted")
+        except KeyError as k:
+            return JsonResponse({k.args[0]: "field missing in form"}, status=400)
         if user is not None:
             login(request, user)
             return HttpResponse()
@@ -165,9 +185,9 @@ def get_followers(request):
     if request.method == "GET":
         if "user_id" not in request.GET.keys():
             followers = list(
-                map(lambda user: user.user.profile.to_json(), UserFollow.objects.filter(followed=request.user)))
+                map(lambda user: user.user.profile.serialize(), UserFollow.objects.filter(followed=request.user)))
         else:
-            followers = list(map(lambda user: user.user.profile.to_json(),
+            followers = list(map(lambda user: user.user.profile.serialize(),
                                  UserFollow.objects.filter(followed_id=int(request.GET["user_id"]))))
         return JsonResponse(followers, safe=False)
     else:
@@ -179,9 +199,9 @@ def get_following(request):
     if request.method == "GET":
         if "user_id" not in request.GET.keys():
             following = list(
-                map(lambda user: user.followed.profile.to_json(), UserFollow.objects.filter(user=request.user)))
+                map(lambda user: user.followed.profile.serialize(), UserFollow.objects.filter(user=request.user)))
         else:
-            following = list(map(lambda user: user.followed.profile.to_json(),
+            following = list(map(lambda user: user.followed.profile.serialize(),
                                  UserFollow.objects.filter(user_id=int(request.GET["user_id"]))))
         return JsonResponse(following, safe=False)
     else:

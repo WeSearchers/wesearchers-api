@@ -13,12 +13,23 @@ class Jumbotron extends Component {
       text: '',
       url: '',
       media_url: '',
-      tags: "random test geirinhas_preciso_que_arranges_maneira_de_as_tags_ficarem_de_maneira_direitinha_nesta_string_:3",
+      tags: '',
     }
   }
 
   handleChange = ev => {
-    this.setState({[ev.target.name]: ev.target.value});
+    let tags = "";
+    if(ev.target.name === "text"){
+      let words = ev.target.value.split(" ");
+      words.forEach(word => {
+        if(word.startsWith("#")){
+          tags = tags + word.substring(1) + " ";
+        }
+      });
+      this.setState({["text"]: ev.target.value, tags: tags});
+    }
+    else
+      this.setState({[ev.target.name]: ev.target.value});
   };
 
   handleSubmit = ev => {
