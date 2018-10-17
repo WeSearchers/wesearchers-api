@@ -89,7 +89,7 @@ class LoginSignUp extends Component {
               </div>
               <div className="upload-btn mr-5 ml-1">
               <input onChange={this.handlechange} id="f02" type='file' name="image" accept="image/*" placeholder="Upload"/>
-              <label >Upload</label>
+              <label for="f02">Upload</label>
               </div>
 
             </div>
