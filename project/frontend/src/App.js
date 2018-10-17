@@ -39,7 +39,6 @@ class App extends Component {
                                 <Route path="/user/profile" component={UserProfileMain}/>
                                 <Route path="/user/edit" component={EditUserProfileForm}/>
                                 <Route path="/changepassword" component={ChangePassword}/>
-                                <Route path="/changepasswordmessage" component={changePasswordMessage}/>
                                 <Route path="/feed" component={Feed}/>
                                 <Route exact path="/" component={Feed}/>
                             </Switch>
@@ -54,6 +53,7 @@ class App extends Component {
                             <Switch>
                                 <Route path="/register/success" component={ConfirmAccount}/>
                                 <Route path="/register" component={LoginSignUp}/>
+                                <Route path="/changepasswordmessage" component={changePasswordMessage}/>
                                 <Route path="/confirm" component={ConfirmAccount}/>
                                 <Route path="/forgotpass" component={ForgotPassword}/>
                                 <Route path="/activate" component={ActivateAccount}/>
