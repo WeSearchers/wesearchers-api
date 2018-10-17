@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.forms import ModelForm
 from django.forms.utils import ErrorDict
@@ -29,38 +30,42 @@ def error_dict(*args):
 
 # Create your views here.
 def register(request):
+    errors = {}
     user_form = None
     profile_form = None
     if request.method == "POST":
-        try:
-            user_form = UserCreationForm(request.POST)
-            if user_form.is_valid():
+        user_form = UserCreationForm(request.POST)
+        profile_form = ProfileForm(request.POST, request.FILES)
+        if user_form.is_valid() and profile_form.is_valid():
+
+            interests = request.POST["interests"].split()
+            if len(interests) >= 6:
+                try:
+                    institution = Institution.objects.filter(name=request.POST["institution"]).first()
+                except KeyError as k:
+                    return JsonResponse(
+                        error_dict(user_form, profile_form, errors, {k.args[0]: "field missing in form"}), status=400)
+                if institution is None:
+                    institution = Institution(name=request.POST["institution"])
+                    institution.save()
                 user = user_form.save(commit=False)
-                profile_form = ProfileForm(request.POST, request.FILES)
-                if profile_form.is_valid():
-                    interests = request.POST["interests"].split()
-                    if len(interests) >= 6:
-                        institution = Institution.objects.filter(name=request.POST["institution"]).first()
-                        if institution is None:
-                            institution = Institution(name=request.POST["institution"])
-                            institution.save()
-                        user.is_active = False
-                        user.save()
-                        for interest in interests:
-                            user_interest = UserInterest(interest=interest)
-                            user_interest.user = user
-                            user_interest.save()
-                        profile = profile_form.save(commit=False)
-                        profile.user = user
-                        profile.institution = institution
-                        profile.save()
-                        send_mail("WeSearchers account activation",
-                                  settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid,
-                                  "activate@wesearchers.pt", [user.email])
-                        return JsonResponse(user.id, safe=False)
-        except KeyError as k:
-            return JsonResponse(error_dict(user_form, profile_form, {k.args[0]: "field missing in form"}), status=400)
-        return JsonResponse(error_dict(user_form, profile_form), status=400)
+                user.is_active = False
+                user.save()
+                for interest in interests:
+                    user_interest = UserInterest(interest=interest)
+                    user_interest.user = user
+                    user_interest.save()
+                profile = profile_form.save(commit=False)
+                profile.user = user
+                profile.institution = institution
+                profile.save()
+                send_mail("WeSearchers account activation",
+                          settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid,
+                          "activate@wesearchers.pt", [user.email])
+                return JsonResponse(user.id, safe=False)
+            else:
+                errors["interests"] = "must select 6 interests or more"
+        return JsonResponse(error_dict(user_form, profile_form, errors), status=400)
     else:
         return HttpResponseNotAllowed("Method not Allowed")
 
@@ -94,26 +99,34 @@ def login_session(request):
 
 @require_login
 def update(request):
+    errors = {}
     user_form = UserUpdateForm(request.POST, instance=request.user)
     profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
-    institution = Institution.objects.filter(id=int(request.POST["institution"])).first()
-    interests = request.POST["interests"].split()
-    if user_form.is_valid() and profile_form.is_valid() and len(interests) >= 6:
-        for interest in list(Institution.objects.filter(user=request.user)):
-            interest.delete()
-        for interest in interests:
-            user_interest = UserInterest(interest=interest)
-            user_interest.user = request.user
-            user_interest.save()
-        user_form.save()
-        profile = profile_form.save(commit=False)
-        if institution is None:
-            institution = Institution(name=request.POST["institution"])
-            institution.save()
-        profile.institution = institution
-        profile.save()
-        return HttpResponse()
-    return HttpResponseBadRequest()
+    try:
+        institution = Institution.objects.filter(id=int(request.POST["institution"])).first()
+        interests = request.POST["interests"].split()
+    except KeyError as k:
+        return JsonResponse(
+            error_dict(user_form, profile_form, errors, {k.args[0]: "field missing in form"}), status=400)
+    if user_form.is_valid() and profile_form.is_valid():
+        if len(interests) >= 6:
+            for interest in list(UserInterest.objects.filter(user=request.user)):
+                interest.delete()
+            for interest in interests:
+                user_interest = UserInterest(interest=interest)
+                user_interest.user = request.user
+                user_interest.save()
+            user_form.save()
+            profile = profile_form.save(commit=False)
+            if institution is None:
+                institution = Institution(name=request.POST["institution"])
+                institution.save()
+            profile.institution = institution
+            profile.save()
+            return HttpResponse()
+        else:
+            errors["interests"] = "must select 6 interests or more"
+    return JsonResponse(error_dict(user_form, profile_form, errors))
 
 
 def guid_check(request):
@@ -132,39 +145,61 @@ def send_reset_password_email(request):
 
 
 def reset_password(request):
-    profile = Profile.objects.filter(email_guid=request.POST["guid"]).first()
-    if profile is not None and request.POST["new_password1"] == request.POST["new_password2"] \
-            and PasswordValidator().validate(request.POST["new_password1"]):
-        profile.user.set_password(request.POST["new_password1"])
-        profile.user.save()
-        profile.email_guid = new_guid()
-        profile.save()
-        return HttpResponse()
-    else:
-        return HttpResponseBadRequest()
+    try:
+        profile = Profile.objects.filter(email_guid=request.POST["guid"]).first()
+        if profile is not None:
+            if request.POST["new_password1"] == request.POST["new_password2"]:
+                pv = PasswordValidator()
+                try:
+                    pv.validate(request.POST["new_password1"])
+                except ValidationError as v:
+                    return JsonResponse({"password": v.message}, status=400)
+                profile.user.set_password(request.POST["new_password1"])
+                profile.user.save()
+                profile.email_guid = new_guid()
+                profile.save()
+                return HttpResponse()
+            else:
+                return JsonResponse({"mismatch": "passwords don't match"}, status=400)
+        else:
+            return JsonResponse({"user": "user not found"}, status=400)
+    except KeyError as k:
+        return JsonResponse({k.args[0]: "field missing in form"}, status=400)
 
 
 @require_login
 def change_password(request):
-    user = authenticate(request, username=request.user.username, password=request.POST["old_password"])
-    if user is not None and request.POST["new_password1"] != request.POST["old_password"] \
-            and request.POST["new_password1"] == request.POST["new_password2"] \
-            and PasswordValidator().validate(request.POST["new_password1"]):
-        user.set_password(request.POST["new_password1"])
-        user.save()
-        user.profile.email_guid = new_guid()
-        user.profile.save()
-        return HttpResponse()
-    else:
-        return HttpResponseBadRequest()
+    try:
+        user = authenticate(request, username=request.user.username, password=request.POST["old_password"])
+        if user is not None:
+            if request.POST["new_password1"] != request.POST["old_password"]:
+                if request.POST["new_password1"] == request.POST["new_password2"]:
+                    pv = PasswordValidator()
+                    try:
+                        pv.validate(request.POST["new_password1"])
+                    except ValidationError as v:
+                        return JsonResponse({"password": v.message}, status=400)
+                    user.set_password(request.POST["new_password1"])
+                    user.save()
+                    user.profile.email_guid = new_guid()
+                    user.profile.save()
+                    return HttpResponse()
+                else:
+                    return JsonResponse({"mismatch": "passwords dont match"}, status=400)
+            else:
+                return JsonResponse({"no_change": "new password same as old password"}, status=400)
+        else:
+            return JsonResponse({"password": "old password is incorrect"}, status=400)
+    except KeyError as k:
+        return JsonResponse({k.args[0]: "field missing in form"}, status=400)
 
 
 def validate(request):
     if request.method == "POST":
         try:
             profile = Profile.objects.filter(email_guid=request.POST["guid"]).first()
-        except KeyError:
-            return HttpResponseBadRequest("Request badly formatted")
+        except KeyError as k:
+            return JsonResponse({k.args[0]: "field missing in form"}, status=400)
         if profile is not None and profile.user.is_active is False:
             user = profile.user
             user.is_active = True
@@ -225,8 +260,8 @@ def follow_view(request):
                 return HttpResponse()
             else:
                 return HttpResponseNotFound()
-        except KeyError:
-            return HttpResponseBadRequest()
+        except KeyError as k:
+            return JsonResponse({k.args[0]: "field missing in form"}, status=400)
     else:
         return HttpResponseNotAllowed()
 
