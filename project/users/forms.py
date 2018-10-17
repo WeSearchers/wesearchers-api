@@ -59,9 +59,9 @@ class ProfileForm(ModelForm):
     def clean_image(self):
         image = self.cleaned_data.get("image")
         w, h = get_image_dimensions(image)
-        if w > 500 or h > 500:
+        """if w > 1000 or h > 1000:
             raise forms.ValidationError(
                 self.error_messages['image_too_large'],
                 code='image_too_large',
-            )
+            )"""
         return image

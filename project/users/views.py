@@ -42,9 +42,8 @@ def register(request):
                                   "activate@wesearchers.pt", [user.email])
                         return JsonResponse(user.id, safe=False)
         except KeyError:
-            return JsonResponse(list(map(lambda error: error.__str__(),list(user_form.errors.values()))),status=400, safe=False)
-        print(user_form.errors.values(), file=sys.stderr)
-        return JsonResponse(list(map(lambda error: error.__str__(),list(user_form.errors.values()))),status=400, safe=False)
+            return HttpResponseBadRequest("Request badly formatted")
+        return HttpResponseBadRequest("Request badly formatted")
     else:
         return HttpResponseNotAllowed("Method not Allowed")
 
@@ -82,8 +81,8 @@ def update(request):
     profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
     institution = Institution.objects.filter(id=int(request.POST["institution"])).first()
     interests = request.POST["interests"].split()
-    if user_form.is_valid() and profile_form.is_valid() and institution is not None and len(interests) >= 6:
-        for interest in request.user.interests:
+    if user_form.is_valid() and profile_form.is_valid() and len(interests) >= 6:
+        for interest in list(Institution.objects.filter(user=request.user)):
             interest.delete()
         for interest in interests:
             user_interest = UserInterest(interest=interest)
@@ -91,6 +90,9 @@ def update(request):
             user_interest.save()
         user_form.save()
         profile = profile_form.save(commit=False)
+        if institution is None:
+            institution = Institution(name=request.POST["institution"])
+            institution.save()
         profile.institution = institution
         profile.save()
         return HttpResponse()

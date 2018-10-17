@@ -37,7 +37,7 @@ class App extends Component {
                         <div className="App">
                             <Switch>
                                 <Route path="/user/profile" component={UserProfileMain}/>
-                                <Route path="/edit" component={EditUserProfileForm}/>
+                                <Route path="/user/edit" component={EditUserProfileForm}/>
                                 <Route path="/changepassword" component={ChangePassword}/>
                                 <Route path="/changepasswordmessage" component={changePasswordMessage}/>
                                 <Route path="/feed" component={Feed}/>
@@ -52,6 +52,7 @@ class App extends Component {
                     <Router>
                         <div className="App">
                             <Switch>
+                                <Route path="/register/success" component={ConfirmAccount}/>
                                 <Route path="/register" component={LoginSignUp}/>
                                 <Route path="/confirm" component={ConfirmAccount}/>
                                 <Route path="/forgotpass" component={ForgotPassword}/>
