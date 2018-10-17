@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .validators import PasswordValidator
 from .decorators import require_login
-from .forms import ProfileForm, UserCreationForm, UserUpdateForm
+from .forms import ProfileForm, UserCreationForm, UserUpdateForm, ProfileUpdateForm
 from .models import *
 
 
@@ -101,7 +101,7 @@ def login_session(request):
 def update(request):
     errors = {}
     user_form = UserUpdateForm(request.POST, instance=request.user)
-    profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+    profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
     try:
         institution = Institution.objects.filter(id=int(request.POST["institution"])).first()
         interests = request.POST["interests"].split()
@@ -126,7 +126,7 @@ def update(request):
             return HttpResponse()
         else:
             errors["interests"] = "must select 6 interests or more"
-    return JsonResponse(error_dict(user_form, profile_form, errors))
+    return JsonResponse(error_dict(user_form, profile_form, errors), status=400)
 
 
 def guid_check(request):
