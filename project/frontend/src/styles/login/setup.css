@@ -1,17 +1,29 @@
+.allpage-signup{
+  background-image: url("../../images/fundo.png");
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 .main-content-signup{
   box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.12);
+  width: 40%;
+
+}
+
+.background-image-profile-signup {
+  background-image: url("../../images/Profilewhite-01.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 100px;
+  width: 100px;
 }
 .name p, .orcid p{
-  width: 220px;
+  width: 50%;
 }
-.button .upload-btn{
-  width: 10%;
-  height: 20%;
-  font-size: 10px;
-}
-.username p, .orcid p, .email p, .password p, .institution p, .bio p, .hash p{
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
 
+.username p, .orcid p, .email p, .password p, .institution p, .bio p, .hash p{
+box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
 }
 .bio p{
   height: 150px;
@@ -55,8 +67,8 @@ input,
   border: 1px solid #CCC;
   border-radius: 3px;
   text-align: left;
-  padding: 10px;
-  width: 150px;
+  padding: 5px;
+  width: 144px;
   margin: 0;
   left: 0;
   position: relative;
@@ -65,11 +77,14 @@ input,
   text-align: center;  border-radius: 12.5px;
   top: 0.5em;
   /* Decorative */
-  background: #333;
+  background: #FFC95E;
   color: #fff;
   border: none;
   cursor: pointer;
 }
 [type=file] + label:hover {
   background: #6c757d;
+}
+.btn-create-account{
+    background: #FFC95E;
 }
