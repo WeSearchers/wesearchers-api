@@ -85,10 +85,10 @@ class Pub1 extends React.Component {
               }
           </div>
           <div className=" mt-4 ml-4  d-flex flex-column justify-content-center">
-            <p className="font-weight-bold mb-0">
+            <a href={"user/profile?id=" + this.props.data.user_id} className="font-weight-bold mb-0">
               {this.state.userData !== null ?
                   this.state.userData.first_name + " " + this.state.userData.last_name : "Name Surname"}
-            </p>
+            </a>
             { /*Ze monteiro colocar nome a partir do fetch*/}
             <p className="font-weight-light mb-0">{/*Date and hour*/}{this.props.data !== undefined && this.props.data !== null ? this.props.data.date : "yyyy/mm/dd"}</p>
           </div>
