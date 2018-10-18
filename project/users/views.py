@@ -153,16 +153,16 @@ def reset_password(request):
                 try:
                     pv.validate(request.POST["new_password1"])
                 except ValidationError as v:
-                    return JsonResponse({"password": v.message}, status=400)
+                    return JsonResponse({"new_password1": v.message}, status=400)
                 profile.user.set_password(request.POST["new_password1"])
                 profile.user.save()
                 profile.email_guid = new_guid()
                 profile.save()
                 return HttpResponse()
             else:
-                return JsonResponse({"mismatch": "passwords don't match"}, status=400)
+                return JsonResponse({"new_password2": "passwords don't match"}, status=400)
         else:
-            return JsonResponse({"user": "user not found"}, status=400)
+            return JsonResponse({"user": "user not found"}, status=404)
     except KeyError as k:
         return JsonResponse({k.args[0]: "field missing in form"}, status=400)
 
@@ -178,18 +178,18 @@ def change_password(request):
                     try:
                         pv.validate(request.POST["new_password1"])
                     except ValidationError as v:
-                        return JsonResponse({"password": v.message}, status=400)
+                        return JsonResponse({"new_password1": v.message}, status=400)
                     user.set_password(request.POST["new_password1"])
                     user.save()
                     user.profile.email_guid = new_guid()
                     user.profile.save()
                     return HttpResponse()
                 else:
-                    return JsonResponse({"mismatch": "passwords dont match"}, status=400)
+                    return JsonResponse({"new_password2": "passwords dont match"}, status=400)
             else:
-                return JsonResponse({"no_change": "new password same as old password"}, status=400)
+                return JsonResponse({"new_password1": "new password same as old password"}, status=400)
         else:
-            return JsonResponse({"password": "old password is incorrect"}, status=400)
+            return JsonResponse({"old_password": "old password is incorrect"}, status=400)
     except KeyError as k:
         return JsonResponse({k.args[0]: "field missing in form"}, status=400)
 
