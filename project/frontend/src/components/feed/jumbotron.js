@@ -89,8 +89,8 @@ class Jumbotron extends Component {
             />
           </div>
         </div>
-        <div className="buttons d-flex flex-row justify-content-end mr-4 mt-3" onClick={this.togglemodal1}>
-          <button type="button" className="btn-linx btn btn-light m-1">
+        <div className="buttons d-flex flex-row justify-content-end mr-4 mt-3">
+          <button type="button" className="btn-linx btn btn-light m-1"  onClick={this.togglemodal1}>
             <img className="pr-1" src={clip} width="18" height="18" />
             Link
           {this.props.buttonLabel}
