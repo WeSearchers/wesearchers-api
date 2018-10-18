@@ -103,7 +103,8 @@ class LoginSignUp extends Component {
                   type="text"
                   name='username'
                   value={this.state.username}
-                  onChange={this.handlechange}
+                  onChange={this.handlechange
+                  }
                   className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                   id="id"
                   placeholder="Username"

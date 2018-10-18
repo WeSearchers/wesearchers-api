@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.forms import ModelForm, forms, EmailField
+from django.forms import ModelForm, forms, EmailField, ImageField
 from django.core.files.images import get_image_dimensions
 
 from .models import Profile
@@ -65,3 +65,12 @@ class ProfileForm(ModelForm):
                 code='image_too_large',
             )"""
         return image
+
+
+class ProfileUpdateForm(ProfileForm):
+
+    image = ImageField(required=False)
+
+    class Meta:
+        model = Profile
+        fields = ["orcid", "bio", "image"]

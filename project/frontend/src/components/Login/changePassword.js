@@ -1,34 +1,31 @@
 import React, { Component } from "react";
-import Fetch from '../../request';
+import Request from '../../request';
 
 class ChangePassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      newPw: '',
-      newPwConfirm: '',
-
+      old_password: '',
+      new_password1: '',
+      new_password2: '',
     }
   }
 
-  handleChange = (event) => {
-    this.setState(
-      {
-        newPw:        event.target.id === 'pw'         ? event.target.value : this.state.newPw,
-        newPwConfirm: event.target.id === "confirmPw"  ? event.target.value : this.state.newPwConfirm,
+  handleChange = event => {
+    this.setState({[event.target.name]: event.target.value});
+  };
+
+  handleSave = event => {
+    event.preventDefault();
+      let fd = new FormData();
+      for(let elem in this.state){
+        fd.append(elem, this.state[elem]);
       }
-    );
-  }
-
-  handleSave = (event) => {
-    if (this.state.newPw === this.state.newPwConfirm) {
-      //TODO
-    }
-    else {
-      //TODO acrescentar aviso caso as passwords não dêm match
-      console.log("Passwords don't match")
-    }
-  }
+      Request.post("api/user/password", fd).then( response => {
+        if (response.status === 200)
+          window.location.assign(window.location.origin + "/user/profile");
+      })
+  };
 
   render() {
     return (
@@ -38,19 +35,35 @@ class ChangePassword extends Component {
           <div className="login-form change-password">
             <div className="title">Create a new Password</div>
             {/* jmmonteiro criar nova password (ligação ao backend) */}
-            <form action="/login">
-              <input id="pw" onChange={this.handleChange} value={this.state.newPw} type="password" placeholder="New password" required />
+            <form onSubmit={this.handleSave}>
               <div className="input-password">
                 <input
-                  id="confirmPw"
                   onChange={this.handleChange}
-                  value={this.state.newPwConfirm}
                   type="password"
-                  placeholder="Confirm Password"
+                  placeholder="Old password"
+                  name="old_password"
                   required
                 />
               </div>
-              <button type="submit">save</button>
+              <div className="input-password">
+                <input
+                  onChange={this.handleChange}
+                  type="password"
+                  placeholder="New password"
+                  name="new_password1"
+                  required
+                />
+              </div>
+              <div className="input-password">
+                <input
+                  onChange={this.handleChange}
+                  type="password"
+                  placeholder="Confirm new password"
+                  name="new_password2"
+                  required
+                />
+              </div>
+              <input type="submit" value="save"/>
             </form>
           </div>
         </div>

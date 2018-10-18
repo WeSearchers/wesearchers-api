@@ -37,14 +37,14 @@ class UserLogin extends Component {
     data.append('username', this.state.username);
     data.append('password', this.state.password);
 
-    console.log(data)
+    console.log(data);
     Request.post('api/user/login',data).then(
       response => {
-        console.log(response)
+        console.log(response);
         if (response.status === 200) {
           //Request.get('api/user/profile/0', {}).then(response => console.log(response))
           //login com sucesso, manda para a proxima página
-          window.location.assign(window.location.origin + "/user/profile")
+          window.location.assign(window.location.origin + "/")
         }
         else {
           //erro no login, do smth
