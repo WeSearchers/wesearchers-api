@@ -16,6 +16,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import LoginSignUp from "./components/Login/LoginSignUp";
 import Feed from "./views/feed";
 import Request from "./request";
+import ResetPassword from "./components/Login/resetPassword";
 
 
 class App extends Component {
@@ -51,6 +52,7 @@ class App extends Component {
                     <Router>
                         <div className="App">
                             <Switch>
+                                <Route path="/resetpw" component={ResetPassword}/>
                                 <Route path="/register/success" component={ConfirmAccount}/>
                                 <Route path="/register" component={LoginSignUp}/>
                                 <Route path="/changepasswordmessage" component={changePasswordMessage}/>

@@ -22,14 +22,13 @@ def path_to_base64(path):
 class Profile(models.Model):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.email_guid = new_guid()
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name="profile")
     orcid = models.CharField(max_length=16)
     institution = models.ForeignKey(Institution, models.CASCADE)
     bio = models.CharField(max_length=240)
     image = models.ImageField(upload_to="media/profile/avatar/")
-    email_guid = models.CharField(max_length=40)
+    email_guid = models.CharField(max_length=40, default=new_guid)
 
     def serialize(self):
         u = self.user

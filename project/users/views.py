@@ -179,8 +179,6 @@ def change_password(request):
                         return JsonResponse({"new_password1": v.message}, status=400)
                     user.set_password(request.POST["new_password1"])
                     user.save()
-                    user.profile.email_guid = new_guid()
-                    user.profile.save()
                     return HttpResponse()
                 else:
                     return JsonResponse({"new_password2": "passwords dont match"}, status=400)
