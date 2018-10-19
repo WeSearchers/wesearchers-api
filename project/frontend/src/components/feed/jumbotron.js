@@ -6,6 +6,10 @@ import clip from "../../images/clip.png";
 import Request from "../../request";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Popup from "./popup";
+import AddPhoto from "./addphoto";
+import AddURL from "./addurl";
+import Tag from "./tag";
+import Location from "./location";
 
 class Jumbotron extends Component {
   constructor(props) {
@@ -21,11 +25,10 @@ class Jumbotron extends Component {
       modal3: false,
       modal4: false,
     }
-
+    this.togglemodal4 = this.togglemodal4.bind(this);
     this.togglemodal1 = this.togglemodal1.bind(this);
     this.togglemodal2 = this.togglemodal2.bind(this);
     this.togglemodal3 = this.togglemodal3.bind(this);
-    this.togglemodal4 = this.togglemodal4.bind(this);
   }
 
   handleChange = ev => {
@@ -42,6 +45,12 @@ class Jumbotron extends Component {
     Request.post('api/feed/article', fd);
   };
 
+  togglemodal4() {
+    this.setState({
+      modal1: !this.state.modal4
+    });
+  }
+
   togglemodal1() {
     this.setState({
       modal1: !this.state.modal1
@@ -57,11 +66,7 @@ class Jumbotron extends Component {
       modal3: !this.state.modal3
     });
   }
-  togglemodal4() {
-    this.setState({
-      modal4: !this.state.modal4
-    });
-  }
+
 
   render() {
     return (
@@ -103,27 +108,29 @@ class Jumbotron extends Component {
             <ModalHeader toggle={this.togglemodal1} />
             <ModalBody>
               {" "}
-              <Popup />{" "}
+              <AddURL />{" "}
             </ModalBody>
             <ModalFooter />
           </Modal>
 
+
           <button type="button" className="btn-foto btn btn-light m-1"onClick={this.togglemodal2}>
             <img className="pr-1" src={photo} width="18" height="18" />
-          {this.props.buttonLabel}
+  {this.props.buttonLabel}
           </button>
-          <Modal
-            isOpen={this.state.modal2}
-            toggle={this.togglemodal2}
-            className={this.props.className}
-          >
-            <ModalHeader toggle={this.togglemodal2} />
-            <ModalBody>
-              {" "}
-              <Popup />{" "}
-            </ModalBody>
-            <ModalFooter />
-          </Modal>
+            <Modal
+              isOpen={this.state.modal2}
+              toggle={this.togglemodal2}
+              className={this.props.className}
+            >
+              <ModalHeader toggle={this.togglemodal2} />
+              <ModalBody>
+                {" "}
+                <AddPhoto />{" "}
+              </ModalBody>
+              <ModalFooter />
+            </Modal>
+
 
           <button type="button" className="btn-id btn btn-light m-1"onClick={this.togglemodal3}>
           <img className="pr-1" src={group} width="18" height="18" />
@@ -138,7 +145,7 @@ class Jumbotron extends Component {
             <ModalHeader toggle={this.togglemodal3} />
             <ModalBody>
               {" "}
-              <Popup />{" "}
+              <Tag />{" "}
             </ModalBody>
             <ModalFooter />
           </Modal>
@@ -156,7 +163,7 @@ class Jumbotron extends Component {
             <ModalHeader toggle={this.togglemodal4} />
             <ModalBody>
               {" "}
-              <Popup />{" "}
+              <Location />{" "}
             </ModalBody>
             <ModalFooter />
           </Modal>

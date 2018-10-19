@@ -87,7 +87,7 @@ class LoginSignUp extends Component {
                   <img src={this.state.image_data} width={"100%"}/> : null
                 }
               </div>
-              <div className="upload-btn mr-5 ml-1">
+              <div className="input-jumbotron upload-btn mr-5 ml-1">
               <input onChange={this.handlechange} id="f02" type='file' name="image" accept="image/*" placeholder="Upload"/>
               <label for="f02">Upload</label>
               </div>

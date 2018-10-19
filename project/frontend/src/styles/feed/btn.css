@@ -61,3 +61,11 @@ btn:focus {
   height: 30px;
   width: 30px;
 }
+.addurl .save-btn{
+  font-size: 10px;
+  height: 10%;
+  width: 15%;
+  padding: 4px;
+  background: #FFC95E;
+  color: #fff;
+}

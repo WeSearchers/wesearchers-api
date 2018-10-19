@@ -36,3 +36,45 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
 }
+
+.addPhoto textarea{
+outline: none;
+}
+.addPhoto label, input {
+  color: #333;
+}
+.addPhoto label {
+  display: inline-block;
+  text-align: right;
+}
+
+/* Hide the file input using
+opacity */
+.addPhoto [type=file] {
+    position: absolute;
+    filter: alpha(opacity=0);
+    opacity: 0;
+}
+.addPhoto input,
+[type=file] + label {
+  border: 1px solid #CCC;
+  border-radius: 0.25rem;
+  font-size: 10px;
+  text-align: left;
+  position: relative;
+}
+.addPhoto [type=file] + label {
+  text-align: center;  border-radius: 12.5px;
+  top: 0.5em;
+  /* Decorative */
+  background-color: #f8f9fa;
+  color: #495057;
+  border: none;
+  cursor: pointer;
+}
+.addPhoto [type=file] + label:hover {
+  background: #6c757d;
+}
+.btn-create-account{
+    background: #FFC95E;
+}
