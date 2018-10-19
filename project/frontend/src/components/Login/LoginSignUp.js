@@ -73,32 +73,29 @@ class LoginSignUp extends Component {
 
   render() {
     return (
-      <div className=" d-flex flex-row justify-content-center mt-5 mb-5" >
-        <div className="d-flex flex-column justify-content-center " >
-          <div className="  d-flex flex-column" >
+      <div className=" d-flex flex-row justify-content-center allpage-signup" >
+        <div className="d-flex flex-column justify-content-center pl-5 pr-5 pb-5 pt-5 mt-5 mb-5 main-content-signup boder-radius-xs" >
+          <div className="d-flex flex-column text-white" >
             <h1><b>WE</b>LCOME</h1>
             <h1> SEARCHERS </h1>
           </div>
 
           <div className="d-flex flex-row mt-5" >
-            <div className="d-flex flex-column justify-content-start align-content-start" >
-              <div className="background-image-profile ml-2" style={{"clip-path": "circle(50% at center)"}}>
+            <div className="d-flex flex-column justify-content-start align-content-start ml-2" >
+              <div className="background-image-profile-signup ml-4 mb-2" style={{"clip-path": "circle(50% at center)"}}>
                 {this.state.image_data !== null ?
                   <img src={this.state.image_data} width={"100%"}/> : null
                 }
               </div>
-              {/*
-              <button type="button"
-                className="upload-btn text-white btn btn-secondary mt-2 mb-4"
-              >
-                Upload
-              </button>
-              */}
-              <input onChange={this.handlechange} type='file' name="image" accept="image/*" />
+              <div className="upload-btn mr-5 ml-1">
+              <input onChange={this.handlechange} id="f02" type='file' name="image" accept="image/*" placeholder="Upload"/>
+              <label for="f02">Upload</label>
+              </div>
+
             </div>
 
             <div className="d-flex flex-column justify-content-right ml-5 mt-2" >
-              <div className="name ">
+              <div className="username">
                 <input
                   type="text"
                   name='username'
@@ -118,13 +115,13 @@ class LoginSignUp extends Component {
                   onChange={this.handlechange}
                   className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                   id="id"
-                  placeholder="orcid ID"
+                  placeholder="Orcid ID"
                 />
               </div>
             </div>
           </div>
 
-          <div className="d-flex flex-column justify-content-right mb-3" >
+          <div className="d-flex flex-column justify-content-right mb-3 mt-5" >
             <div className="first_name ">
               <input
                 type="text"
@@ -159,7 +156,7 @@ class LoginSignUp extends Component {
                 onChange={this.handlechange}
                 className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                 id="id"
-                placeholder="email"
+                placeholder="Email"
               />
             </div>
           </div>
@@ -173,7 +170,7 @@ class LoginSignUp extends Component {
                 onChange={this.handlechange}
                 className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                 id="id"
-                placeholder="password"
+                placeholder="Password"
               />
 
             </div>
@@ -187,7 +184,7 @@ class LoginSignUp extends Component {
                 onChange={this.handlechange}
                 className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                 id="id"
-                placeholder="password2"
+                placeholder="Confirm password"
               />
 
             </div>
@@ -201,7 +198,7 @@ class LoginSignUp extends Component {
                 onChange={this.handlechange}
                 className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                 id="id"
-                placeholder="institution"
+                placeholder="Institution"
               />
             </div>
           </div>
@@ -215,7 +212,7 @@ class LoginSignUp extends Component {
                 id="id"
                 rows="3"
                 column="10"
-                placeholder="bio/description"
+                placeholder="Bio/Description"
               />
             </div>
           </div>
@@ -227,7 +224,7 @@ class LoginSignUp extends Component {
                 onChange={this.handlechange}
                 className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                 id="id"
-                placeholder="#"
+                placeholder="#Hashtags"
               />
             </div>
           </div>
@@ -235,7 +232,7 @@ class LoginSignUp extends Component {
             <button
               onClick={this.handleRegister}
               type="button"
-              className="text-white btn btn-secondary mt-2"
+              className="text-white btn btn-create-account mt-2"
             >
               Create Account
             </button>
