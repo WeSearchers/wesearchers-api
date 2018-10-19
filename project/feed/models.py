@@ -14,8 +14,9 @@ class Article(models.Model):
     title = models.CharField(max_length=255)
     text = models.TextField()
     date = models.DateField()
-    media_url = models.URLField(null=True)
-    url = models.URLField(null=True)
+    media_url = models.URLField(blank=True)
+    image = models.ImageField(blank=True, upload_to="media/articles/")
+    url = models.URLField(blank=True)
 
     def calc_score(self):
         temp = 0

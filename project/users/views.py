@@ -30,10 +30,8 @@ def error_dict(*args):
 
 # Create your views here.
 def register(request):
-    errors = {}
-    user_form = None
-    profile_form = None
     if request.method == "POST":
+        errors = {}
         user_form = UserCreationForm(request.POST)
         profile_form = ProfileForm(request.POST, request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
