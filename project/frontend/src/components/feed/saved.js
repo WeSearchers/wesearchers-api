@@ -4,7 +4,7 @@ import google from "../../images/google-plus-logo-button.png";
 import linkedin from "../../images/linkedin-logo-button.png";
 import twitter from "../../images/twitter-logo-button.png";
 
-class Tag extends React.Component {
+class Saved extends React.Component {
   render() {
     return (
       <div className="  m-2 d-flex flex-column  addurl">
@@ -16,4 +16,4 @@ class Tag extends React.Component {
   }
 }
 
-export default Tag;
+export default Saved;

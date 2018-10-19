@@ -4,12 +4,11 @@ import google from "../../images/google-plus-logo-button.png";
 import linkedin from "../../images/linkedin-logo-button.png";
 import twitter from "../../images/twitter-logo-button.png";
 
-class Popup extends React.Component {
+class Location extends React.Component {
   render() {
     return (
       <div className="  m-2 d-flex flex-column  addurl">
       <h2 className="mb-4">Send me your location </h2>
-
 
 
       </div>
@@ -17,4 +16,4 @@ class Popup extends React.Component {
   }
 }
 
-export default Popup;
+export default Location;
