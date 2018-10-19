@@ -13,8 +13,9 @@ class Jumbotron extends Component {
     this.state = {
       title: '',
       text: '',
-      url: '',
-      media_url: '',
+      url: null,
+      media_url: null,
+      image: null,
       tags: '',
       modal1: false,
       modal2: false,
@@ -47,8 +48,9 @@ class Jumbotron extends Component {
     let fd = new FormData();
     fd.append("title", this.state.title);
     fd.append("text", this.state.text);
-    fd.append("url", this.state.url);
-    fd.append("media_url", this.state.media_url);
+    if (this.state.url !== null) fd.append("url", this.state.url);
+    if (this.state.media_url !== null) fd.append("media_url", this.state.media_url);
+    if (this.state.image !== null) fd.append("media_url", this.state.image, this.state.image.filename);
     fd.append("tags", this.state.tags);
     Request.post('api/feed/article', fd);
   };

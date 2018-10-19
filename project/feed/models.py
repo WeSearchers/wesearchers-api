@@ -1,7 +1,15 @@
+import base64
 import datetime
 
 from django.contrib.auth.models import User
 from django.db import models
+
+
+def path_to_base64(path):
+    file = open(path, "rb")
+    data = base64.b64encode(file.read())
+    file.close()
+    return data.decode("utf-8")
 
 
 class Article(models.Model):
@@ -14,9 +22,9 @@ class Article(models.Model):
     title = models.CharField(max_length=255)
     text = models.TextField()
     date = models.DateField()
-    media_url = models.URLField(blank=True)
-    image = models.ImageField(blank=True, upload_to="media/articles/")
-    url = models.URLField(blank=True)
+    media_url = models.URLField(null=True)
+    image = models.ImageField(null=True, upload_to="media/articles/")
+    url = models.URLField(null=True)
 
     def calc_score(self):
         temp = 0
@@ -30,7 +38,7 @@ class Article(models.Model):
             vote = 0
         else:
             vote = user_vote.score
-        return {
+        re = {
             "id": self.id,
             "user_id": self.user.id,
             "title": self.title,
@@ -42,6 +50,13 @@ class Article(models.Model):
             "interests": list(map(lambda x: x.interest, ArticleInterest.objects.filter(article=self))),
             "vote": vote
         }
+        if self.image:
+            re["image"] = path_to_base64(self.image.path)
+        if self.url:
+            re["url"] = self.url
+        if self.media_url:
+            re["media_url"] = self.media_url
+        return re
 
 
 class ArticleInterest(models.Model):
