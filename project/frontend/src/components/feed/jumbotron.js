@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import photo from "../../images/images.png";
 import group from "../../images/group.png";
-import local from "../../images/mappin.png";
+import local from "../../images/mapin.png";
 import clip from "../../images/clip.png";
 import Request from "../../request";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
@@ -116,6 +116,7 @@ class Jumbotron extends Component {
 
           <button type="button" className="btn-foto btn btn-light m-1"onClick={this.togglemodal2}>
             <img className="pr-1" src={photo} width="18" height="18" />
+            Photo/Video
   {this.props.buttonLabel}
           </button>
             <Modal

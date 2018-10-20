@@ -117,6 +117,9 @@ class LoginSignUp extends Component {
                   placeholder="Orcid ID"
                 />
               </div>
+              <div className="wrongpass">
+              <p>Please make sure your orcid has 16 numbers.</p>
+              </div>
             </div>
           </div>
 
@@ -173,6 +176,9 @@ class LoginSignUp extends Component {
               />
 
             </div>
+            <div className="wrongpass">
+            <p>Please make sure you write the right password.</p>
+            </div>
           </div>
           <div className="d-flex flex-column justify-content-right mb-3" >
             <div className="password ">
@@ -186,6 +192,9 @@ class LoginSignUp extends Component {
                 placeholder="Confirm password"
               />
 
+            </div>
+            <div className="wrongpass">
+            <p>Please make sure you write the right password.</p>
             </div>
           </div>
           <div className="d-flex flex-column justify-content-right mb-3" >
@@ -225,6 +234,9 @@ class LoginSignUp extends Component {
                 id="id"
                 placeholder="#Hashtags"
               />
+            </div>
+            <div className="wrongpass">
+            <p>Please make sure you put at least 6 hashtags.</p>
             </div>
           </div>
           <div className="d-flex flex-column justify-content-right" >
