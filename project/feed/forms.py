@@ -1,14 +1,24 @@
-from django.validators import URLValidator
+from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
+from django.forms import ModelForm, forms, URLField, ImageField
+
+from .models import Article, Comment
+
 
 class ArticlePublishingForm(ModelForm):
     error_messages = {
-        'title_too_long' : "Title exceeds the 255 character limit",
-        'url_invalid' : "Media has invalid URL"
+        'title_too_long': "Title exceeds the 255 character limit",
+        'url_invalid': "Media has invalid URL"
     }
+
+    url = URLField(required=False)
+    media_url = URLField(required=False)
+    image = ImageField(required=False)
+
     class Meta:
         model = Article
-        fields = ("title", "text", "url", "tags")
-    
+        fields = ("title", "text", "url", "media_url", "image")
+
     def clean_title(self):
         title = self.cleaned_data.get("title")
         if len(title) > 255:
@@ -20,9 +30,9 @@ class ArticlePublishingForm(ModelForm):
 
     def clean_url(self):
         url = self.cleaned_data.get("url")
-        val = URLValidator(verify_exists=True)
+        val = URLValidator()
         try:
-            validate(url)
+            val(url)
         except ValidationError:
             raise forms.ValidationError(
                 self.error_messages['url_invalid'],
@@ -30,9 +40,22 @@ class ArticlePublishingForm(ModelForm):
             )
         return url
 
+    def clean_media_url(self):
+        media_url = self.cleaned_data.get("url")
+        val = URLValidator()
+        try:
+            val(media_url)
+        except ValidationError:
+            raise forms.ValidationError(
+                self.error_messages['url_invalid'],
+                code='url_invalid',
+            )
+        return media_url
+
+
 class CommentPublishingForm(ModelForm):
     error_messages = {
-        'text_too_long' : "Comment exceeds 7900 character limit"
+        'text_too_long': "Comment exceeds 7900 character limit"
     }
 
     class Meta:
@@ -47,4 +70,3 @@ class CommentPublishingForm(ModelForm):
                 code='text_too_long',
             )
         return text
-        
