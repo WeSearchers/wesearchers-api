@@ -16,6 +16,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import LoginSignUp from "./components/Login/LoginSignUp";
 import Feed from "./views/feed";
 import Request from "./request";
+import ResetPassword from "./components/Login/resetPassword";
 
 
 class App extends Component {
@@ -37,11 +38,10 @@ class App extends Component {
                         <div className="App">
                             <Switch>
                                 <Route path="/user/profile" component={UserProfileMain}/>
-                                <Route path="/edit" component={EditUserProfileForm}/>
+                                <Route path="/user/edit" component={EditUserProfileForm}/>
                                 <Route path="/changepassword" component={ChangePassword}/>
-                                <Route path="/changepasswordmessage" component={changePasswordMessage}/>
                                 <Route path="/feed" component={Feed}/>
-                                <Route component={Feed}/>
+                                <Route exact path="/" component={Feed}/>
                             </Switch>
                         </div>
                     </Router>
@@ -52,7 +52,10 @@ class App extends Component {
                     <Router>
                         <div className="App">
                             <Switch>
+                                <Route path="/resetpw" component={ResetPassword}/>
+                                <Route path="/register/success" component={ConfirmAccount}/>
                                 <Route path="/register" component={LoginSignUp}/>
+                                <Route path="/changepasswordmessage" component={changePasswordMessage}/>
                                 <Route path="/confirm" component={ConfirmAccount}/>
                                 <Route path="/forgotpass" component={ForgotPassword}/>
                                 <Route path="/activate" component={ActivateAccount}/>

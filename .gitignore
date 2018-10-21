@@ -73,3 +73,9 @@ project/project/credentials\.json
 project/media/
 
 project/webpack-stats\.dev\.json
+
+\.idea/inspectionProfiles/
+
+project/feed/migrations/
+
+project/users/migrations/

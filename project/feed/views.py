@@ -10,12 +10,27 @@ from .forms import *
 UserInterest = apps.get_model('users', 'UserInterest')
 
 
+def error_dict(*args):
+    final = dict()
+    for item in args:
+        if item is not None:
+            if issubclass(type(item), ModelForm):
+                errors = dict()
+                for error in item.errors.keys():
+                    errors[error] = item.errors[error][0]
+                final = {**final, **errors}
+            else:
+                final = {**final, **item}
+    return final
+
+
 @require_login
 def post_comment(request):
     if request.method == "POST":
+        errors = {}
+        comment_form = CommentPublishingForm(request.POST)
         try:
-            comment_form = CommentPublishingForm(request.POST)
-            article = Article.objects.filter(id=request.POST["article_id"]).first()
+            article = Article.objects.filter(id=int(request.POST["article_id"])).first()
             if article is not None:
                 if comment_form.is_valid():
                     comment = comment_form.save(commit=False)
@@ -24,10 +39,12 @@ def post_comment(request):
                     comment.save()
                     return JsonResponse(comment.id, safe=False)
             else:
-                return HttpResponseNotFound()
-        except KeyError:
-            return HttpResponseBadRequest("Request badly formatted")
-        return HttpResponseBadRequest("Request badly formatted")
+                errors["article_id"] = "article does not exist"
+        except KeyError as k:
+            return JsonResponse(
+                error_dict(comment_form, errors, {k.args[0]: "field missing in form"}), status=400)
+        return JsonResponse(
+            error_dict(comment_form, errors), status=400)
     else:
         return HttpResponseNotAllowed()
 
@@ -50,7 +67,7 @@ def vote_view(request):
         try:
             value = int(request.POST["vote"])
         except ValueError:
-            return HttpResponseBadRequest()
+            return JsonResponse({"vote": "vote must be an integer"}, status=400)
         if any([value == 0, value == -1, value == 1]):
             article = Article.objects.filter(id=int(request.POST["article_id"])).first()
             if article is not None:
@@ -65,7 +82,10 @@ def vote_view(request):
                     vote = Vote(score=value, user=request.user, article=article)
                     vote.save()
                 return JsonResponse(vote.id, safe=False)
-        return HttpResponseBadRequest()
+            else:
+                return JsonResponse({"article_id": "article does not exist"}, status=400)
+        else:
+            return JsonResponse({"vote": "vote must be either -1, 0 or 1"}, status=400)
     else:
         return HttpResponseNotAllowed("Method not allowed")
 
@@ -75,7 +95,7 @@ def get_article(request, article_id):
     if request.method == "GET":
         article = Article.objects.filter(id=article_id).first()
         if article is not None:
-            return JsonResponse(article.serialize())
+            return JsonResponse(article.serialize(request.user))
         else:
             return HttpResponseNotFound()
     else:
@@ -84,29 +104,35 @@ def get_article(request, article_id):
 
 @require_login
 def post_article(request):
-    article_form = ArticlePublishingForm(request.POST)
-    try:
-        if article_form.is_valid():
-            article = article_form.save(commit=False)
-            tags = request.POST["tags"].split()
-            for tag in tags:
-                article_interest = ArticleInterest(interest=tag)
-                article_interest.article = article
-                article_interest.save()
-            article.user = request.user
-            article.save()
-            return JsonResponse(article.id, safe=False)
-        else:
-            return HttpResponseBadRequest()
-    except KeyError:
-        return HttpResponseBadRequest("Request badly formatted")
+    if request.method == "POST":
+        article_form = ArticlePublishingForm(request.POST)
+        try:
+            if article_form.is_valid():
+                article = article_form.save(commit=False)
+                article.user = request.user
+                article.save()
+                tags = request.POST["tags"].split()
+                for tag in tags:
+                    article_interest = ArticleInterest(interest=tag)
+                    article_interest.article = article
+                    article_interest.save()
+                return JsonResponse(article.id, safe=False)
+            else:
+                return JsonResponse(
+                    error_dict(article_form), status=400)
+        except KeyError as k:
+            return JsonResponse(
+                error_dict(article_form, {k.args[0]: "field missing in form"}), status=400)
+    else:
+        return HttpResponseNotAllowed()
 
 
 @require_login
 def comments_by_article(request, article_id):
     article = Article.objects.filter(id=article_id).first()
     if article is not None:
-        comments = list(map(lambda comment : comment.serialize(), Comment.objects.filter(article=article)))
+        comments = list(map(lambda comment: comment.serialize(), Comment.objects.filter(article=article)))
+        comments.sort(key=lambda x: x["date"], reverse=True)
         return JsonResponse(comments, safe=False)
     else:
         return HttpResponseNotFound()
@@ -125,7 +151,7 @@ def article_by_interests(request):
 
     user_interests = list(map(lambda interest: interest.interest, UserInterest.objects.filter(user=request.user)))
     articles = list(Article.objects.all())
-    articles.sort(key=lambda x: x.score, reverse=True)
+    articles.sort(key=lambda x: x.calc_score(), reverse=True)
     articles.sort(key=lambda x: match_count(user_interests, x), reverse=True)
-    final_list = list(map(lambda x: x.serialize(), articles))
+    final_list = list(map(lambda x: x.serialize(request.user), articles))
     return JsonResponse(final_list, safe=False)

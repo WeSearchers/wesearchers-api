@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import Request from '../../request';
 
-class ChangePassword extends Component {
+class ResetPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      old_password: '',
       new_password1: '',
       new_password2: '',
     }
@@ -17,13 +16,15 @@ class ChangePassword extends Component {
 
   handleSave = event => {
     event.preventDefault();
+    let guid = new URLSearchParams(window.location.search).get("guid");
       let fd = new FormData();
       for(let elem in this.state){
         fd.append(elem, this.state[elem]);
       }
-      Request.post("api/user/password", fd).then( response => {
+      fd.append("guid", guid);
+      Request.post("api/user/reset", fd).then( response => {
         if (response.status === 200)
-          window.location.assign(window.location.origin + "/user/profile");
+          window.location.assign(window.location.origin + "/login");
       })
   };
 
@@ -36,15 +37,6 @@ class ChangePassword extends Component {
             <div className="title">Create a new Password</div>
             {/* jmmonteiro criar nova password (ligação ao backend) */}
             <form onSubmit={this.handleSave}>
-              <div className="input-password">
-                <input
-                  onChange={this.handleChange}
-                  type="password"
-                  placeholder="Old password"
-                  name="old_password"
-                  required
-                />
-              </div>
               <div className="input-password">
                 <input
                   onChange={this.handleChange}
@@ -72,4 +64,4 @@ class ChangePassword extends Component {
   }
 }
 
-export default ChangePassword;
+export default ResetPassword;

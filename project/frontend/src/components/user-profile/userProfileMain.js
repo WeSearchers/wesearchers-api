@@ -22,7 +22,8 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-    Request.get('api/user/profile/0', {}).then(response => {
+    let id = new URLSearchParams(window.location.search).get("id");
+    Request.get('api/user/profile/' + (id === undefined || id === null ? 0 : id), {}).then(response => {
       response.json().then(data => {
         //console.log(data)
         this.setState(

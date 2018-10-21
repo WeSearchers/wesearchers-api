@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.forms import ModelForm, forms, EmailField
+from django.forms import ModelForm, forms, EmailField, ImageField
 from django.core.files.images import get_image_dimensions
 
 from .models import Profile
@@ -59,9 +59,18 @@ class ProfileForm(ModelForm):
     def clean_image(self):
         image = self.cleaned_data.get("image")
         w, h = get_image_dimensions(image)
-        if w > 500 or h > 500:
+        """if w > 1000 or h > 1000:
             raise forms.ValidationError(
                 self.error_messages['image_too_large'],
                 code='image_too_large',
-            )
+            )"""
         return image
+
+
+class ProfileUpdateForm(ProfileForm):
+
+    image = ImageField(required=False)
+
+    class Meta:
+        model = Profile
+        fields = ["orcid", "bio", "image"]
