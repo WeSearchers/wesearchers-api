@@ -1,0 +1,100 @@
+.resources-main {
+  padding-top: 40px;
+}
+
+.resources-main .title {
+  display: flex;
+  align-items: center;
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
+.resources-main .title a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+  background: orange;
+  color: #fafafa;
+  border-radius: 50%;
+  margin-left: 40px;
+}
+
+/* Section-card*/
+.resources-main .section-card {
+  padding: 30px;
+  margin-bottom: 40px;
+}
+.resources-main .section-card .title {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.resources-main .title > a {
+  color: #fafafa !important;
+}
+
+.resources-main .section-card .delete {
+  margin-top: -15px;
+  font-size: 15px;
+  float: right;
+}
+
+.resources-main .interests {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 40px;
+  float: right;
+}
+
+.resources-main .interests .add {
+  border: 1px solid #999;
+  color: #000;
+  font-weight: bold;
+}
+
+.resources-main .multi-choice-area {
+  margin-right: 0;
+}
+
+/*end*/
+
+/* Popup */
+
+.resources-popup-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 2;
+  padding-top: 20vh;
+}
+
+.resources-popup-container .section-card:first-child {
+  margin: 0;
+}
+
+.resources-popup {
+  display: flex;
+  flex-direction: column;
+  height: 330px;
+}
+
+.resources-popup input {
+  margin-bottom: 20px;
+}
+.resources-popup button {
+  align-self: flex-end;
+  margin-bottom: 0;
+}
+
+.resources-popup .close {
+  margin-bottom: 15px;
+  text-align: right;
+}

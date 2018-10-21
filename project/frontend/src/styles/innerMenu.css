@@ -1,0 +1,64 @@
+.inner-menu-main .side-menu ul {
+  height: calc(100vh - 60px);
+  background: #e7e7e7;
+  padding-bottom: 20px;
+}
+.inner-menu-main .side-menu ul h5 {
+  padding: 10px 0;
+  padding-left: 10px;
+  background: #999;
+  color: #fafafa;
+  margin: 0;
+}
+.inner-menu-main .side-menu ul > a > li {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  border-bottom: 1px solid #999;
+  border-left: 5px solid #e7e7e7;
+  padding-left: 15px;
+  padding-right: 20px;
+  transition: 0.05s;
+  margin-bottom: 0;
+}
+.inner-menu-main .side-menu ul > a > li:nth-child(2) {
+  border-top: 1px solid #999;
+}
+.inner-menu-main .side-menu ul > a > li:hover {
+  border-color: #999;
+  background: #fafafa;
+  cursor: pointer;
+}
+
+/*on click sideMenu item*/
+.inner-menu-main .side-menu ul > a > li.clicked-side-menu-item {
+  border-color: #999;
+  background: #fafafa;
+}
+
+/*end*/
+
+/**/
+
+.inner-menu-main .side-menu {
+  background: #f1f1f1;
+  padding-left: 0;
+}
+
+.inner-menu-main .actions {
+  background: #f1f1f1;
+  padding-top: 44px;
+}
+
+/*change password*/
+
+.form-change-password .input-password {
+  margin-bottom: 15px;
+  width: 70%;
+}
+
+.form-change-password .input-password input {
+  border-radius: 5px;
+  padding: 10px 10px;
+  width: 100%;
+}
