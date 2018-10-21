@@ -13,7 +13,6 @@ from .decorators import require_login
 from .forms import ProfileForm, UserCreationForm, UserUpdateForm, ProfileUpdateForm
 from .models import *
 import sys
-<<<<<<< HEAD
 
 
 def error_dict(*args):
@@ -28,8 +27,6 @@ def error_dict(*args):
             else:
                 final = {**final, **item}
     return final
-=======
->>>>>>> feed-bk
 
 
 # Create your views here.
