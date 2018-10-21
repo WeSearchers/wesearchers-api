@@ -1,4 +1,4 @@
-import datetime
+import tweepy
 from django.shortcuts import render
 from django.http import *
 
@@ -155,3 +155,21 @@ def article_by_interests(request):
     articles.sort(key=lambda x: match_count(user_interests, x), reverse=True)
     final_list = list(map(lambda x: x.serialize(request.user), articles))
     return JsonResponse(final_list, safe=False)
+
+@require_login
+def get_tweets(request):
+    if request.method == "GET":
+        consumer_token = "XnyRqdYFGxJWDrqPw6FvlozVT"
+        consumer_secret = "MlEGXgLHSo1doQFI71MFOrYE9CPoVx2ModEqzsMD8nOAcI6ygo"
+        max_tweets = 30
+
+        auth = tweepy.OAuthHandler(consumer_token, consumer_secret)
+        api = tweepy.API(auth, parser=tweepy.parsers.JSONParser())
+        tweet_list = []
+        for interest in UserInterest.objects.filter(user=request.user):
+            for tweet in tweepy.Cursor(api.search, q=interest).items(max_tweets):
+                json.dumps(tweet)
+                tweet_list.append(tweet)
+        return JsonResponse(tweet_list, safe=False)
+    else:
+        return HttpResponseNotAllowed("Method not allowed")
