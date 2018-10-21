@@ -16,13 +16,13 @@ class EditUserProfileForm extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     Request.get('api/user/profile/0').then(response => {
       response.json().then(data => {
         let interestStr = "";
         data.image_data = "data:image/jpeg;base64, " + data.image_data;
         data.interests.forEach(interest => {
-            interestStr += interest + " "
+          interestStr += interest + " "
         });
         data.interests = interestStr;
         //console.log(data)
@@ -36,10 +36,10 @@ class EditUserProfileForm extends Component {
   handleChange = event => {
     if (event.target.type === 'file') {
       let file = event.target.files[0];
-      let reader  = new FileReader();
+      let reader = new FileReader();
 
       reader.onload = e => {
-        this.setState({image_data: reader.result})
+        this.setState({ image_data: reader.result })
       };
       reader.readAsDataURL(file);
 
@@ -62,15 +62,15 @@ class EditUserProfileForm extends Component {
     let data = new FormData();
 
     for (let elem in this.state) {
-      if(elem !== "image_data") {
-          if (elem === "image") {
-              if (this.state[elem] !== null)
-                  data.append(elem, this.state[elem]);
-          }
-          else if (this.state[elem].filename !== undefined)
-              data.append(elem, this.state[elem], this.state[elem].filename);
-          else
-              data.append(elem, this.state[elem]);
+      if (elem !== "image_data") {
+        if (elem === "image") {
+          if (this.state[elem] !== null)
+            data.append(elem, this.state[elem]);
+        }
+        else if (this.state[elem].filename !== undefined)
+          data.append(elem, this.state[elem], this.state[elem].filename);
+        else
+          data.append(elem, this.state[elem]);
       }
     }
 
@@ -89,66 +89,53 @@ class EditUserProfileForm extends Component {
       <div className="edit-user-profile section-card">
         <h3>Edit Profile</h3>
         <a href="/user/profile" className="fa fa-times" />
-        <div className="d-flex flex-column justify-content-start align-content-start" >
-          <div className="background-image-profile ml-2" style={{"clip-path": "circle(50% at center)"}}>
-            {this.state.image_data !== null ?
-              <img src={this.state.image_data} width={"100%"}/> : null
-            }
-          </div>
-          <input onChange={this.handleChange} type='file' name="image" accept="image/*" />
+        <label>First Name</label>
+        <input type="text" placeholder="..." />
+        <div className="wrongpass">
+          <p>Not a valide answer.</p>
         </div>
-        <div>
-            <div>
-                <label>First Name</label>
-            </div>
-            <input
-            type="text"
-            name="first_name"
-            onChange={this.handleChange}
-            value={this.state.first_name}
-            />
+        <label>Last Name</label>
+        <input type="text" placeholder="..." />
+        <div className="wrongpass">
+          <p>Not a valide answer.</p>
         </div>
-        <div>
-            <label>Last Name</label>
+        <label>ORCID</label>
+        <input type="text" placeholder="..." />
+        <div className="wrongpass">
+          <p>Please make sure your orcid has 16 numbers.</p>
         </div>
-        <input
-            type="text"
-            name="last_name"
-            onChange={this.handleChange}
-            value={this.state.last_name}
-        />
-        <div>
-            <label>ORCID</label>
+        <label>Affiliation</label>
+        <input type="text" placeholder="..." />
+        <div className="wrongpass">
+          <p>Not a valide answer.</p>
         </div>
-        <input
-            type="text"
-            name="orcid"
-            onChange={this.handleChange}
-            value={this.state.orcid}
-        />
-        <div>
-            <label>Biography</label>
+        <label>Research unit</label>
+        <input type="text" placeholder="..." />
+        <div className="wrongpass">
+          <p>Not a valide answer.</p>
         </div>
-        <textarea
-            placeholder="..."
-            name="bio"
-            onChange={this.handleChange}
-            value={this.state.bio}
-        />
-        <div>
-            <label>Interests</label>
+        <label>Email</label>
+        <input type="text" placeholder="..." />
+        <div className="wrongpass">
+          <p>Not a valide answer.</p>
         </div>
-        <input
-            type="text"
-            name="interests"
-            onChange={this.handleChange}
-            value={this.state.interests}
-        />
-        <div>
-        <button onClick={this.handleSubmit}>
+        <label>Skype</label>
+        <input type="text" placeholder="..." />
+        <div className="wrongpass">
+          <p>Not a valide answer.</p>
+        </div>
+        <label>Biography</label>
+        <textarea placeholder="..." />
+        <label>Interests</label>
+        <input type="text" />
+        <div className="wrongpass">
+          <p>Not a valide answer.</p>
+        </div>
+        <label>language</label>
+        <input type="text" placeholder="..." />
+        <button type="submit" value="">
           save changes
         </button>
-        </div>
       </div>
     );
   }
