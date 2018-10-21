@@ -56,6 +56,25 @@ class UserFollow(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following_user")
     followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followed")
 
+class ResourceForm(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    text = models.TextField()
+    url = models.URLField(blank=True)
+
+    def serialize(self,user):
+        u = self.user
+        r = self
+        return {
+            "id": r.id,
+            "user_id": u.id,
+            "title": r.title,
+            "url": r.url,
+            "interests": list(map(lambda r: r.interest, ResourceInterest.objects.filter(resource=self)))
+        }
+
+class ResourceInterest(models.Model):
+    resource = models.ForeignKey(Resource,on_delete=models.CASCADE, related_name="interests")
+    interest = models.CharField(max_length=50)
 
 """
 class UserMentor(models.Model):
