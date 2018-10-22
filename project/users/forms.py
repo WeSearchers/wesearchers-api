@@ -40,7 +40,7 @@ class ProfileForm(ModelForm):
 
     def clean_orcid(self):
         orcid = self.cleaned_data.get("orcid")
-        if not orcid.isnumeric() or len(orcid) > 16:
+        if not orcid.isnumeric() or len(orcid) != 16:
             raise forms.ValidationError(
                 self.error_messages['orcid_format'],
                 code='orcid_format',

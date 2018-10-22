@@ -13,7 +13,7 @@ class EditUserProfileForm extends Component {
       image_data: null,
       interests: "",
       institution: "",
-      errors = {}
+      errors: {}
     };
   }
 

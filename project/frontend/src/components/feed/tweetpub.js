@@ -14,7 +14,7 @@ import Request from "../../request";
 import save from '../../images/icon.png';
 import trash from '../../images/waste-bin.png';
 
-class Pub1 extends React.Component {
+class TweetPub extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -91,10 +91,10 @@ class Pub1 extends React.Component {
               }
           </div>
           <div className=" mt-4 ml-4  d-flex flex-column justify-content-center">
-            <a href={"user/profile?id=" + this.props.data.user_id} className="font-weight-bold mb-0">
-              {this.state.userData !== null ?
-                  this.state.userData.first_name + " " + this.state.userData.last_name : "Name Surname"}
-            </a>
+            <p className="font-weight-bold mb-0">
+              {this.props.data !== null && this.props.data !== undefined ?
+                  this.props.data.name : "Name Surname"}
+            </p>
             { /*Ze monteiro colocar nome a partir do fetch*/}
             <p className="font-weight-light mb-0">{/*Date and hour*/}{this.props.data !== undefined && this.props.data !== null ? this.props.data.date : "yyyy/mm/dd"}</p>
           </div>
@@ -198,4 +198,4 @@ class Pub1 extends React.Component {
   }
 }
 
-export default Pub1;
+export default TweetPub;
