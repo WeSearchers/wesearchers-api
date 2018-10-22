@@ -1,3 +1,5 @@
+import json
+
 import tweepy
 from django.shortcuts import render
 from django.http import *
@@ -156,6 +158,7 @@ def article_by_interests(request):
     final_list = list(map(lambda x: x.serialize(request.user), articles))
     return JsonResponse(final_list, safe=False)
 
+
 @require_login
 def get_tweets(request):
     if request.method == "GET":
@@ -164,12 +167,22 @@ def get_tweets(request):
         max_tweets = 30
 
         auth = tweepy.OAuthHandler(consumer_token, consumer_secret)
-        api = tweepy.API(auth, parser=tweepy.parsers.JSONParser())
+        api = tweepy.API(auth)
         tweet_list = []
         for interest in UserInterest.objects.filter(user=request.user):
-            for tweet in tweepy.Cursor(api.search, q=interest).items(max_tweets):
-                json.dumps(tweet)
-                tweet_list.append(tweet)
+            for tweet in tweepy.Cursor(api.search, q=interest.interest).items(max_tweets):
+                tweet_dict = {
+                    "url": "https://twitter.com/" + tweet.user.screen_name + "/status/" + str(tweet.id),
+                    "name": tweet.user.name,
+                    "text": tweet.text,
+                    "date": tweet.created_at,
+                    "profile_pic_url": tweet.user.profile_image_url,
+                    "fav_count": tweet.favorite_count,
+                    "ret_count": tweet.retweet_count
+                }
+                if len(tweet.entities.get('media', [])) > 0:
+                    tweet_dict["media_url"] = tweet.entities.get('media', [])[0]["media_url"]
+                tweet_list.append(tweet_dict)
         return JsonResponse(tweet_list, safe=False)
     else:
         return HttpResponseNotAllowed("Method not allowed")
