@@ -255,9 +255,9 @@ def resource_add(request):
                 tags = request.POST["tags"].split()
                 for tag in tags:
                     resource_interest = ResourceInterest(interest=tag)
-                    resource_interest.resoure = resource
+                    resource_interest.resource = resource
                     resource_interest.save()
-                return JsonResponse(resoure.id,safe=False)
+                return JsonResponse(resource.id,safe=False)
             else:
                 return JsonResponse(error_dict(resource_form), status=400)
         except KeyError as k:
