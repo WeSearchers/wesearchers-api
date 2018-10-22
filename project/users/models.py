@@ -1,4 +1,5 @@
 import base64
+from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -56,12 +57,16 @@ class UserFollow(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following_user")
     followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followed")
 
-class ResourceForm(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+
+class Resource(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50)
     text = models.TextField()
     url = models.URLField(blank=True)
+    date = models.DateTimeField(default=datetime.now)
 
-    def serialize(self,user):
+    def serialize(self):
         u = self.user
         r = self
         return {
@@ -69,12 +74,14 @@ class ResourceForm(models.Model):
             "user_id": u.id,
             "title": r.title,
             "url": r.url,
-            "interests": list(map(lambda r: r.interest, ResourceInterest.objects.filter(resource=self)))
+            "interests": list(map(lambda ri: ri.interest, ResourceInterest.objects.filter(resource=self)))
         }
 
+
 class ResourceInterest(models.Model):
-    resource = models.ForeignKey(Resource,on_delete=models.CASCADE, related_name="interests")
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE, related_name="interests")
     interest = models.CharField(max_length=50)
+
 
 """
 class UserMentor(models.Model):

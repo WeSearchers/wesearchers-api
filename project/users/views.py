@@ -142,6 +142,7 @@ def send_reset_password_email(request):
     else:
         return HttpResponseNotFound()
 
+
 def reset_password(request):
     try:
         profile = Profile.objects.filter(email_guid=request.POST["guid"]).first()
@@ -244,58 +245,52 @@ def get_collaborators(request):
     return HttpResponse()
 """
 
-@require_login
-def resource_add(request):
-    if(request.method == "POST"):
-        resource_form = ResourceForm(request.POST)
-        try:
-            if resource_form.is_valid():
-                resource = resource_form.save(commit=False)
-                resource.user = request.user
-                resource.save()
-                tags = request.POST["tags"].split()
-                for tag in tags:
-                    resource_interest = ResourceInterest(interest=tag)
-                    resource_interest.resource = resource
-                    resource_interest.save()
-                return JsonResponse(resource.id,safe=False)
-            else:
-                return JsonResponse(error_dict(resource_form), status=400)
-        except KeyError as k:
-            return JsonResponse(error_dict(resource_form, {k.args[0]: "field missing in form"}),status = 400)
-    else:
-        return HttpResponseNotAllowed()
-
 
 @require_login
-def get_resource(request,resource_id)
-    if request.method = "GET":
-        resource = Resource.objects.filter(id=resource_id).first()
-        if resource is not None:
-            return JsonResponse(resource.serialize(request.user))
+def add_resource(request):
+    resource_form = ResourceForm(request.POST)
+    try:
+        if resource_form.is_valid():
+            resource = resource_form.save(commit=False)
+            resource.user = request.user
+            resource.save()
+            tags = request.POST["tags"].split()
+            for tag in tags:
+                resource_interest = ResourceInterest(interest=tag)
+                resource_interest.resource = resource
+                resource_interest.save()
+            return JsonResponse(resource.id, safe=False)
         else:
-            return HttpResponseNotFound()
+            return JsonResponse(error_dict(resource_form), status=400)
+    except KeyError as k:
+        return JsonResponse(error_dict(resource_form, {k.args[0]: "field missing in form"}), status=400)
+
+
+def get_resources(request):
+    resources = list(map(lambda r: r.resource, ResourceInterest.objects.all()))
+    resources.sort(key=lambda x: x.date, reverse=True)
+    final_list = list(map(lambda x: x.serialize(), resources))
+    return JsonResponse(final_list, safe=False)
+
+
+@require_login
+def resource_view(request):
+    if request.method == "GET":
+        return get_resources(request)
+    elif request.method == "POST":
+        return add_resource(request)
     else:
         return HttpResponseNotAllowed()
 
 
-"""
 @require_login
-def resources_by_interest(request):
-    def intersection_len(l1, l2):
-        temp = set(l2)
-        l3 = [value for value in l1 if value in temp]
-        return len(l3)
-
-    def match_count(interest, resource):
-        resource_interests = list(map(lambda r: r.interest, ResourceInterest.objects.filter(resource=resource)))
-        return intersection_len(interest, resource_interests)
-
-    resources = list(Resource.objects.all())
-    articles.sort(key=lambda x: match_count(user_interests, x), reverse=True)
-    final_list = list(map(lambda x: x.serialize(request.user), articles))
+def resources_by_interest(request, tag):
+    resources = list(map(lambda r: r.resource, ResourceInterest.objects.filter(interest=tag)))
+    resources.sort(key=lambda x: x.date, reverse=True)
+    final_list = list(map(lambda x: x.serialize(), resources))
     return JsonResponse(final_list, safe=False)
-"""
+
+
 
 @require_login
 def follow_view(request):
