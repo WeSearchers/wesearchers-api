@@ -7,14 +7,15 @@ import Request from "../../request";
 import AddComent from "./addcoment";
 import Popup from "./popup";
 import TestFetch from "../textfetch";
+import TweetPub from "./tweetpub";
 
 class Feed extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userData: null,
-      articles: []
-    };
+      userData : null,
+      tweets: []
+    }
   }
 
   componentDidMount() {
@@ -25,23 +26,22 @@ class Feed extends Component {
         });
       });
     });
-    Request.get("api/feed/articlebyinterests").then(response => {
-      response.json().then(data => {
+    Request.get("api/feed/tweet").then( response => {
+      response.json().then( data => {
         this.setState({
-          articles: data
-        });
-      });
+          tweets: data,
+        })
+      })
     });
   }
 
   render() {
-    console.log(this.state.articles);
     return (
       <React.Fragment>
         <NavBar />
-        <Jumbotron userData={this.state.userData} />
-        {this.state.articles.map(article => (
-          <Pub1 data={article} />
+          {/*<Jumbotron userData={this.state.userData}/>*/}
+        {this.state.tweets.map( tweet => (
+          <TweetPub data={tweet}/>
         ))}
         {/*
         <Pub1 />
