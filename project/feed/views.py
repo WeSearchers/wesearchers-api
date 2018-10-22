@@ -164,7 +164,7 @@ def get_tweets(request):
     if request.method == "GET":
         consumer_token = "XnyRqdYFGxJWDrqPw6FvlozVT"
         consumer_secret = "MlEGXgLHSo1doQFI71MFOrYE9CPoVx2ModEqzsMD8nOAcI6ygo"
-        max_tweets = 20
+        max_tweets = 10
 
         auth = tweepy.OAuthHandler(consumer_token, consumer_secret)
         api = tweepy.API(auth)

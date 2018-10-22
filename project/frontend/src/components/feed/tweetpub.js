@@ -130,14 +130,8 @@ class TweetPub extends React.Component {
           }
         <div className="barra d-flex flex-row ml-4 mt-3">
           <div className="icons d-flex flex-row mb-4">
-            <img
-              className={"mr-2 ml-3 mt-1 opacity"}
-              src={uparrow}
-              width="18"
-              height="20"
-              id="upvote"
-            />
-            <p>{this.props.data !== undefined && this.props.data !== null ? this.props.data.fav_count : null}</p>
+            <p>favourites: {this.props.data !== undefined && this.props.data !== null ? this.props.data.fav_count : null}</p>
+            <p>retweets: {this.props.data !== undefined && this.props.data !== null ? this.props.data.ret_count : null}</p>
           </div>
           <div className=" d-flex flex-row justify-content-end hashtags mr-4">
             {this.props.data !== undefined && this.props.data !== null ? this.props.data.tags.map(tag => (
