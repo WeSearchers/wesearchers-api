@@ -247,6 +247,18 @@ def get_collaborators(request):
 
 
 @require_login
+def delete_resorce(request):
+    if request.method == "POST":
+        resource = Resources.objects.filter(id=request.POST["request_id"]).first()
+        if resource is not None:
+            resource.delete()
+            return HttpResponse()
+        else:
+            return HttpResponseNotFound()
+    else:
+        return HttpResponseNotAllowed()
+
+@require_login
 def add_resource(request):
     resource_form = ResourceForm(request.POST)
     try:
