@@ -9,7 +9,7 @@ class UserLogin extends Component {
     this.state = {
       username: '',
       password: '',
-
+      failed: false
     }
   }
 
@@ -47,7 +47,7 @@ class UserLogin extends Component {
           window.location.assign(window.location.origin + "/")
         }
         else {
-          //erro no login, do smth
+          this.setState({failed: true})
         }
       }
     );
@@ -77,9 +77,11 @@ class UserLogin extends Component {
                 type="password"
                 placeholder="Password"
               />
-              <div className="wrongpass">
-              <p>Please make sure you write the right password.</p>
-              </div>
+                {this.state.failed ? (
+                    <div className="wrongpass">
+                      <p>Unknown username/password combination</p>
+                    </div>
+                ) : null}
 
               <a href="/forgotpass" className="forgot-pass"> ? </a>
             </div>

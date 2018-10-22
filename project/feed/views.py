@@ -164,25 +164,34 @@ def get_tweets(request):
     if request.method == "GET":
         consumer_token = "XnyRqdYFGxJWDrqPw6FvlozVT"
         consumer_secret = "MlEGXgLHSo1doQFI71MFOrYE9CPoVx2ModEqzsMD8nOAcI6ygo"
-        max_tweets = 30
+        max_tweets = 20
 
         auth = tweepy.OAuthHandler(consumer_token, consumer_secret)
         api = tweepy.API(auth)
         tweet_list = []
         for interest in UserInterest.objects.filter(user=request.user):
-            for tweet in tweepy.Cursor(api.search, q=interest.interest).items(max_tweets):
+            for tweet in tweepy.Cursor(api.search, tweet_mode="extended", q=("%23" + interest.interest)).items(max_tweets):
+                if hasattr(tweet, 'retweeted_status'):
+                    tweet = tweet.retweeted_status
+                tags = list()
+                for tag in tweet.entities.get('hashtags'):
+                    tags.append(tag["text"])
                 tweet_dict = {
                     "url": "https://twitter.com/" + tweet.user.screen_name + "/status/" + str(tweet.id),
                     "name": tweet.user.name,
-                    "text": tweet.text,
+                    "text": tweet.full_text,
                     "date": tweet.created_at,
                     "profile_pic_url": tweet.user.profile_image_url,
                     "fav_count": tweet.favorite_count,
-                    "ret_count": tweet.retweet_count
+                    "ret_count": tweet.retweet_count,
+                    "tags": tags
                 }
+
                 if len(tweet.entities.get('media', [])) > 0:
                     tweet_dict["media_url"] = tweet.entities.get('media', [])[0]["media_url"]
                 tweet_list.append(tweet_dict)
+            tweet_list.sort(key=lambda t: t["fav_count"], reverse=True)
+            tweet_list = tweet_list[:30]
         return JsonResponse(tweet_list, safe=False)
     else:
         return HttpResponseNotAllowed("Method not allowed")

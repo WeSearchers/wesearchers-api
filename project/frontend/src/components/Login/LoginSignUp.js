@@ -18,7 +18,8 @@ class LoginSignUp extends Component {
       image: '',
       interests: '',
       institution: '',
-      image_data: null
+      image_data: null,
+      errors:{}
     }
   }
 
@@ -53,7 +54,7 @@ class LoginSignUp extends Component {
     let data = new FormData();
 
     for (let elem in this.state) {
-      if(elem !== "image_data") {
+      if(elem !== "image_data" && elem !== "errors") {
           if (this.state[elem].filename !== undefined)
               data.append(elem, this.state[elem], this.state[elem].filename);
           else
@@ -66,7 +67,9 @@ class LoginSignUp extends Component {
         window.location.assign(window.location.origin + "/register/success");
       }
       else {
-        console.log("nay")
+        response.json().then(errors => {
+          this.setState({errors: errors});
+        });
       }
     })
   };
@@ -90,6 +93,11 @@ class LoginSignUp extends Component {
               <div className="input-jumbotron upload-btn mr-5 ml-1">
               <input onChange={this.handlechange} id="f02" type='file' name="image" accept="image/*" placeholder="Upload"/>
               <label for="f02">Upload</label>
+                {this.state.errors.image !== undefined && this.state.errors.image !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.image}</p>
+                    </div>
+                    ) : null}
               </div>
 
             </div>
@@ -107,6 +115,11 @@ class LoginSignUp extends Component {
                   placeholder="Username"
                 />
               </div>
+              {this.state.errors.username !== undefined && this.state.errors.username !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.username}</p>
+                    </div>
+                    ) : null}
               <div className="orcid">
                 <input
                   type="text"
@@ -118,9 +131,11 @@ class LoginSignUp extends Component {
                   placeholder="Orcid ID"
                 />
               </div>
-              <div className="wrongpass">
-              <p>Please make sure your orcid has 16 numbers.</p>
-              </div>
+                {this.state.errors.orcid !== undefined && this.state.errors.orcid !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.orcid}</p>
+                    </div>
+                    ) : null}
             </div>
           </div>
 
@@ -136,6 +151,11 @@ class LoginSignUp extends Component {
                 placeholder="First Name"
               />
             </div>
+            {this.state.errors.first_name !== undefined && this.state.errors.first_name !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.first_name}</p>
+                    </div>
+                    ) : null}
           </div>
           <div className="d-flex flex-column justify-content-right mb-3" >
             <div className="last_name ">
@@ -149,6 +169,11 @@ class LoginSignUp extends Component {
                 placeholder="Last Name"
               />
             </div>
+            {this.state.errors.last_name !== undefined && this.state.errors.last_name !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.last_name}</p>
+                    </div>
+                    ) : null}
           </div>
           <div className="d-flex flex-column justify-content-right mb-3" >
             <div className="email ">
@@ -162,6 +187,11 @@ class LoginSignUp extends Component {
                 placeholder="Email"
               />
             </div>
+            {this.state.errors.email !== undefined && this.state.errors.email !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.email}</p>
+                    </div>
+                    ) : null}
           </div>
 
           <div className="d-flex flex-column justify-content-right mb-3" >
@@ -177,9 +207,11 @@ class LoginSignUp extends Component {
               />
 
             </div>
-            <div className="wrongpass">
-            <p>Please make sure you write the right password.</p>
-            </div>
+            {this.state.errors.password1 !== undefined && this.state.errors.password1 !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.password1}</p>
+                    </div>
+                    ) : null}
           </div>
           <div className="d-flex flex-column justify-content-right mb-3" >
             <div className="password ">
@@ -194,9 +226,11 @@ class LoginSignUp extends Component {
               />
 
             </div>
-            <div className="wrongpass">
-            <p>Please make sure you write the right password.</p>
-            </div>
+            {this.state.errors.password2 !== undefined && this.state.errors.password2 !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.password2}</p>
+                    </div>
+                    ) : null}
           </div>
           <div className="d-flex flex-column justify-content-right mb-3" >
             <div className="institution">
@@ -210,6 +244,11 @@ class LoginSignUp extends Component {
                 placeholder="Institution"
               />
             </div>
+            {this.state.errors.institution !== undefined && this.state.errors.institution !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.institution}</p>
+                    </div>
+                    ) : null}
           </div>
           <div className="d-flex flex-column justify-content-right mb-3" >
             <div className="bio">
@@ -224,6 +263,11 @@ class LoginSignUp extends Component {
                 placeholder="Bio/Description"
               />
             </div>
+            {this.state.errors.bio !== undefined && this.state.errors.bio !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.bio}</p>
+                    </div>
+                    ) : null}
           </div>
           <div className="d-flex flex-column justify-content-right " >
             <div className="hash">
@@ -236,9 +280,11 @@ class LoginSignUp extends Component {
                 placeholder="#Hashtags"
               />
             </div>
-            <div className="wrongpass">
-            <p>Please make sure you put at least 6 hashtags.</p>
-            </div>
+            {this.state.errors.interests !== undefined && this.state.errors.interests !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.interests}</p>
+                    </div>
+                    ) : null}
           </div>
           <div className="d-flex flex-column justify-content-right" >
             <button
