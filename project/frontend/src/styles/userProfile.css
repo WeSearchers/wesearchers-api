@@ -5,14 +5,14 @@
 }
 
 .user-profile .user-header .user-photo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
   border: 1px solid;
   height: 130px;
   width: 130px;
   border-radius: 50%;
-  background-image: url("../Media/user.jpg");
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
 }
 
 .user-header {
@@ -20,6 +20,10 @@
 }
 .user-header .user-photo {
   margin-right: 60px;
+}
+
+.user-header .user-info {
+  background: #efefef;
 }
 
 .user-info .user-name {
@@ -190,14 +194,14 @@
 }
 
 .network-user-info .photo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
   border: 1px solid;
   height: 65px;
   width: 65px;
   border-radius: 50%;
-  background-image: url("../Media/user.jpg");
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
   margin: 0 20px;
 }
 
@@ -262,14 +266,14 @@
 }
 
 .follower .photo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
   border: 1px solid;
   height: 50px;
   width: 50px;
   border-radius: 50%;
-  background-image: url("../Media/user.jpg");
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
   background-color: #333;
 }
 
@@ -296,14 +300,14 @@
 }
 
 .publication .photo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
   border: 1px solid;
   height: 80px;
   width: 80px;
   border-radius: 50%;
-  background-image: url("../Media/user.jpg");
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
   margin-right: 30px;
   margin-left: 10px;
   background-color: #333;
@@ -337,7 +341,7 @@
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 /*MARGINS & PADDINGS*/
