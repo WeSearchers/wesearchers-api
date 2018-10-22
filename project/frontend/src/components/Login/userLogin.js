@@ -9,6 +9,7 @@ class UserLogin extends Component {
     this.state = {
       username: '',
       password: '',
+      errorMessage: false,
 
     }
   }
@@ -44,14 +45,15 @@ class UserLogin extends Component {
         if (response.status === 200) {
           //Request.get('api/user/profile/0', {}).then(response => console.log(response))
           //login com sucesso, manda para a proxima página
-          window.location.assign(window.location.origin + "/")
+          this.setState( { errorMessage: false } );
+          window.location.assign(window.location.origin + "/");
         }
         else {
           //erro no login, do smth
+          this.setState( { errorMessage: true } );
         }
       }
     );
-
   }
 
 
@@ -78,7 +80,7 @@ class UserLogin extends Component {
                 placeholder="Password"
               />
               <div className="wrongpass">
-              <p>Please make sure you write the right password.</p>
+              <p hidden={!this.state.errorMessage}>Please make sure you write the right password.</p>
               </div>
 
               <a href="/forgotpass" className="forgot-pass"> ? </a>
