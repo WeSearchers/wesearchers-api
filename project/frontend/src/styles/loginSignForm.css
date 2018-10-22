@@ -89,6 +89,9 @@
 .login-page .change-password form button {
   margin: auto;
 }
+.wrongpass p{
+  color: red;
+}
 
 /*FORGOT PASSWORD*/
 

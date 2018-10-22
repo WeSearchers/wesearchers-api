@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Jumbotron from "../components/feed/jumbotron";
-import NavBar from "../components/feed/navbar";
+import NavBar from "../components/navbar/navBar";
 import Pub1 from "../components/feed/pub1";
 import Pub2 from "../components/feed/pub2";
 import AddComent from "../components/feed/addcoment";
@@ -12,7 +12,7 @@ class SignUp extends Component {
   render() {
     return (
       <React.Fragment>
-      <LoginSignUp/>
+        <LoginSignUp />
       </React.Fragment>
     );
   }

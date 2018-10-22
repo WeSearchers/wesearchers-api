@@ -12,6 +12,7 @@ from .validators import PasswordValidator
 from .decorators import require_login
 from .forms import ProfileForm, UserCreationForm, UserUpdateForm, ProfileUpdateForm, ResourceForm
 from .models import *
+import sys
 
 
 def error_dict(*args):

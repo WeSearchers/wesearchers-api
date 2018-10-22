@@ -1,29 +1,92 @@
+.allpage-signup{
+  background-image: url("../../images/fundo.png");
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.main-content-signup{
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  width: 40%;
+  background: rgba(0, 59, 105, 0.6);
+
+}
+
+.background-image-profile-signup {
+  background-image: url("../../images/Profilewhite-01.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 100px;
+  width: 100px;
+}
 .name p, .orcid p{
-  width: 220px;
+  width: 50%;
 }
-.button .upload-btn{
-  width: 10%;
-  height: 20%;
-  font-size: 10px;
-}
-.name p, .orcid p, .email p, .password p, .institution p, .bio p, .hash p{
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
+
+.username p, .orcid p, .email p, .password p, .institution p, .bio p, .hash p{
+box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
 }
 .bio p{
   height: 150px;
 }
-.name .form-control-coment , .orcid .form-control-coment, .email .form-control-coment,
+.username .form-control-coment , .orcid .form-control-coment,.first_name .form-control-coment,.last_name .form-control-coment,.email .form-control-coment,
 .password .form-control-coment, .institution .form-control-coment, .bio .form-control-coment, .hash .form-control-coment{
-height: 34px;
-font-size: 12px;
+height: 44px;
 }
 .email .form-control-coment,
-.password .form-control-coment, .institution .form-control-coment, .bio .form-control-coment, .hash .form-control-coment{
+.password .form-control-coment, .institution .form-control-coment, .bio .form-control-coment, .first_name .form-control-coment,.last_name .form-control-coment,.hash .form-control-coment{
   width: 100%;
 }
-.name .form-control-coment , .orcid .form-control-coment{
+.username .form-control-coment , .orcid .form-control-coment{
 width: 100%;
 }
 .bio .form-control-coment{
   height: 90px;
+}
+
+.input-jumbotron textarea{
+outline: none;
+}
+.input-jumbotron label, input {
+  color: #333;
+  font: 14px/20px Arial;
+}
+.input-jumbotron label {
+  display: inline-block;
+  text-align: right;
+}
+
+/* Hide the file input using
+opacity */
+.input-jumbotron [type=file] {
+    position: absolute;
+    filter: alpha(opacity=0);
+    opacity: 0;
+}
+.input-jumbotron input,
+[type=file] + label {
+  border: 1px solid #CCC;
+  border-radius: 3px;
+  text-align: left;
+  padding: 5px;
+  width: 144px;
+  margin: 0;
+  left: 0;
+  position: relative;
+}
+.input-jumbotron [type=file] + label {
+  text-align: center;  border-radius: 12.5px;
+  top: 0.5em;
+  /* Decorative */
+  background: #FFC95E;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+.input-jumbotron [type=file] + label:hover {
+  background: #6c757d;
+}
+.btn-create-account{
+    background: #FFC95E;
 }
