@@ -11,6 +11,8 @@ import linkedin from "../../images/linkedin-logo-button.png";
 import twitter from "../../images/twitter-logo-button.png";
 import AddComent from "./addcoment";
 import Request from "../../request";
+import save from '../../images/icon.png';
+import trash from '../../images/waste-bin.png';
 
 class Pub1 extends React.Component {
   constructor(props) {
@@ -78,14 +80,23 @@ class Pub1 extends React.Component {
     const { isLoading, contacts } = this.state;
     return (
       <div className="pub1 m-5 bg-grey d-flex flex-column mr-auto ml-auto ">
-        <div className=" d-flex flex-row align-content-baseline">
+      <div className="icons d-flex flex-row justify-content-end mr-4">
+      <img  className="mt-3"src={save} width="14" height="14" />
+      <img  className="mt-3 ml-3"src={trash} width="14" height="16" />
+      </div>
+        <div className=" d-flex flex-row align-content-baseline mb-4">
           <div className="background-image-profile ml-3 mt-3" >
               {this.state.userData !== null ?
                 <img src={"data:image/jpeg;base64, " + this.state.userData.image_data} width={"100%"} style={{"clip-path": "circle(50% at center)"}}/> : null
               }
           </div>
+<<<<<<< HEAD
           <div className=" mt-4 ml-4  d-flex flex-column justify-content-center">
             <a href={"user/profile?id=" + this.props.data.user_id} className="font-weight-bold mb-0">
+=======
+          <div className=" mt-4 ml-4 d-flex flex-column justify-content-center">
+            <p className="font-weight-bold mb-0">
+>>>>>>> feed-bk
               {this.state.userData !== null ?
                   this.state.userData.first_name + " " + this.state.userData.last_name : "Name Surname"}
             </a>
@@ -124,10 +135,10 @@ class Pub1 extends React.Component {
         <div className="barra d-flex flex-row ml-4 mt-3">
           <div className="icons d-flex flex-row mb-4">
             <img
-              className={"mr-1 ml-3 mt-1" + (this.state.vote === 1 ? "" : " opacity")}
+              className={"mr-2 ml-3 mt-1" + (this.state.vote === 1 ? "" : " opacity")}
               src={uparrow}
               width="18"
-              height="18"
+              height="20"
               id="upvote"
               onClick={this.vote}
             />
@@ -136,13 +147,13 @@ class Pub1 extends React.Component {
               className={"ml-2 mt-2" + (this.state.vote === -1 ? "" : " opacity")}
               src={downarrow}
               width="18"
-              height="18"
+              height="20"
               id="downvote"
               onClick={this.vote}
             />
 
-            <button className="img-btn " onClick={this.togglemodal2}>
-              <img className="opacity" src={share} width="14" height="14" />
+            <button className="img-btn ml-3" onClick={this.togglemodal2}>
+              <img  src={share} width="20" height="22" />
               {this.props.buttonLabel}
             </button>
             <Modal
@@ -159,7 +170,7 @@ class Pub1 extends React.Component {
             </Modal>
 
             <button className="img-btn" onClick={this.togglemodal1}>
-              <img className="opacity" src={balloon} width="14" height="14" />
+              <img  src={balloon} width="20" height="16" />
               {this.props.buttonLabel}
             </button>
             <Modal
@@ -182,7 +193,7 @@ class Pub1 extends React.Component {
               </p>
             )) : null
             }
-            <p className="bg-secondary text-white  text-center align-middles mr-1 second  m-2">
+            <p className="bg-blue text-white  text-center align-middles mr-1 second  m-2">
               ...
             </p>
           </div>

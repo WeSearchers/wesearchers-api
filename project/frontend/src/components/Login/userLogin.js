@@ -77,6 +77,9 @@ class UserLogin extends Component {
                 type="password"
                 placeholder="Password"
               />
+              <div className="wrongpass">
+              <p>Please make sure you write the right password.</p>
+              </div>
 
               <a href="/forgotpass" className="forgot-pass"> ? </a>
             </div>

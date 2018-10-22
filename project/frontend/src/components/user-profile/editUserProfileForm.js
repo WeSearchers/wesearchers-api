@@ -13,6 +13,7 @@ class EditUserProfileForm extends Component {
       image_data: null,
       interests: "",
       institution: "",
+      errors = {}
     };
   }
 
@@ -62,7 +63,7 @@ class EditUserProfileForm extends Component {
     let data = new FormData();
 
     for (let elem in this.state) {
-      if(elem !== "image_data") {
+      if(elem !== "image_data" && elem !== "errors") {
           if (elem === "image") {
               if (this.state[elem] !== null)
                   data.append(elem, this.state[elem]);
@@ -79,7 +80,9 @@ class EditUserProfileForm extends Component {
         window.location.assign(window.location.origin + "/user/profile");
       }
       else {
-        console.log("nay")
+        response.json().then(errors => {
+          this.setState({errors : errors})
+        })
       }
     })
   };
@@ -96,6 +99,12 @@ class EditUserProfileForm extends Component {
             }
           </div>
           <input onChange={this.handleChange} type='file' name="image" accept="image/*" />
+          {this.state.errors.image !== undefined ? (
+            <div className="wrongpass">
+              <p>{this.state.errors.image}</p>
+            </div>
+            ) : null
+          }
         </div>
         <div>
             <div>
@@ -107,6 +116,12 @@ class EditUserProfileForm extends Component {
             onChange={this.handleChange}
             value={this.state.first_name}
             />
+            {this.state.errors.first_name !== undefined ? (
+            <div className="wrongpass">
+              <p>{this.state.errors.first_name}</p>
+            </div>
+            ) : null
+            }
         </div>
         <div>
             <label>Last Name</label>
@@ -117,6 +132,12 @@ class EditUserProfileForm extends Component {
             onChange={this.handleChange}
             value={this.state.last_name}
         />
+        {this.state.errors.last_name !== undefined ? (
+            <div className="wrongpass">
+              <p>{this.state.errors.last_name}</p>
+            </div>
+            ) : null
+        }
         <div>
             <label>ORCID</label>
         </div>
@@ -126,6 +147,12 @@ class EditUserProfileForm extends Component {
             onChange={this.handleChange}
             value={this.state.orcid}
         />
+        {this.state.errors.orcid !== undefined ? (
+            <div className="wrongpass">
+              <p>{this.state.errors.orcid}</p>
+            </div>
+            ) : null
+        }
         <div>
             <label>Biography</label>
         </div>
@@ -135,6 +162,12 @@ class EditUserProfileForm extends Component {
             onChange={this.handleChange}
             value={this.state.bio}
         />
+        {this.state.errors.bio !== undefined ? (
+            <div className="wrongpass">
+              <p>{this.state.errors.bio}</p>
+            </div>
+            ) : null
+        }
         <div>
             <label>Interests</label>
         </div>
@@ -144,6 +177,12 @@ class EditUserProfileForm extends Component {
             onChange={this.handleChange}
             value={this.state.interests}
         />
+        {this.state.errors.interests !== undefined ? (
+            <div className="wrongpass">
+              <p>{this.state.errors.interests}</p>
+            </div>
+            ) : null
+        }
         <div>
         <button onClick={this.handleSubmit}>
           save changes
