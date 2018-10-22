@@ -18,17 +18,20 @@ class LoginSignUp extends Component {
       image: '',
       interests: '',
       institution: '',
-      image_data: null
+      image_data: null,
+
+      orcidFocus: false,
+      pwFocus: false,
     }
   }
 
   handlechange = event => {
     if (event.target.type === 'file') {
       let file = event.target.files[0];
-      let reader  = new FileReader();
+      let reader = new FileReader();
 
       reader.onload = e => {
-        this.setState({image_data: reader.result})
+        this.setState({ image_data: reader.result })
       };
       reader.readAsDataURL(file);
 
@@ -53,11 +56,11 @@ class LoginSignUp extends Component {
     let data = new FormData();
 
     for (let elem in this.state) {
-      if(elem !== "image_data") {
-          if (this.state[elem].filename !== undefined)
-              data.append(elem, this.state[elem], this.state[elem].filename);
-          else
-              data.append(elem, this.state[elem]);
+      if (elem !== "image_data") {
+        if (this.state[elem].filename !== undefined)
+          data.append(elem, this.state[elem], this.state[elem].filename);
+        else
+          data.append(elem, this.state[elem]);
       }
     }
 
@@ -71,6 +74,18 @@ class LoginSignUp extends Component {
     })
   };
 
+  handleOrcidFocus = (value) => {
+    this.setState({ orcidFocus: value });
+  }
+
+  handlePwFocus = (value) => {
+    this.setState( { pwFocus: value } );
+  }
+  
+  handleInterestsFocus = (value) => {
+    this.setState( { interestFocus: value } );
+  }
+
   render() {
     return (
       <div className=" d-flex flex-row justify-content-center allpage-signup" >
@@ -82,14 +97,14 @@ class LoginSignUp extends Component {
 
           <div className="d-flex flex-row mt-5" >
             <div className="d-flex flex-column justify-content-start align-content-start ml-2" >
-              <div className="background-image-profile-signup ml-4 mb-2" style={{"clip-path": "circle(50% at center)"}}>
+              <div className="background-image-profile-signup ml-4 mb-2" style={{ "clip-path": "circle(50% at center)" }}>
                 {this.state.image_data !== null ?
-                  <img src={this.state.image_data} width={"100%"}/> : null
+                  <img src={this.state.image_data} width={"100%"} /> : null
                 }
               </div>
               <div className="input-jumbotron upload-btn mr-5 ml-1">
-              <input onChange={this.handlechange} id="f02" type='file' name="image" accept="image/*" placeholder="Upload"/>
-              <label for="f02">Upload</label>
+                <input onChange={this.handlechange} id="f02" type='file' name="image" accept="image/*" placeholder="Upload" />
+                <label for="f02">Upload</label>
               </div>
 
             </div>
@@ -100,8 +115,7 @@ class LoginSignUp extends Component {
                   type="text"
                   name='username'
                   value={this.state.username}
-                  onChange={this.handlechange
-                  }
+                  onChange={this.handlechange}
                   className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                   id="id"
                   placeholder="Username"
@@ -116,10 +130,12 @@ class LoginSignUp extends Component {
                   className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                   id="id"
                   placeholder="Orcid ID"
+                  onFocus={() => this.handleOrcidFocus(true)}
+                  onBlur={() => this.handleOrcidFocus(false)}
                 />
               </div>
               <div className="wrongpass">
-              <p>Please make sure your orcid has 16 numbers.</p>
+                <p hidden={this.state.orcid === '' || this.state.orcid.length === 16 || this.state.orcidFocus}>Please make sure your orcid has 16 numbers. It has {this.state.orcid.length} numbers</p>
               </div>
             </div>
           </div>
@@ -174,11 +190,13 @@ class LoginSignUp extends Component {
                 className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                 id="id"
                 placeholder="Password"
+                onFocus={() => this.handlePwFocus(true)}
+                onBlur={() => this.handlePwFocus(false)}
               />
 
             </div>
             <div className="wrongpass">
-            <p>Please make sure you write the right password.</p>
+              {/*<p>Please make sure you write the right password.</p>*/}
             </div>
           </div>
           <div className="d-flex flex-column justify-content-right mb-3" >
@@ -191,11 +209,13 @@ class LoginSignUp extends Component {
                 className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                 id="id"
                 placeholder="Confirm password"
+                onFocus={() => this.handlePwFocus(true)}
+                onBlur={() => this.handlePwFocus(false)}
               />
 
             </div>
             <div className="wrongpass">
-            <p>Please make sure you write the right password.</p>
+              <p hidden={this.state.password1 === '' || this.state.password1 === '' || this.state.password1 === this.state.password2 || this.state.pwFocus}>Please make sure you write the right password.</p>
             </div>
           </div>
           <div className="d-flex flex-column justify-content-right mb-3" >
@@ -234,10 +254,12 @@ class LoginSignUp extends Component {
                 className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                 id="id"
                 placeholder="#Hashtags"
+                onFocus={() => this.handleInterestsFocus(true)}
+                onBlur={() => this.handleInterestsFocus(false)}
               />
             </div>
             <div className="wrongpass">
-            <p>Please make sure you put at least 6 hashtags.</p>
+              <p hidden={this.state.interestFocus || this.state.interests === '' || this.state.interests.split(" ").length === 6}>Please make sure you put at least 6 hashtags.</p>
             </div>
           </div>
           <div className="d-flex flex-column justify-content-right" >
