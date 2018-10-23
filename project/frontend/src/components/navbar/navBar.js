@@ -25,6 +25,9 @@ class NavBar extends Component {
       case "settings":
         window.location.assign(window.location.origin + "/user/settings");
         break;
+      case "resources":
+        window.location.assign(window.location.origin + "/user/resources");
+        break;
     }
   }
 
@@ -40,8 +43,8 @@ class NavBar extends Component {
         <div className="container nav-bar-container">
           <ul className="menu">
             <li className="logo-nav" id="home" onClick={NavBar.clickButton} />
-            <li id="" onClick={NavBar.clickButton}>
-              <i className="fa fa-window-maximize" />
+            <li id="resources" onClick={NavBar.clickButton}>
+              <i className="fa fa-floppy-o" />
             </li>
             <li id="profile" onClick={NavBar.clickButton}>
               <i className="fa fa-user" />

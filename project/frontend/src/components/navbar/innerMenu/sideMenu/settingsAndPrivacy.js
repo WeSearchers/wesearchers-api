@@ -9,7 +9,7 @@ class SettingsAndPrivacy extends Component {
         <a onClick={() => this.props.onShowSubMenu("changepassword")}>
           <li
             className={
-              this.props.subMenu == "changepassword"
+              this.props.subMenu === "changepassword"
                 ? "clicked-side-menu-item"
                 : ""
             }
