@@ -87,7 +87,7 @@ class Pub1 extends React.Component {
         <div className=" d-flex flex-row align-content-baseline mb-4">
           <div className="background-image-profile ml-3 mt-3" >
               {this.state.userData !== null ?
-                <img src={"data:image/jpeg;base64, " + this.state.userData.image_data} width={"100%"} style={{"clip-path": "circle(50% at center)"}}/> : null
+                <img className="circle" src={"data:image/jpeg;base64, " + this.state.userData.image_data} width={"100%"} style={{}}/> : null
               }
           </div>
           <div className=" mt-4 ml-4  d-flex flex-column justify-content-center">
@@ -122,7 +122,7 @@ class Pub1 extends React.Component {
           {
             this.props.data !== undefined && this.props.data !== null && this.props.data.media_url !== null? (
                 <div className="anexo d-flex flex-row justify-content-center mr-2 ml-2 mt-5 mr-auto ml-auto text-black-50">
-                    <img src={this.props.data.media_url} style={{width: "100%", height: "auto"}}/>
+                    <img src={this.props.data.media_url} style={{width: "100%", height: "100%"}}/>
                 </div>
                 )
             : null
