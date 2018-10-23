@@ -66,15 +66,6 @@ class TweetPub extends React.Component {
     Request.post("api/feed/vote", fd);
   };
 
-  componentDidMount() {
-    console.log(this.props.data);
-    Request.get("api/user/profile/" + this.props.data.user_id).then(response => {
-      response.json().then(userData => {
-        this.setState({userData : userData});
-      })
-    })
-  }
-
   render() {
 
     const { isLoading, contacts } = this.state;
@@ -86,7 +77,7 @@ class TweetPub extends React.Component {
       </div>
         <div className=" d-flex flex-row align-content-baseline mb-4">
           <div className="background-image-profile ml-3 mt-3" >
-              {this.state.userData !== null ?
+              {this.props.data !== null && this.props.data !== undefined ?
                 <img src={this.props.data !== null && this.props.data !== undefined ?
                     this.props.data.profile_pic_url : null} width={"100%"} style={{}}/> : null
               }
@@ -130,11 +121,13 @@ class TweetPub extends React.Component {
           }
         <div className="barra d-flex flex-row ml-4 mt-3">
           <div className="icons d-flex flex-row mb-4">
-            <p>favourites: {this.props.data !== undefined && this.props.data !== null ? this.props.data.fav_count : null}</p>
-            <p>retweets: {this.props.data !== undefined && this.props.data !== null ? this.props.data.ret_count : null}</p>
+            <i className="fa fa-heart"/>
+            <p> {this.props.data !== undefined && this.props.data !== null ? this.props.data.fav_count : null} </p>
+            <i className="fa fa-retweet"/>
+            <p> {this.props.data !== undefined && this.props.data !== null ? this.props.data.ret_count : null} </p>
           </div>
           <div className=" d-flex flex-row justify-content-end hashtags mr-4">
-            {this.props.data !== undefined && this.props.data !== null ? this.props.data.tags.map(tag => (
+            {this.props.data !== undefined && this.props.data !== null ? this.props.data.tags.splice(0,Math.min(5, this.props.data.tags.length)).map(tag => (
               <p className="bg-secondary text-white  text-center align-middle mr-1 first m-2">
                 #{tag}
               </p>
