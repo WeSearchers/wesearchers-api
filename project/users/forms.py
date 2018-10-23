@@ -1,9 +1,11 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
 from django.forms import ModelForm, forms, EmailField, ImageField
 from django.core.files.images import get_image_dimensions
 
-from .models import Profile
+from .models import Profile, Resource
 
 
 class UserCreationForm(UserCreationForm):
@@ -68,9 +70,40 @@ class ProfileForm(ModelForm):
 
 
 class ProfileUpdateForm(ProfileForm):
-
     image = ImageField(required=False)
 
     class Meta:
         model = Profile
         fields = ["orcid", "bio", "image"]
+
+
+class ResourceForm(ModelForm):
+    error_messages = {
+        'title_too_long': "The title exceeds the 50 character limit",
+                          'url_invalid': "The url is invalid"
+    }
+
+    class Meta:
+        model = Resource
+        fields = ["title", "url"]
+
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        if len(title) > 50:
+            raise forms.ValidationError(
+                self.error_messages['title_too_long'],
+                code='title_too_long',
+            )
+        return title
+
+    def clean_url(self):
+        url = self.cleaned_data.get("url")
+        val = URLValidator()
+        try:
+            val(url)
+        except ValidationError:
+            raise forms.ValidationError(
+                self.error_messages['url_invalid'],
+                code='url_invalid',
+            )
+        return url
