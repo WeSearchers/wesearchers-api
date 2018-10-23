@@ -23,10 +23,16 @@
 }
 
 /* Section-card*/
+
 .resources-main .section-card {
   padding: 30px;
   margin-bottom: 40px;
 }
+
+.resources-main .section-card:first-child {
+  margin-top: 0;
+}
+
 .resources-main .section-card .title {
   font-size: 20px;
   margin-bottom: 10px;
@@ -46,7 +52,8 @@
   display: flex;
   flex-wrap: wrap;
   margin-top: 40px;
-  float: right;
+  justify-self: flex-end;
+  justify-content: flex-end;
 }
 
 .resources-main .interests .add {
@@ -97,4 +104,23 @@
 .resources-popup .close {
   margin-bottom: 15px;
   text-align: right;
+}
+
+/* checkbox */
+
+.resources-main .interests-checkbox {
+  padding: 20px;
+  border-radius: 5px;
+  background: #999;
+  color: #fafafa;
+  margin-bottom: 40px;
+}
+
+.interests-checkbox .checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.interests-checkbox .checkbox input {
+  margin-right: 10px;
 }

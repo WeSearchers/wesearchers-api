@@ -29,7 +29,7 @@ class ResourceItem extends Component {
           <div className="interests">
             {/*<a className="add multi-choice-area">+</a>*/}
               {this.props.data.interests.map( interest => (
-                <span className="multi-choice-area">#{interest}</span>
+                <span key={Math.random()} className="multi-choice-area">#{interest}</span>
               ))}
           </div>
         </div>
