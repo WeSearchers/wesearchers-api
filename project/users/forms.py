@@ -85,7 +85,7 @@ class ResourceForm(ModelForm):
 
     class Meta:
         model = Resource
-        fields = ["title", "text", "url"]
+        fields = ["title", "url"]
 
     def clean_title(self):
         title = self.cleaned_data.get('title')

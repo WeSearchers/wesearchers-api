@@ -247,9 +247,9 @@ def get_collaborators(request):
 
 
 @require_login
-def delete_resorce(request):
+def delete_resource(request):
     if request.method == "POST":
-        resource = Resources.objects.filter(id=request.POST["request_id"]).first()
+        resource = Resource.objects.filter(id=request.POST["request_id"]).first()
         if resource is not None:
             resource.delete()
             return HttpResponse()
@@ -257,6 +257,7 @@ def delete_resorce(request):
             return HttpResponseNotFound()
     else:
         return HttpResponseNotAllowed()
+
 
 @require_login
 def add_resource(request):
@@ -279,9 +280,9 @@ def add_resource(request):
 
 
 def get_resources(request):
-    resources = list(map(lambda r: r.resource, ResourceInterest.objects.all()))
+    resources = list(Resource.objects.all())
     resources.sort(key=lambda x: x.date, reverse=True)
-    final_list = list(map(lambda x: x.serialize(), resources))
+    final_list = list((map(lambda x: x.serialize(), resources)))
     return JsonResponse(final_list, safe=False)
 
 
@@ -299,9 +300,9 @@ def resource_view(request):
 def resources_by_interest(request, tag):
     resources = list(map(lambda r: r.resource, ResourceInterest.objects.filter(interest=tag)))
     resources.sort(key=lambda x: x.date, reverse=True)
+    resources = list({v.id: v for v in resources}.values())
     final_list = list(map(lambda x: x.serialize(), resources))
     return JsonResponse(final_list, safe=False)
-
 
 
 @require_login

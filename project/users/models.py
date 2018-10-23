@@ -62,7 +62,6 @@ class Resource(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
-    text = models.TextField()
     url = models.URLField(blank=True)
     date = models.DateTimeField(default=datetime.now)
 
