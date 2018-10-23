@@ -13,6 +13,7 @@ urlpatterns = [
     re_path('following', views.get_following),
     # re_path('<int:user_id>/collaborators',views.get_collaborators),
     re_path('resource/delete', views.delete_resource),
+    re_path('resource/gettags', views.resource_tags),
     re_path('resource/tags', views.resources_by_interest),
     re_path('resource',views.resource_view),
     re_path('follow', views.follow_view),

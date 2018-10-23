@@ -304,10 +304,19 @@ def resource_view(request):
 
 
 @require_login
-def resources_by_interest(request, tag):
-    resources = list(map(lambda r: r.resource, ResourceInterest.objects.filter(interest=tag)))
-    resources.sort(key=lambda x: x.date, reverse=True)
+def resource_tags(request):
+    tags = list(set(map(lambda res: res.interest, filter(lambda ri: ri.resource.user == request.user, ResourceInterest.objects.all()))))
+    return JsonResponse(tags, safe=False)
+
+
+@require_login
+def resources_by_interest(request):
+    tags = request.GET["tags"].split(",")
+    resources = list()
+    for tag in tags:
+        resources += list(map(lambda r: r.resource, ResourceInterest.objects.filter(interest=tag)))
     resources = list({v.id: v for v in resources}.values())
+    resources.sort(key=lambda x: x.date, reverse=True)
     final_list = list(map(lambda x: x.serialize(), resources))
     return JsonResponse(final_list, safe=False)
 
