@@ -122,7 +122,7 @@ class Pub1 extends React.Component {
           {
             this.props.data !== undefined && this.props.data !== null && this.props.data.media_url !== null? (
                 <div className="anexo d-flex flex-row justify-content-center mr-2 ml-2 mt-5 mr-auto ml-auto text-black-50">
-                    <img src={this.props.data.media_url} style={{width: "100%", height: "auto"}}/>
+                    <img src={this.props.data.media_url} style={{width: "100%", height: "100%"}}/>
                 </div>
                 )
             : null
