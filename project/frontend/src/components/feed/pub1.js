@@ -87,7 +87,7 @@ class Pub1 extends React.Component {
         <div className=" d-flex flex-row align-content-baseline mb-4">
           <div className="background-image-profile ml-3 mt-3" >
               {this.state.userData !== null ?
-                <img src={"data:image/jpeg;base64, " + this.state.userData.image_data} width={"100%"} style={{"clip-path": "circle(50% at center)"}}/> : null
+                <img className="circle" src={"data:image/jpeg;base64, " + this.state.userData.image_data} width={"100%"} style={{}}/> : null
               }
           </div>
           <div className=" mt-4 ml-4 d-flex flex-column justify-content-center">
