@@ -8,6 +8,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 
+from .responses import HttpResponseUnauthorized
 from .validators import PasswordValidator
 from .decorators import require_login
 from .forms import ProfileForm, UserCreationForm, UserUpdateForm, ProfileUpdateForm, ResourceForm
@@ -249,12 +250,18 @@ def get_collaborators(request):
 @require_login
 def delete_resource(request):
     if request.method == "POST":
-        resource = Resource.objects.filter(id=request.POST["request_id"]).first()
-        if resource is not None:
-            resource.delete()
-            return HttpResponse()
-        else:
-            return HttpResponseNotFound()
+        try:
+            resource = Resource.objects.filter(id=request.POST["resource_id"]).first()
+            if resource is not None:
+                if resource.user == request.user:
+                    resource.delete()
+                    return HttpResponse()
+                else:
+                    return HttpResponseUnauthorized()
+            else:
+                return HttpResponseNotFound()
+        except KeyError as k:
+            return JsonResponse({k.args[0]: "field missing in form"}, status=400)
     else:
         return HttpResponseNotAllowed()
 

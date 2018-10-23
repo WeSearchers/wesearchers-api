@@ -45,7 +45,7 @@ class ResourcesMain extends Component {
               Resources <a onClick={() => this.handleShowPopup("show")}>+</a>
             </div>
             {this.state.resources.map(resource => (
-              <ResourceItem data={resource}/>
+              <ResourceItem data={resource} update={this.updateResources}/>
             ))}
           </div>
         </div>
