@@ -17,33 +17,6 @@ class SettingsAndPrivacy extends Component {
             change password
           </li>
         </a>
-        <a onClick={() => this.props.onShowSubMenu("empty1")}>
-          <li
-            className={
-              this.props.subMenu == "empty1" ? "clicked-side-menu-item" : ""
-            }
-          >
-            sub-menu 2
-          </li>
-        </a>
-        <a onClick={() => this.props.onShowSubMenu("empty2")}>
-          <li
-            className={
-              this.props.subMenu == "empty2" ? "clicked-side-menu-item" : ""
-            }
-          >
-            sub-menu 3
-          </li>
-        </a>
-        <a onClick={() => this.props.onShowSubMenu("empty3")}>
-          <li
-            className={
-              this.props.subMenu == "empty3" ? "clicked-side-menu-item" : ""
-            }
-          >
-            sub-menu 4
-          </li>
-        </a>
       </ul>
     );
   }
