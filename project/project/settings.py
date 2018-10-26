@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 import json
 import os
-#import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,12 +19,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '7z4v2zj#ehp3hf4f_9t8s%&4awby&*7i#_0i1!$4o_xv66&kn%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', 'https://wesearchers-sprint2.herokuapp.com/']
 
 # Application definition
 
@@ -81,24 +79,35 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-credfile = open(BASE_DIR + "/project/credentials.json")
-credentials = json.loads(credfile.read())
-credfile.close()
+#credfile = open(BASE_DIR + "\\project\\credentials.json")
+#credentials = json.loads(credfile.read())
+#credfile.close()
 
-RUNNING_HOST = credentials["RUNNING_HOST"]
+RUNNING_HOST = "localhost:8000"
 
 DATABASES = {
-    'default': credentials["DATABASE"]
+    'default': {
+    "ENGINE": "django.db.backends.postgresql",
+    "NAME": "WeSearchers.Database",
+    "USER": "postgres",
+    "PASSWORD": "postgres",
+    "HOST": "127.0.0.1"
+  }
 }
 
-smtp = credentials["SMTP"]
+smtp = {
+    "EMAIL_HOST": "smtp.sendgrid.net",
+    "EMAIL_HOST_USER": "apikey",
+    "EMAIL_PORT": 587,
+    "EMAIL_USE_TLS": True
+  }
 
 EMAIL_HOST = smtp["EMAIL_HOST"]
 EMAIL_HOST_USER = smtp["EMAIL_HOST_USER"]
-EMAIL_HOST_PASSWORD = smtp["EMAIL_HOST_PASSWORD"]
 EMAIL_PORT = smtp["EMAIL_PORT"]
 EMAIL_USE_TLS = smtp["EMAIL_USE_TLS"]
 
+SECRET_KEY = "7z4v2zj#ehp3hf4f_9t8s%&4awby&*7i#_0i1!$4o_xv66&kn%"
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -130,5 +139,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
 # Activate Django-Heroku.
-#django_heroku.settings(locals())
+import django_heroku
+django_heroku.settings(locals())
+
+import dj_database_url
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
+DATABASES['default']['CONN_MAX_AGE'] = 500
