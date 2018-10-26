@@ -9,7 +9,7 @@ class ForgotPassword extends Component {
           <a href="/login" className="general-btn back-login" />
           <div className="container">
             <div className="forgot-password login-form">
-              <div className="title">FORGOT YOUR PASSWORD?</div>
+              <div className="title mt-4">FORGOT YOUR PASSWORD?</div>
               <div className="sub-title">
                 We will help you to have a new one with your email
               </div>
@@ -22,7 +22,7 @@ class ForgotPassword extends Component {
                 />
                 {/* jmmonteiro enviar email de recuperação de password */}
 
-                <button type="submit" href="/user/profile">
+                <button className="mb-4" type="submit" href="/user/profile">
                   send email
                 </button>
               </form>
