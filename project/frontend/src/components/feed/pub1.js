@@ -12,7 +12,7 @@ import twitter from "../../images/twitter-logo-button.png";
 import AddComent from "./addcoment";
 import Request from "../../request";
 import save from "../../images/icon.png";
-import trash from "../../images/waste-bin.png";
+import trash from "../../images/waste-bin.svg";
 
 class Pub1 extends React.Component {
   constructor(props) {
@@ -76,9 +76,14 @@ class Pub1 extends React.Component {
     const { isLoading, contacts } = this.state;
     return (
       <div className="pub1 m-5 bg-grey d-flex flex-column mr-auto ml-auto ">
-        <div className="icons d-flex flex-row justify-content-end mr-4">
-          <img className="mt-3" src={save} width="14" height="14" />
-          <img className="mt-3 ml-3" src={trash} width="14" height="16" />
+        <div className=" d-flex flex-row justify-content-between mr-4">
+          <p className="twitter-pub mt-3 ml-4">
+            <i>#FromTwitter</i>
+          </p>
+          <div className="icons">
+            <img className="mt-3" src={save} width="14" height="14" />
+            <img className="mt-3 ml-3" src={trash} width="14" height="16" />
+          </div>
         </div>
         <div className=" d-flex flex-row align-content-baseline mb-4">
           <div className="background-image-profile ml-3 mt-3">

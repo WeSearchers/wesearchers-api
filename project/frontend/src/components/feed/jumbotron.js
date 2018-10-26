@@ -70,8 +70,11 @@ class Jumbotron extends Component {
 
   render() {
     return (
-      <div className="write-pub m-5 d-flex flex-column mr-auto ml-auto pb-3">
-        <h1>News feed</h1>
+      <div className="write-pub mt-5 d-flex flex-column mr-auto ml-auto ">
+        <h1>
+          {" "}
+          <b>News feed </b>
+        </h1>
       </div>
     );
   }
