@@ -6,7 +6,7 @@
 .inner-menu-main .side-menu ul h5 {
   padding: 10px 0;
   padding-left: 10px;
-  background: #999;
+  background: #ffc95e;
   color: #fafafa;
   margin: 0;
 }
@@ -32,7 +32,8 @@
 
 /*on click sideMenu item*/
 .inner-menu-main .side-menu ul > a > li.clicked-side-menu-item {
-  border-color: #999;
+  border-color: #002f54;
+  border-bottom-color: #999;
   background: #fafafa;
 }
 

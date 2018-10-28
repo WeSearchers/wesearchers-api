@@ -14,6 +14,7 @@ class UserChangePassword extends Component {
         >
           <div className="input-password">
             <input
+              className="general-input"
               onChange={this.handleChange}
               type="password"
               placeholder="Old password"
@@ -23,6 +24,7 @@ class UserChangePassword extends Component {
           </div>
           <div className="input-password">
             <input
+              className="general-input"
               onChange={this.handleChange}
               type="password"
               placeholder="New password"
@@ -32,6 +34,7 @@ class UserChangePassword extends Component {
           </div>
           <div className="input-password">
             <input
+              className="general-input"
               onChange={this.handleChange}
               type="password"
               placeholder="Confirm new password"
@@ -39,7 +42,11 @@ class UserChangePassword extends Component {
               required
             />
           </div>
-          <input type="submit" value="save" />
+          <input
+            className="general-btn yellow-btn"
+            type="submit"
+            value="save"
+          />
         </form>
       </React.Fragment>
     );
