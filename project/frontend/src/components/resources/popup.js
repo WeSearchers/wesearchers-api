@@ -21,7 +21,7 @@ class Popup extends Component {
             type="text"
             placeholder="#Hashtags"
           />
-          <button className="general-btn" type="submit">
+          <button className="general-btn yellow-btn" type="submit">
             add +
           </button>
         </div>
