@@ -41,7 +41,6 @@ body {
 a:hover,
 button:hover {
   cursor: pointer;
-  background: #ffc95e !important;
   text-decoration-line: none !important;
 }
 
@@ -77,14 +76,14 @@ a.fa {
 .see-more {
   margin-top: 20px;
   background-color: #ffc95e;
+  border: 1px solid #ffc95e;
   float: right;
   transition: 0.25s;
   padding: 5px 20px;
-  border: none;
   color: #002f54 !important;
 }
 .see-more:hover {
-  background: #777 !important;
+  background: #fafafa;
 }
 
 .general-input {

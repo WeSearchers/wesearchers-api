@@ -9,10 +9,11 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  border: 1px solid;
+  border: 1px solid #002f54;
   height: 130px;
   width: 130px;
   border-radius: 50%;
+  box-shadow: 0px 2px 6px 1px rgba(0, 0, 0, 0.25);
 }
 
 .user-header {
@@ -78,6 +79,7 @@
 
 .profile-menu .menu-item:hover {
   cursor: pointer;
+  background: #ffc95e;
 }
 
 .menu-item > .fa {
@@ -97,7 +99,7 @@
   background: #fcfcfc;
   border-radius: 5px;
   padding: 15px;
-  box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: 2px 2px 6px 1px rgba(0, 0, 0, 0.25);
 }
 
 .section-card:first-child {
@@ -108,6 +110,9 @@
   margin-top: 25px;
 }
 .section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 40px;
   font-size: 18px;
   margin-bottom: 15px;
@@ -115,13 +120,28 @@
   color: #002f54;
 }
 
-.section-title > span {
+.section-title span {
   color: #999;
   font-weight: 500;
 }
 
 .section-card .sub-text {
   font-size: 15px;
+}
+
+.section-title .plus-sign {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #ffc95e;
+}
+
+.section-title .plus-sign:hover {
+  border: 1px solid #ffc95e;
+  background: #fafafa;
 }
 
 /*Sub-Section ProfileAbout*/

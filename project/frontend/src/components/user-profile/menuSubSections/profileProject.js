@@ -11,7 +11,11 @@ class ProfileProject extends Component {
       >
         {/* jmmonteiro colocar o numéro de projetos do utilizador através do fetch */}
         <div className="section-title">
-          Projects <span>(5)</span>
+          <div>
+            {" "}
+            Projects <span>(5)</span>
+          </div>
+          <a className="plus-sign">+</a>
         </div>
         <div className="section-card project">
           <div className="project-header">

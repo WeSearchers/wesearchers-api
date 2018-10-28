@@ -11,7 +11,11 @@ class Publication extends Component {
         }
       >
         <div className="section-title">
-          Posts <span>(2)</span>
+          <div>
+            {" "}
+            Posts <span>(5)</span>
+          </div>
+          <a className="plus-sign">+</a>
         </div>
         <div className="container-posts">
           <Post />
@@ -22,7 +26,11 @@ class Publication extends Component {
           <a className="general-btn see-more">see more</a>
         </div>
         <div className="section-title">
-          Articles <span>(5)</span>
+          <div>
+            {" "}
+            Articles <span>(5)</span>
+          </div>
+          <a className="plus-sign">+</a>
         </div>
         <div className="container-posts">
           <Post />
