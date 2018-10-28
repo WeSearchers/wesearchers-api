@@ -23,7 +23,7 @@
 }
 
 .user-header .user-info {
-  background: #efefef;
+  background: #fcfcfc;
 }
 
 .user-info .user-name {
@@ -67,23 +67,21 @@
 }
 
 .profile-menu .menu-item {
-  border: 1px solid #999;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 50px;
-  background: #eee;
+  background: #ffffff;
   border-radius: 20px;
-  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.25);
 }
 
 .profile-menu .menu-item:hover {
   cursor: pointer;
-  background: #999;
 }
 
 .menu-item > .fa {
-  color: #333;
+  color: #002f54;
 }
 
 /*UserProfileMenuSection*/
@@ -96,11 +94,10 @@
 
 /*CARD*/
 .section-card {
-  border: 1px solid #999;
-  background: #fafafa;
+  background: #fcfcfc;
   border-radius: 5px;
   padding: 15px;
-  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.25);
 }
 
 .section-card:first-child {
@@ -114,6 +111,12 @@
   margin-top: 40px;
   font-size: 18px;
   margin-bottom: 15px;
+  font-weight: 600;
+  color: #002f54;
+}
+
+.section-title > span {
+  color: #999;
   font-weight: 500;
 }
 
@@ -155,10 +158,11 @@
 }
 
 .multi-choice-area {
-  background: #ccc;
+  background: #002f54;
   padding: 5px 10px;
   border-radius: 10px;
   margin: 7.5px;
+  color: #fafafa;
 }
 
 .multi-choice-area .fa {
@@ -220,24 +224,27 @@
   transition: 0.25s;
 }
 
-.user-profile-menu-section .network-sub-section:nth-child(3) {
-  background-color: rgb(180, 180, 180);
+.user-profile-menu-section .network-sub-section:nth-child(1) {
+  background-color: rgba(0, 47, 84, 0.6);
 }
 
-.user-profile-menu-section .network-sub-section:nth-child(5) {
-  background-color: rgb(160, 160, 160);
+.user-profile-menu-section .network-sub-section:nth-child(3) {
+  background-color: rgba(0, 47, 84, 0.85);
 }
 
 .user-profile-menu-section .network-sub-section:nth-child(7) {
-  background-color: rgb(140, 140, 140);
+  background-color: rgba(0, 47, 84, 0.6);
 }
 
 .network-sub-section .value {
   margin-right: 20px;
   font-size: 20px;
   font-weight: 500;
+  color: #fafafa;
 }
-
+.network-sub-section .title {
+  color: #fafafa;
+}
 .network-user-container {
   transition: 0.25s;
   background: #f1f1f1;
@@ -283,11 +290,19 @@
 
 /*Sub-Section Publication*/
 
+.section-card.project {
+  border: none;
+}
+
 .project .project-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
   color: #999;
+}
+.project .project-header > div:first-child {
+  color: #002f54;
+  font-weight: 600;
 }
 
 /*Sub-Section Publication*/
@@ -319,7 +334,7 @@
 }
 
 .publication-title {
-  font-weight: 500;
+  font-weight: 600;
   margin-right: 20px;
 }
 
@@ -332,6 +347,7 @@
   float: right;
   margin-top: 10px;
   margin-right: 20px;
+  color: #999;
 }
 
 /*ProfileMenuSubSections*/

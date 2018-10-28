@@ -34,14 +34,14 @@ body {
 }
 
 .link-selected {
-  background: #999 !important;
-  border: 1px solid black !important;
+  background: #ffc95e !important;
+  border: 1px solid #999 !important;
 }
 
 a:hover,
 button:hover {
   cursor: pointer;
-  background: #999 !important;
+  background: #ffc95e !important;
   text-decoration-line: none !important;
 }
 
@@ -76,9 +76,12 @@ a.fa {
 
 .see-more {
   margin-top: 20px;
-  background-color: #999;
+  background-color: #ffc95e;
   float: right;
   transition: 0.25s;
+  padding: 5px 20px;
+  border: none;
+  color: #002f54 !important;
 }
 .see-more:hover {
   background: #777 !important;
