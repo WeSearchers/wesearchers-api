@@ -7,7 +7,8 @@
   padding: 10px 0;
   padding-left: 10px;
   background: #ffc95e;
-  color: #fafafa;
+  color: #002f54;
+  font-weight: 600;
   margin: 0;
 }
 .inner-menu-main .side-menu ul > a > li {
@@ -15,7 +16,7 @@
   align-items: center;
   height: 40px;
   border-bottom: 1px solid #999;
-  border-left: 5px solid #e7e7e7;
+  border-left: 7px solid #e7e7e7;
   padding-left: 15px;
   padding-right: 20px;
   transition: 0.05s;
@@ -62,4 +63,27 @@
   border-radius: 5px;
   padding: 10px 10px;
   width: 100%;
+}
+
+/*media queries*/
+
+@media only screen and (max-width: 767px) {
+  .inner-menu-main .side-menu {
+    background: transparent;
+    padding: 0;
+  }
+  .inner-menu-main .side-menu ul {
+    height: auto;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: 20px solid #002f54;
+  }
+  .inner-menu-main .actions {
+    background: transparent;
+    padding: 0;
+  }
+  .form-change-password {
+    background: #e7e7e7;
+    padding: 40px 30px;
+  }
 }
