@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import NavBar from "../navbar/navBar";
 import Popup from "./popup";
 import ResourceItem from "./resourceItem";
+import Request from "../../request";
 import CheckboxItem from "./checkboxItem";
 
 class ResourcesMain extends Component {
@@ -9,20 +10,8 @@ class ResourcesMain extends Component {
     super(props);
     this.state = {
       showPopup: "hidden",
-      checkboxTags: [
-        { id: 1, value: "Design", clicks: 1 },
-        { id: 2, value: "Tech", clicks: 1 },
-        { id: 3, value: "Frontend", clicks: 1 },
-        { id: 4, value: "Backend", clicks: 1 },
-        { id: 5, value: "Ui/Ux", clicks: 1 }
-      ],
-      resourceTags: [
-        { id: 1, value: ["Design", "Tech"], show: true },
-        { id: 2, value: ["Backend", "Tech"], show: true },
-        { id: 3, value: ["Design", "Ui/Ux"], show: true },
-        { id: 4, value: ["Design", "Backend"], show: true },
-        { id: 5, value: ["Frontend", "Tech"], show: true }
-      ],
+      resources: [],
+      checkboxTags: [],
       //save id of selected checkbox's
       clickedTags: []
     };
@@ -30,86 +19,71 @@ class ResourcesMain extends Component {
     this.handleShowResource = this.handleShowResource.bind(this);
   }
 
-  handleShowPopup(show) {
+  handleShowPopup = show => {
     if (this.state.showPopup !== show) {
       this.setState({
         showPopup: show
       });
     }
+  };
+
+  updateResources = event => {
+    Request.get("api/user/resource").then(response => {
+      response.json().then(resources => {
+        this.setState({resources: resources});
+      })
+    });
+    Request.get("api/user/resource/gettags").then(response => {
+        response.json().then(tags => {
+            this.setState({checkboxTags: tags});
+        })
+    });
+  };
+
+  componentDidMount() {
+    this.updateResources();
   }
 
-  handleShowResource(checkboxId) {
+  handleShowResource(checkboxtag, value) {
     // clone state arrays for setstate
-    var resourceTags = [...this.state.resourceTags];
-    var checkboxTags = [...this.state.checkboxTags];
     var clickedTags = [...this.state.clickedTags];
-    var matchArray = [];
-    var dontMatchArray = [];
-    console.log("checkbox clicks: " + checkboxTags[checkboxId].clicks);
 
     // if we have multiple selected checkbox's we add the new selection to the array
-    if (checkboxTags[checkboxId].clicks === 1) {
-      clickedTags.push(checkboxId);
+    if (value) {
+      clickedTags.push(checkboxtag);
     } else {
       // if a checkbox have been deselected
-      if (checkboxTags[checkboxId].clicks === 2) {
-        clickedTags.splice(clickedTags.indexOf(checkboxId), 1);
-      }
+      clickedTags.splice(clickedTags.indexOf(checkboxtag), 1);
     }
 
-    for (var i = 0; i < resourceTags.length; i++) {
-      //refresh variable at the loop
-      console.log("i: " + i);
-      var saveNotMatch = "";
-      for (var l = 0; l < clickedTags.length; l++) {
-        console.log("l: " + l);
-        // console.log(checkboxTags[checkboxId].value);
-        if (
-          resourceTags[i].value.includes(checkboxTags[clickedTags[l]].value)
-        ) {
-          console.log(resourceTags[i].id);
-          matchArray.push(resourceTags[i].id);
-          break; //make sure we dont repeat id's if exists several matches
-        } else {
-          //make sure dont repeat the same action
-          if (saveNotMatch.length !== "") {
-            saveNotMatch = resourceTags[i].id;
-          }
-          //make sure that until the last tag verification we dont add the resource id to dontMatch array
-          if (l === clickedTags.length - 1 && saveNotMatch.length !== "") {
-            dontMatchArray.push(saveNotMatch);
-          }
-        }
-      }
+    this.setState({clickedTags: clickedTags});
+    let tags = "";
+    for(let i = 0; i < clickedTags.length; i++){
+      tags += clickedTags[i] + ","
     }
-    // set state of show / clicks !!!!!!!! (done)
-    //condition clickedtags clear id (done)
+    tags = tags.substring(0, tags.length - 1);
 
-    //setup arrays with new information to proceed to setstate
-    for (var r = 0; r < resourceTags.length; r++) {
-      console.log(matchArray[r] + " " + resourceTags[r].id);
-      if (matchArray.includes(resourceTags[r].id)) resourceTags[r].show = true;
-      else resourceTags[r].show = false;
+    if (clickedTags.length === 0){
+        Request.get("api/user/resource").then(response => {
+            response.json().then(resources => {
+                this.setState({resources: resources});
+            })
+        });
     }
-    if (checkboxTags[checkboxId].clicks === 1)
-      checkboxTags[checkboxId].clicks = 2;
-    else checkboxTags[checkboxId].clicks = 1;
-
-    //restore initial stage if none of the checkbox's are selected
-    if (checkboxTags[checkboxId].clicks === 1 && clickedTags.length === 0) {
-      for (var a = 0; a < resourceTags.length; a++) {
-        resourceTags[a].show = true;
-      }
+    else {
+        Request.get("api/user/resource/tags", {tags: tags}).then(response => {
+            response.json().then(resources => {
+                this.setState({resources: resources});
+            })
+        });
     }
-
-    this.setState({ clickedTags, resourceTags, checkboxTags });
   }
 
   render() {
     return (
       <React.Fragment>
         <NavBar />
-        <Popup toShow={this.state.showPopup} toHide={this.handleShowPopup} />
+        <Popup toShow={this.state.showPopup} toHide={this.handleShowPopup} update={this.updateResources} />
         <div className="container resources-main">
           <div className="row ">
             <div className="col-md-12 title">
@@ -119,22 +93,18 @@ class ResourcesMain extends Component {
               <div className="interests-checkbox">
                 {this.state.checkboxTags.map(checkbox => (
                   <CheckboxItem
-                    key={checkbox.id}
-                    id={checkbox.id}
-                    label={checkbox.value}
+                    key={Math.random()}
+                    value={this.state.clickedTags.indexOf(checkbox) !== -1}
+                    label={checkbox}
                     toFilter={this.handleShowResource}
                   />
                 ))}
               </div>
             </div>
             <div className="col-md-9 resource-item-container">
-              {this.state.resourceTags.map(resource => (
-                <ResourceItem
-                  key={resource.id}
-                  tags={resource.value}
-                  toShow={resource.show}
-                />
-              ))}
+              {this.state.resources.map(resource => (
+                  <ResourceItem data={resource} update={this.updateResources}/>
+                ))}
             </div>
           </div>
         </div>

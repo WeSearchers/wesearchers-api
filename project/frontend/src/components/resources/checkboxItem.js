@@ -1,7 +1,14 @@
 import React, { Component } from "react";
 
 class CheckboxItem extends Component {
-  state = {};
+  constructor(props) {
+    super(props)
+  }
+  
+  handleClick = event => {
+    this.props.toFilter(this.props.label, event.target.checked);
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -10,8 +17,8 @@ class CheckboxItem extends Component {
             className="regular-checkbox"
             type="checkbox"
             name="tag"
-            value={this.props.label}
-            onClick={() => this.props.toFilter(this.props.id - 1)}
+            checked={this.props.value}
+            onChange={this.handleClick}
           />{" "}
           <div className="checkbox-label">#{this.props.label}</div>
         </div>

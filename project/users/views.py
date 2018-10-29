@@ -8,10 +8,12 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 
+from .responses import HttpResponseUnauthorized
 from .validators import PasswordValidator
 from .decorators import require_login
-from .forms import ProfileForm, UserCreationForm, UserUpdateForm, ProfileUpdateForm
+from .forms import ProfileForm, UserCreationForm, UserUpdateForm, ProfileUpdateForm, ResourceForm
 from .models import *
+import sys
 
 
 def error_dict(*args):
@@ -243,6 +245,80 @@ def get_collaborators(request):
     #insert code here
     return HttpResponse()
 """
+
+
+@require_login
+def delete_resource(request):
+    if request.method == "POST":
+        try:
+            resource = Resource.objects.filter(id=request.POST["resource_id"]).first()
+            if resource is not None:
+                if resource.user == request.user:
+                    resource.delete()
+                    return HttpResponse()
+                else:
+                    return HttpResponseUnauthorized()
+            else:
+                return HttpResponseNotFound()
+        except KeyError as k:
+            return JsonResponse({k.args[0]: "field missing in form"}, status=400)
+    else:
+        return HttpResponseNotAllowed()
+
+
+@require_login
+def add_resource(request):
+    resource_form = ResourceForm(request.POST)
+    try:
+        if resource_form.is_valid():
+            resource = resource_form.save(commit=False)
+            resource.user = request.user
+            resource.save()
+            tags = request.POST["tags"].split()
+            for tag in tags:
+                resource_interest = ResourceInterest(interest=tag)
+                resource_interest.resource = resource
+                resource_interest.save()
+            return JsonResponse(resource.id, safe=False)
+        else:
+            return JsonResponse(error_dict(resource_form), status=400)
+    except KeyError as k:
+        return JsonResponse(error_dict(resource_form, {k.args[0]: "field missing in form"}), status=400)
+
+
+def get_resources(request):
+    resources = list(Resource.objects.all())
+    resources.sort(key=lambda x: x.date, reverse=True)
+    final_list = list((map(lambda x: x.serialize(), resources)))
+    return JsonResponse(final_list, safe=False)
+
+
+@require_login
+def resource_view(request):
+    if request.method == "GET":
+        return get_resources(request)
+    elif request.method == "POST":
+        return add_resource(request)
+    else:
+        return HttpResponseNotAllowed()
+
+
+@require_login
+def resource_tags(request):
+    tags = list(set(map(lambda res: res.interest, filter(lambda ri: ri.resource.user == request.user, ResourceInterest.objects.all()))))
+    return JsonResponse(tags, safe=False)
+
+
+@require_login
+def resources_by_interest(request):
+    tags = request.GET["tags"].split(",")
+    resources = list()
+    for tag in tags:
+        resources += list(map(lambda r: r.resource, ResourceInterest.objects.filter(interest=tag)))
+    resources = list({v.id: v for v in resources}.values())
+    resources.sort(key=lambda x: x.date, reverse=True)
+    final_list = list(map(lambda x: x.serialize(), resources))
+    return JsonResponse(final_list, safe=False)
 
 
 @require_login

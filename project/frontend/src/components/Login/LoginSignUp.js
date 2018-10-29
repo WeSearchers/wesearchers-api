@@ -18,7 +18,8 @@ class LoginSignUp extends Component {
       image: '',
       interests: '',
       institution: '',
-      image_data: null
+      image_data: null,
+      errors:{}
     }
   }
 
@@ -53,7 +54,7 @@ class LoginSignUp extends Component {
     let data = new FormData();
 
     for (let elem in this.state) {
-      if(elem !== "image_data") {
+      if(elem !== "image_data" && elem !== "errors") {
           if (this.state[elem].filename !== undefined)
               data.append(elem, this.state[elem], this.state[elem].filename);
           else
@@ -66,39 +67,43 @@ class LoginSignUp extends Component {
         window.location.assign(window.location.origin + "/register/success");
       }
       else {
-        console.log("nay")
+        response.json().then(errors => {
+          this.setState({errors: errors});
+        });
       }
     })
   };
 
   render() {
     return (
-      <div className=" d-flex flex-row justify-content-center mt-5 mb-5" >
-        <div className="d-flex flex-column justify-content-center " >
-          <div className="  d-flex flex-column" >
+      <div className=" d-flex flex-row justify-content-center allpage-signup" >
+        <div className="d-flex flex-column justify-content-center pl-5 pr-5 pb-5 pt-5 mt-5 mb-5 main-content-signup boder-radius-xs" >
+          <div className="d-flex flex-column text-white" >
             <h1><b>WE</b>LCOME</h1>
             <h1> SEARCHERS </h1>
           </div>
 
           <div className="d-flex flex-row mt-5" >
-            <div className="d-flex flex-column justify-content-start align-content-start" >
-              <div className="background-image-profile ml-2" style={{"clip-path": "circle(50% at center)"}}>
+            <div className="d-flex flex-column justify-content-start align-content-start ml-2" >
+              <div className="background-image-profile-signup ml-4 mb-2" style={{"clip-path": "circle(50% at center)"}}>
                 {this.state.image_data !== null ?
                   <img src={this.state.image_data} width={"100%"}/> : null
                 }
               </div>
-              {/*
-              <button type="button"
-                className="upload-btn text-white btn btn-secondary mt-2 mb-4"
-              >
-                Upload
-              </button>
-              */}
-              <input onChange={this.handlechange} type='file' name="image" accept="image/*" />
+              <div className="input-jumbotron upload-btn mr-5 ml-1">
+              <input onChange={this.handlechange} id="f02" type='file' name="image" accept="image/*" placeholder="Upload"/>
+              <label for="f02">Upload</label>
+                {this.state.errors.image !== undefined && this.state.errors.image !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.image}</p>
+                    </div>
+                    ) : null}
+              </div>
+
             </div>
 
             <div className="d-flex flex-column justify-content-right ml-5 mt-2" >
-              <div className="name ">
+              <div className="username">
                 <input
                   type="text"
                   name='username'
@@ -110,6 +115,11 @@ class LoginSignUp extends Component {
                   placeholder="Username"
                 />
               </div>
+              {this.state.errors.username !== undefined && this.state.errors.username !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.username}</p>
+                    </div>
+                    ) : null}
               <div className="orcid">
                 <input
                   type="text"
@@ -118,13 +128,18 @@ class LoginSignUp extends Component {
                   onChange={this.handlechange}
                   className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                   id="id"
-                  placeholder="orcid ID"
+                  placeholder="Orcid ID"
                 />
               </div>
+                {this.state.errors.orcid !== undefined && this.state.errors.orcid !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.orcid}</p>
+                    </div>
+                    ) : null}
             </div>
           </div>
 
-          <div className="d-flex flex-column justify-content-right mb-3" >
+          <div className="d-flex flex-column justify-content-right mb-3 mt-5" >
             <div className="first_name ">
               <input
                 type="text"
@@ -136,6 +151,11 @@ class LoginSignUp extends Component {
                 placeholder="First Name"
               />
             </div>
+            {this.state.errors.first_name !== undefined && this.state.errors.first_name !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.first_name}</p>
+                    </div>
+                    ) : null}
           </div>
           <div className="d-flex flex-column justify-content-right mb-3" >
             <div className="last_name ">
@@ -149,6 +169,11 @@ class LoginSignUp extends Component {
                 placeholder="Last Name"
               />
             </div>
+            {this.state.errors.last_name !== undefined && this.state.errors.last_name !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.last_name}</p>
+                    </div>
+                    ) : null}
           </div>
           <div className="d-flex flex-column justify-content-right mb-3" >
             <div className="email ">
@@ -159,9 +184,14 @@ class LoginSignUp extends Component {
                 onChange={this.handlechange}
                 className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                 id="id"
-                placeholder="email"
+                placeholder="Email"
               />
             </div>
+            {this.state.errors.email !== undefined && this.state.errors.email !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.email}</p>
+                    </div>
+                    ) : null}
           </div>
 
           <div className="d-flex flex-column justify-content-right mb-3" >
@@ -173,10 +203,15 @@ class LoginSignUp extends Component {
                 onChange={this.handlechange}
                 className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                 id="id"
-                placeholder="password"
+                placeholder="Password"
               />
 
             </div>
+            {this.state.errors.password1 !== undefined && this.state.errors.password1 !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.password1}</p>
+                    </div>
+                    ) : null}
           </div>
           <div className="d-flex flex-column justify-content-right mb-3" >
             <div className="password ">
@@ -187,10 +222,15 @@ class LoginSignUp extends Component {
                 onChange={this.handlechange}
                 className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                 id="id"
-                placeholder="password2"
+                placeholder="Confirm password"
               />
 
             </div>
+            {this.state.errors.password2 !== undefined && this.state.errors.password2 !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.password2}</p>
+                    </div>
+                    ) : null}
           </div>
           <div className="d-flex flex-column justify-content-right mb-3" >
             <div className="institution">
@@ -201,9 +241,14 @@ class LoginSignUp extends Component {
                 onChange={this.handlechange}
                 className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                 id="id"
-                placeholder="institution"
+                placeholder="Institution"
               />
             </div>
+            {this.state.errors.institution !== undefined && this.state.errors.institution !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.institution}</p>
+                    </div>
+                    ) : null}
           </div>
           <div className="d-flex flex-column justify-content-right mb-3" >
             <div className="bio">
@@ -215,9 +260,14 @@ class LoginSignUp extends Component {
                 id="id"
                 rows="3"
                 column="10"
-                placeholder="bio/description"
+                placeholder="Bio/Description"
               />
             </div>
+            {this.state.errors.bio !== undefined && this.state.errors.bio !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.bio}</p>
+                    </div>
+                    ) : null}
           </div>
           <div className="d-flex flex-column justify-content-right " >
             <div className="hash">
@@ -227,15 +277,20 @@ class LoginSignUp extends Component {
                 onChange={this.handlechange}
                 className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                 id="id"
-                placeholder="#"
+                placeholder="#Hashtags"
               />
             </div>
+            {this.state.errors.interests !== undefined && this.state.errors.interests !== null ? (
+                    <div className="wrongpass">
+                      <p>{this.state.errors.interests}</p>
+                    </div>
+                    ) : null}
           </div>
           <div className="d-flex flex-column justify-content-right" >
             <button
               onClick={this.handleRegister}
               type="button"
-              className="text-white btn btn-secondary mt-2"
+              className="text-white btn btn-create-account mt-2"
             >
               Create Account
             </button>
