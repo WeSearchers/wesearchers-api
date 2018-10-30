@@ -3,19 +3,30 @@
   display: flex;
   align-items: center;
   height: 100vh;
-  background: #fafafa;
+  background-image: url("../images/fundo.png");
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .login-page .container {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 40%;
+  background-color: rgba(0, 59, 105, 0.6);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
 }
 
 .login-page .login-form {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.dont-have-account {
+  color: white;
 }
 
 .login-form input,
@@ -30,8 +41,8 @@
   min-width: 300px;
   padding-left: 20px;
   border-radius: 20px;
-  background-color: #eee;
-  border: 1px solid #999;
+  background-color: white;
+  border: none;
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.05);
 }
 
@@ -39,8 +50,8 @@
   height: 150px;
   width: 350px;
   min-width: 300px;
-  background-image: url("../Media/logo2.png");
-  background-size: 345px;
+  background-image: url("../images/logo-01.png");
+  background-size: 285px;
   background-position: center;
   background-repeat: no-repeat;
   margin-bottom: 40px;
@@ -48,17 +59,20 @@
 
 .login-form button {
   padding: 0;
-  background: #ccc;
+  background: #ffc95e;
   width: 250px;
   min-width: 200px;
   font-weight: 500;
-  color: #333;
-  margin-bottom: 50px;
+  color: white;
+  margin-top: 20px;
 }
 
 .login-form a {
   font-weight: 700;
-  color: #333;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .login-form .input-password {
@@ -89,32 +103,34 @@
 .login-page .change-password form button {
   margin: auto;
 }
-.wrongpass p{
+.wrongpass p {
   color: red;
 }
 
 /*FORGOT PASSWORD*/
 
 .forgot-password .title {
+  color: #ffc95e;
   font-size: 30px;
-  margin-bottom: 15px;
+  margin-bottom: 2px;
   align-self: flex-start;
   font-family: avenir-light;
 }
 
 .forgot-password .sub-title {
   margin-bottom: 5px;
+  color: white;
 }
 
 .forgot-password .input-email {
   background: transparent;
   border: transparent;
+  color: white;
   border-bottom: 1px solid #999;
   border-radius: 0;
   box-shadow: 0px 2px 0px 0px #eee;
   height: fit-content;
   margin: 40px 0;
-  margin-bottom: 50px;
   text-align: center;
   padding: 0;
 }

@@ -23,8 +23,8 @@ class Jumbotron extends Component {
       modal1: false,
       modal2: false,
       modal3: false,
-      modal4: false,
-    }
+      modal4: false
+    };
     this.togglemodal4 = this.togglemodal4.bind(this);
     this.togglemodal1 = this.togglemodal1.bind(this);
     this.togglemodal2 = this.togglemodal2.bind(this);
@@ -53,7 +53,7 @@ class Jumbotron extends Component {
     fd.append("url", this.state.url);
     fd.append("media_url", this.state.media_url);
     fd.append("tags", this.state.tags);
-    Request.post('api/feed/article', fd);
+    Request.post("api/feed/article", fd);
   };
 
   togglemodal4() {
@@ -78,116 +78,13 @@ class Jumbotron extends Component {
     });
   }
 
-
   render() {
     return (
-      <div className="write-pub bg-grey m-5 d-flex flex-column mr-auto ml-auto pb-3">
-        <div className="bla d-flex flex-column ">
-          <div className="d-flex flex-row">
-          <div className="background-image-profile ml-3 mt-4" />
-          <div className="textField mt-5">
-            <input
-              className="form-control z-depth-1 mt-1"
-              name="title"
-              onChange={this.handleChange}
-              placeholder="Title"
-            />
-          </div>
-                    </div>
-          <div className="textField descrition mb-3 ">
-            <textarea
-              className="form-control z-depth-1 ml-5"
-              id="exampleFormControlTextarea6"
-              rows="3"
-              name="text"
-              onChange={this.handleChange}
-              placeholder="Description..."
-            />
-          </div>
-        </div>
-        <div className="buttons d-flex flex-row justify-content-end mr-4 mt-3">
-          <button type="button" className="btn-linx btn btn-light m-1"  onClick={this.togglemodal1}>
-            <img className="pr-1" src={clip} width="18" height="18" />
-            Link
-          {this.props.buttonLabel}
-          </button>
-          <Modal
-            isOpen={this.state.modal1}
-            toggle={this.togglemodal1}
-            className={this.props.className}
-          >
-            <ModalHeader toggle={this.togglemodal1} />
-            <ModalBody>
-              {" "}
-              <AddURL />{" "}
-            </ModalBody>
-            <ModalFooter />
-          </Modal>
-
-
-          <button type="button" className="btn-foto btn btn-light m-1"onClick={this.togglemodal2}>
-            <img className="pr-1" src={photo} width="18" height="18" />
-            Photo/Video
-  {this.props.buttonLabel}
-          </button>
-            <Modal
-              isOpen={this.state.modal2}
-              toggle={this.togglemodal2}
-              className={this.props.className}
-            >
-              <ModalHeader toggle={this.togglemodal2} />
-              <ModalBody>
-                {" "}
-                <AddPhoto />{" "}
-              </ModalBody>
-              <ModalFooter />
-            </Modal>
-
-
-          <button type="button" className="btn-id btn btn-light m-1"onClick={this.togglemodal3}>
-          <img className="pr-1" src={group} width="18" height="18" />
-          Tag someone (...)
-            {this.props.buttonLabel}
-          </button>
-          <Modal
-            isOpen={this.state.modal3}
-            toggle={this.togglemodal3}
-            className={this.props.className}
-          >
-            <ModalHeader toggle={this.togglemodal3} />
-            <ModalBody>
-              {" "}
-              <Tag />{" "}
-            </ModalBody>
-            <ModalFooter />
-          </Modal>
-
-          <button type="button" className="btn-local btn btn-light m-1" onClick={this.togglemodal4}>
-            <img className="pr-1" src={local} width="18" height="18" />
-            Location
-            {this.props.buttonLabel}
-          </button>
-          <Modal
-            isOpen={this.state.modal4}
-            toggle={this.togglemodal4}
-            className={this.props.className}
-          >
-            <ModalHeader toggle={this.togglemodal4} />
-            <ModalBody>
-              {" "}
-              <Location />{" "}
-            </ModalBody>
-            <ModalFooter />
-          </Modal>
-
-          <button
-            type="button"
-            className="btn-publish btn text-white m-1 ml-4 mt-2"
-            onClick={this.handleSubmit}
-          >
-            Publish
-          </button>
-        </div>
+      <div className="write-pub mt-5 d-flex flex-column mr-auto ml-auto ">
+        <h1>
+          {" "}
+          <b>News feed </b>
+        </h1>
       </div>
     );
   }

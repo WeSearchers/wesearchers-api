@@ -7,26 +7,25 @@ class Popup extends Component {
     this.state = {
       title: "",
       url: "",
-      tags: "",
-    }
+      tags: ""
+    };
   }
 
   handleChange = event => {
-    this.setState({[event.target.name]: event.target.value})
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   handleSubmit = event => {
     let fd = new FormData();
-    for (let elem in this.state)
-      fd.append(elem, this.state[elem]);
+    for (let elem in this.state) fd.append(elem, this.state[elem]);
     Request.post("api/user/resource", fd).then(() => {
-        this.setState({
-          title: "",
-          url: "",
-          tags: "",
-        })
-        this.props.update();
-        this.props.toHide("hide");
+      this.setState({
+        title: "",
+        url: "",
+        tags: ""
+      });
+      this.props.update();
+      this.props.toHide("hide");
     });
   };
 
@@ -42,8 +41,22 @@ class Popup extends Component {
           <div onClick={() => this.props.toHide("hide")} className="close">
             x
           </div>
-          <input className="general-input" onChange={this.handleChange} name="title" type="text" placeholder="Title" value={this.state.title}/>
-          <input className="general-input" onChange={this.handleChange} name="url" type="text" placeholder="Link" value={this.state.url}/>
+          <input
+            className="general-input"
+            onChange={this.handleChange}
+            name="title"
+            type="text"
+            placeholder="Title"
+            value={this.state.title}
+          />
+          <input
+            className="general-input"
+            onChange={this.handleChange}
+            name="url"
+            type="text"
+            placeholder="Link"
+            value={this.state.url}
+          />
           <input
             className="general-input"
             onChange={this.handleChange}
@@ -52,7 +65,11 @@ class Popup extends Component {
             placeholder="#Hashtags"
             value={this.state.tags}
           />
-          <button onClick={this.handleSubmit} className="general-btn" type="submit">
+          <button
+            onClick={this.handleSubmit}
+            className="general-btn yellow-btn"
+            type="submit"
+          >
             add +
           </button>
         </div>

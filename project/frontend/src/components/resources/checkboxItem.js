@@ -14,6 +14,7 @@ class CheckboxItem extends Component {
       <React.Fragment>
         <div className="checkbox">
           <input
+            className="regular-checkbox"
             type="checkbox"
             name="tag"
             checked={this.props.value}
