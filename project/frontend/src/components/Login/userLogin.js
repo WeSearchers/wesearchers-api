@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import Request from '../../request';
+import Request from "../../request";
 import PropTypes from "prop-types";
-
 
 class UserLogin extends Component {
   constructor(props) {
@@ -15,17 +14,20 @@ class UserLogin extends Component {
 
   static contextTypes = {
     router: PropTypes.object
-  }
-
+  };
 
   handlechange = event => {
-    this.setState(
-      {
-        username: event.target.id === 'username' ? event.target.value : this.state.username,
-        password: event.target.id === 'password' ? event.target.value : this.state.password,
-      }
-    );
-  }
+    this.setState({
+      username:
+        event.target.id === "username"
+          ? event.target.value
+          : this.state.username,
+      password:
+        event.target.id === "password"
+          ? event.target.value
+          : this.state.password
+    });
+  };
 
   handleLogin = event => {
     /*
@@ -34,8 +36,8 @@ class UserLogin extends Component {
       pasword: this.state.password,
     }*/
     let data = new FormData();
-    data.append('username', this.state.username);
-    data.append('password', this.state.password);
+    data.append("username", this.state.username);
+    data.append("password", this.state.password);
 
     console.log(data);
     Request.post('api/user/login',data).then(
@@ -50,16 +52,14 @@ class UserLogin extends Component {
           this.setState({failed: true})
         }
       }
-    );
-
-  }
-
+    });
+  };
 
   render() {
     return (
-      <div className="login-page">
+      <div className="login-page ">
         <div className="container">
-          <div className="login-form">
+          <div className="login-form mt-4">
             <div className="logo" />
             <input
               id="username"
@@ -83,11 +83,18 @@ class UserLogin extends Component {
                     </div>
                 ) : null}
 
-              <a href="/forgotpass" className="forgot-pass"> ? </a>
+              <a href="/forgotpass" className="forgot-pass">
+                {" "}
+                ?{" "}
+              </a>
             </div>
-              <button onClick={this.handleLogin} type="submit">log in</button>
-            <div>Don't you have an account?</div>
-            <a href="/register">sign up</a>
+            <button onClick={this.handleLogin} type="submit">
+              log in
+            </button>
+            <div className="dont-have-account mb-3">
+              <div>Don't you have an account?</div>
+              <a href="/register">Sign Up</a>
+            </div>
           </div>
         </div>
       </div>
