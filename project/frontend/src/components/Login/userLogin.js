@@ -6,10 +6,10 @@ class UserLogin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
       failed: false
-    }
+    };
   }
 
   static contextTypes = {
@@ -40,17 +40,14 @@ class UserLogin extends Component {
     data.append("password", this.state.password);
 
     console.log(data);
-    Request.post('api/user/login',data).then(
-      response => {
-        console.log(response);
-        if (response.status === 200) {
-          //Request.get('api/user/profile/0', {}).then(response => console.log(response))
-          //login com sucesso, manda para a proxima página
-          window.location.assign(window.location.origin + "/")
-        }
-        else {
-          this.setState({failed: true})
-        }
+    Request.post("api/user/login", data).then(response => {
+      console.log(response);
+      if (response.status === 200) {
+        //Request.get('api/user/profile/0', {}).then(response => console.log(response))
+        //login com sucesso, manda para a proxima página
+        window.location.assign(window.location.origin + "/");
+      } else {
+        this.setState({ failed: true });
       }
     });
   };
@@ -77,11 +74,11 @@ class UserLogin extends Component {
                 type="password"
                 placeholder="Password"
               />
-                {this.state.failed ? (
-                    <div className="wrongpass">
-                      <p>Unknown username/password combination</p>
-                    </div>
-                ) : null}
+              {this.state.failed ? (
+                <div className="wrongpass">
+                  <p>Unknown username/password combination</p>
+                </div>
+              ) : null}
 
               <a href="/forgotpass" className="forgot-pass">
                 {" "}
