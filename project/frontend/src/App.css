@@ -94,14 +94,45 @@ a.fa {
 }
 
 .yellow-btn {
-  background-color: #ffc95e;
-  border: 1px solid #ffc95e;
+  background-color: #ffc95e !important;
+  border: 1px solid #ffc95e !important;
   color: #002f54;
 }
 .yellow-btn:hover {
   cursor: pointer;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2) !important;
 }
+
+/**/
+input.input-upload-file {
+  position: relative;
+  background: transparent !important;
+  padding: 0 !important;
+  opacity: 1;
+  border-radius: 40px !important;
+  width: 175 !important;
+  height: 40px !important;
+  margin-top: 20px;
+}
+input.input-upload-file::after {
+  position: absolute;
+  top: 0;
+  left: 0.5px;
+  content: "upload image";
+  color: #fafafa;
+  background-color: #ffc95e;
+  border: 1px solid #ffc95e;
+  padding: 5px 25px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.05);
+  opacity: 1;
+}
+input.input-upload-file:hover::after {
+  cursor: pointer;
+  background: #333 !important;
+  border: 1px solid #fafafa;
+}
+
 /*font*/
 
 @font-face {

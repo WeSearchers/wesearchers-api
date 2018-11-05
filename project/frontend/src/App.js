@@ -22,6 +22,7 @@ import Request from "./request";
 import ResetPassword from "./components/Login/resetPassword";
 import InnerMenuMain from "./components/navbar/innerMenu/innerMenuMain";
 import ResourcesMain from "./components/resources/resourcesMain";
+import UserRegister from "./components/Login/userRegister";
 
 class App extends Component {
   constructor(props) {
