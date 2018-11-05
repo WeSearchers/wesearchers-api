@@ -23,8 +23,56 @@ class LoginSignUp extends Component {
     }
   }
 
+  static isnumeric(str) {
+    for(let i = 0; i < str.length; i++){
+      if ("1234567890-".indexOf(str[i]) < 0)
+        return false;
+    }
+    return true;
+  }
+
+  static format_orcid(value) {
+    let v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    let matches = v.match(/\d{4,16}/g);
+    let match = matches && matches[0] || '';
+    let parts = [];
+    for (let i=0, len=match.length; i<len; i+=4) {
+      parts.push(match.substring(i, i+4))
+    }
+    if (parts.length) {
+      return parts.join('-')
+    } else {
+      return value
+    }
+  }
+
+  static hashTagify(value, oldValue){
+    let str = value.replace(/#/g, "");
+    let parts = str.split(" ");
+    parts = parts.filter(el => {
+      return el !== "";
+    });
+    if (oldValue.length < value.length && (value.endsWith(" ") || value.endsWith("#")))
+      parts.push ("");
+    return "#" + parts.join(" #");
+  }
+
   handlechange = event => {
-    if (event.target.type === 'file') {
+    if (event.target.name === "orcid") {
+        event.target.value = LoginSignUp.format_orcid(event.target.value);
+        if (!LoginSignUp.isnumeric(event.target.value))
+          event.target.value = "";
+        this.setState({orcid:event.target.value.split("-").join("")})
+    }
+    else if (event.target.name === "interests") {
+      event.target.value = LoginSignUp.hashTagify(event.target.value, this.state.interests);
+      this.setState(
+        {
+          [event.target.name]: event.target.value,
+        }
+      );
+    }
+    else if (event.target.type === 'file') {
       let file = event.target.files[0];
       let reader  = new FileReader();
 
@@ -55,7 +103,9 @@ class LoginSignUp extends Component {
 
     for (let elem in this.state) {
       if(elem !== "image_data" && elem !== "errors") {
-          if (this.state[elem].filename !== undefined)
+          if (elem === "interests")
+            data.append(elem, this.state[elem].replace(/#/g, ""));
+          else if (this.state[elem].filename !== undefined)
               data.append(elem, this.state[elem], this.state[elem].filename);
           else
               data.append(elem, this.state[elem]);
@@ -124,7 +174,6 @@ class LoginSignUp extends Component {
                 <input
                   type="text"
                   name='orcid'
-                  value={this.state.orcid}
                   onChange={this.handlechange}
                   className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                   id="id"
@@ -273,7 +322,6 @@ class LoginSignUp extends Component {
             <div className="hash">
               <input
                 name='interests'
-                value={this.state.interests}
                 onChange={this.handlechange}
                 className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                 id="id"

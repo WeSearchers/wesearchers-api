@@ -11,13 +11,32 @@ class Popup extends Component {
     };
   }
 
+  static hashTagify(value, oldValue){
+    let str = value.replace(/#/g, "");
+    let parts = str.split(" ");
+    parts = parts.filter(el => {
+      return el !== "";
+    });
+    if (oldValue.length < value.length && (value.endsWith(" ") || value.endsWith("#")))
+      parts.push ("");
+    return "#" + parts.join(" #");
+  }
+
   handleChange = event => {
+    if (event.target.name === "tags"){
+      event.target.value = Popup.hashTagify(event.target.value, this.state.tags);
+    }
     this.setState({ [event.target.name]: event.target.value });
   };
 
   handleSubmit = event => {
     let fd = new FormData();
-    for (let elem in this.state) fd.append(elem, this.state[elem]);
+    for (let elem in this.state) {
+      let str = this.state[elem];
+      if (elem === "tags")
+        fd.append(elem, this.state[elem].replace(/#/g, ""));
+      else fd.append(elem, this.state[elem]);
+    }
     Request.post("api/user/resource", fd).then(() => {
       this.setState({
         title: "",

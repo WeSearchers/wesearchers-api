@@ -6,7 +6,6 @@ import Pub2 from "./pub2";
 import Request from "../../request";
 import AddComent from "./addcoment";
 import Popup from "./popup";
-import TestFetch from "../textfetch";
 import TweetPub from "./tweetpub";
 
 class Feed extends Component {
