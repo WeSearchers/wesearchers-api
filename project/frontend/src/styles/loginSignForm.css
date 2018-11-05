@@ -1,23 +1,44 @@
-.login-page {
+.login-page,
+.register-page {
   position: relative;
   display: flex;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   background-image: url("../images/fundo.png");
   background-position: top;
   background-repeat: no-repeat;
   background-size: cover;
+  padding: 20px 0;
 }
 
-.login-page .container {
+.login-page .container,
+.register-page .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40%;
+  width: 60%;
+  min-height: calc(100vh - 40px);
   background-color: rgba(0, 59, 105, 0.6);
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
 }
+
+/*register exception*/
+
+.register-page .container {
+  display: block;
+}
+
+.register-page .register-header .row {
+  padding: 0 15px;
+}
+
+.register-page .register-header .row > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+/*end*/
 
 .login-page .login-form {
   display: flex;
@@ -30,7 +51,10 @@
 }
 
 .login-form input,
-.login-form button {
+.login-form button,
+.register-page input,
+.register-page button,
+.register-page textarea {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,13 +62,31 @@
   margin-bottom: 30px;
   height: 50px;
   width: 350px;
-  min-width: 300px;
   padding-left: 20px;
+  padding-right: 20px;
   border-radius: 20px;
   background-color: white;
   border: none;
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.05);
 }
+
+/*register-page exception*/
+.register-page input,
+.register-page button {
+  height: 40px;
+  width: 100%;
+}
+.register-page textarea {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  height: 100px;
+  width: 100%;
+}
+
+.register-page .container-upload-img input {
+  border-radius: 0;
+}
+/*end*/
 
 .login-form .logo {
   height: 150px;
@@ -158,6 +200,35 @@
   text-align: center;
 }
 
+/*UserRegister*/
+.register-page .container-logo {
+  padding: 30px 15px;
+}
+
+.register-page .container-logo .logo {
+  font-size: 40px;
+  color: #fafafa;
+}
+
+.register-page .register-header,
+.register-page .register-main {
+  padding: 30px 15px;
+  padding-top: 15px;
+  padding-bottom: 0;
+}
+.register-page .register-main {
+  padding-top: 0;
+}
+
+.register-page .register-header .container-upload-img .user-photo {
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  background: #fafafa;
+}
+
+/*End*/
+
 /* general */
 
 .login-page a.back-login {
@@ -167,4 +238,20 @@
   height: 40px;
   width: 40px;
   border-radius: 50%;
+}
+
+/*media queries*/
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .login-page .container,
+  .register-page .container {
+    width: 85%;
+  }
+}
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .login-page .container,
+  .register-page .container {
+    width: 100%;
+  }
 }

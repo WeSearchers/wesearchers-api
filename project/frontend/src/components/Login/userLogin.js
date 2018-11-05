@@ -53,6 +53,11 @@ class UserLogin extends Component {
   };
 
   render() {
+    var buttonStyle = {
+      color: "#fafafa",
+      maxWidth: "auto"
+    };
+
     return (
       <div className="login-page ">
         <div className="container">

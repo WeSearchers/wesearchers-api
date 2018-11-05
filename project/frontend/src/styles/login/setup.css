@@ -1,15 +1,19 @@
-.allpage-signup{
+.allpage-signup {
   background-image: url("../../images/fundo.png");
   background-position: top;
   background-repeat: no-repeat;
   background-size: cover;
 }
-.main-content-signup{
+
+.allpage-signup .container {
+  height: 100%;
+}
+
+.main-content-signup {
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
   width: 40%;
   background: rgba(0, 59, 105, 0.6);
-
 }
 
 .background-image-profile-signup {
@@ -20,35 +24,56 @@
   height: 100px;
   width: 100px;
 }
-.name p, .orcid p{
+.name p,
+.orcid p {
   width: 50%;
 }
 
-.username p, .orcid p, .email p, .password p, .institution p, .bio p, .hash p{
-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+.username p,
+.orcid p,
+.email p,
+.password p,
+.institution p,
+.bio p,
+.hash p {
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
 }
-.bio p{
+.bio p {
   height: 150px;
 }
-.username .form-control-coment , .orcid .form-control-coment,.first_name .form-control-coment,.last_name .form-control-coment,.email .form-control-coment,
-.password .form-control-coment, .institution .form-control-coment, .bio .form-control-coment, .hash .form-control-coment{
-height: 44px;
+.username .form-control-coment,
+.orcid .form-control-coment,
+.first_name .form-control-coment,
+.last_name .form-control-coment,
+.email .form-control-coment,
+.password .form-control-coment,
+.institution .form-control-coment,
+.bio .form-control-coment,
+.hash .form-control-coment {
+  height: 44px;
 }
 .email .form-control-coment,
-.password .form-control-coment, .institution .form-control-coment, .bio .form-control-coment, .first_name .form-control-coment,.last_name .form-control-coment,.hash .form-control-coment{
+.password .form-control-coment,
+.institution .form-control-coment,
+.bio .form-control-coment,
+.first_name .form-control-coment,
+.last_name .form-control-coment,
+.hash .form-control-coment {
   width: 100%;
 }
-.username .form-control-coment , .orcid .form-control-coment{
-width: 100%;
+.username .form-control-coment,
+.orcid .form-control-coment {
+  width: 100%;
 }
-.bio .form-control-coment{
+.bio .form-control-coment {
   height: 90px;
 }
 
-.input-jumbotron textarea{
-outline: none;
+.input-jumbotron textarea {
+  outline: none;
 }
-.input-jumbotron label, input {
+.input-jumbotron label,
+input {
   color: #333;
   font: 14px/20px Arial;
 }
@@ -59,14 +84,14 @@ outline: none;
 
 /* Hide the file input using
 opacity */
-.input-jumbotron [type=file] {
-    position: absolute;
-    filter: alpha(opacity=0);
-    opacity: 0;
+.input-jumbotron [type="file"] {
+  position: absolute;
+  filter: alpha(opacity=0);
+  opacity: 0;
 }
 .input-jumbotron input,
-[type=file] + label {
-  border: 1px solid #CCC;
+[type="file"] + label {
+  border: 1px solid #ccc;
   border-radius: 3px;
   text-align: left;
   padding: 5px;
@@ -75,18 +100,19 @@ opacity */
   left: 0;
   position: relative;
 }
-.input-jumbotron [type=file] + label {
-  text-align: center;  border-radius: 12.5px;
+.input-jumbotron [type="file"] + label {
+  text-align: center;
+  border-radius: 12.5px;
   top: 0.5em;
   /* Decorative */
-  background: #FFC95E;
+  background: #ffc95e;
   color: #fff;
   border: none;
   cursor: pointer;
 }
-.input-jumbotron [type=file] + label:hover {
+.input-jumbotron [type="file"] + label:hover {
   background: #6c757d;
 }
-.btn-create-account{
-    background: #FFC95E;
+.btn-create-account {
+  background: #ffc95e;
 }
