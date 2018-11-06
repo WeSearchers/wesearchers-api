@@ -9,11 +9,11 @@ class ConfirmAccount extends Component {
 
         <div className="container">
           <div className="confirm-account login-form">
-            <div className="welcome">
+            <div className="welcome text-white">
               Welcome <b>We</b>
               Searchers!
             </div>
-            <div className="message">
+            <div className="message text-white">
               To proceed you only need to consult your email address and confirm
               your registration.
             </div>

@@ -8,10 +8,10 @@ class ChangePasswordMessage extends Component {
         <a href="/login" className="general-btn back-login" />
         <div className="container">
           <div className="activate-account login-form">
-            <div className="title">
+            <div className="title  text-white">
               <b>Processing...</b>
             </div>
-            <div className="message">
+            <div className="message text-white">
               A password recovery request has been made. Please check your
               e-mail
             </div>
