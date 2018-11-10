@@ -326,8 +326,8 @@ def resources_by_interest(request):
 
 #@require_login
 def get_authentication_url(request):
-    consumer_key = "XnyRqdYFGxJWDrqPw6FvlozVT"
-    consumer_secret = "MlEGXgLHSo1doQFI71MFOrYE9CPoVx2ModEqzsMD8nOAcI6ygo"
+    consumer_key = "9JzpHC6cHUXhhTi53m2q2dbOE"
+    consumer_secret = "ToyJ7j7zjI7OfG4JKbwhgr7VdB2BU4alvBHbmwLh2BkzzPxETA"
     callback_url = "http://localhost:8000/api/user/saveaccesstokens"
 
     oauth = tweepy.OAuthHandler(consumer_key, consumer_secret,callback=callback_url)
@@ -340,8 +340,8 @@ def get_authentication_url(request):
 def save_access_tokens(request):
     access_token = ""
     access_token_secret = ""
-    consumer_key = "XnyRqdYFGxJWDrqPw6FvlozVT"
-    consumer_secret = "MlEGXgLHSo1doQFI71MFOrYE9CPoVx2ModEqzsMD8nOAcI6ygo"
+    consumer_key = "9JzpHC6cHUXhhTi53m2q2dbOE"
+    consumer_secret = "ToyJ7j7zjI7OfG4JKbwhgr7VdB2BU4alvBHbmwLh2BkzzPxETA"
     
     verifier = request.GET.get('oauth_verifier')
     oauth = tweepy.OAuthHandler(consumer_key,consumer_secret)
@@ -364,8 +364,8 @@ def save_access_tokens(request):
 def publish(request):
     access_token = ""
     access_token_secret = ""
-    consumer_key = "XnyRqdYFGxJWDrqPw6FvlozVT"
-    consumer_secret = "MlEGXgLHSo1doQFI71MFOrYE9CPoVx2ModEqzsMD8nOAcI6ygo"
+    consumer_key = "9JzpHC6cHUXhhTi53m2q2dbOE"
+    consumer_secret = "ToyJ7j7zjI7OfG4JKbwhgr7VdB2BU4alvBHbmwLh2BkzzPxETA"
 
     profile = Profile.objects.filter(user=request.user).first()
     access_token = profile.twitter_access_token
@@ -374,7 +374,7 @@ def publish(request):
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth)
 
-    api.update_status(status="Tweet Worked!")
+    api.update_status(status="Tweet funcionou!")
     return HttpResponse()
 
 @require_login
