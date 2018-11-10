@@ -69,6 +69,7 @@ class UserProfileMenu extends Component {
                 <i className="fa fa-file-text" />
               </a>
             </div>
+            <a href="http://localhost:8000/api/user/authentication"><button>Visit Page Now</button></a>
           </div>
         </div>
         <UserProfileMenuSection data={this.props.data} toShow={this.state.showSection} />

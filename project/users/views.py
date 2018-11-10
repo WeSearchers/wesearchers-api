@@ -342,15 +342,14 @@ def save_access_tokens(request):
     access_token_secret = ""
     consumer_key = "XnyRqdYFGxJWDrqPw6FvlozVT"
     consumer_secret = "MlEGXgLHSo1doQFI71MFOrYE9CPoVx2ModEqzsMD8nOAcI6ygo"
+    
     verifier = request.GET.get('oauth_verifier')
     oauth = tweepy.OAuthHandler(consumer_key,consumer_secret)
     token = request.session.get('request_token')
     request.session.delete('request_token')
     oauth.request_token = token
-    try:
-        oauth.get_access_token(verifier)
-    except tweepy.TweepError:
-        print('Error, failed to get access token')
+    oauth.get_access_token(verifier)
+
 
     access_token = oauth.access_token
     access_token_secret = oauth.access_token_secret
