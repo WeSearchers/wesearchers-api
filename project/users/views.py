@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.conf import settings
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
+import tweepy, requests
 
 from .responses import HttpResponseUnauthorized
 from .validators import PasswordValidator
@@ -322,6 +323,53 @@ def resources_by_interest(request):
     final_list = list(map(lambda x: x.serialize(), resources))
     return JsonResponse(final_list, safe=False)
 
+
+#@require_login
+def get_authentication_url(request):
+    consumer_key = "XnyRqdYFGxJWDrqPw6FvlozVT"
+    consumer_secret = "MlEGXgLHSo1doQFI71MFOrYE9CPoVx2ModEqzsMD8nOAcI6ygo"
+    callback_url = "localhost:8000/api/user/saveaccesstokens"
+
+    oauth = tweepy.OAuthHandler(consumer_key, consumer_secret,callback=callback_url)
+    url_redirect = oauth.get_authorization_url()
+
+    return url_redirect
+
+def save_access_tokens(request):
+    access_token = ""
+    access_token_secret = ""
+    session_request_token = ""
+
+
+@require_login
+def publish(request):
+    #insert code here
+    """
+    access_token = ""
+    access_token_secret = ""
+    session_request_token = ""
+
+    session_request_token = auth.request_token
+    verifier = request.GET.get('oauth_verifier')
+
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    token = session_request_token
+    session_request_token = ""
+    auth.request_token = token
+
+    try:
+        auth.get_access_token(verifier)
+    except tweepy.TweepError:
+        print "Error! Failed to get access token."
+
+    access_token = auth.access_token
+    access_token_secret = auth.access_token_secret
+
+
+    profile.twitter_access_token = acces_token
+    profile.twitter_access_token_secret = access_token_secret
+    profile.save()
+    """
 
 @require_login
 def follow_view(request):
