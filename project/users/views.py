@@ -328,12 +328,12 @@ def resources_by_interest(request):
 def get_authentication_url(request):
     consumer_key = "XnyRqdYFGxJWDrqPw6FvlozVT"
     consumer_secret = "MlEGXgLHSo1doQFI71MFOrYE9CPoVx2ModEqzsMD8nOAcI6ygo"
-    callback_url = "localhost:8000/api/user/saveaccesstokens"
+    callback_url = "http://localhost:8000/api/user/saveaccesstokens"
 
     oauth = tweepy.OAuthHandler(consumer_key, consumer_secret,callback=callback_url)
     url_redirect = oauth.get_authorization_url()
 
-    return url_redirect
+    return JsonResponse(url_redirect,safe=False)
 
 def save_access_tokens(request):
     access_token = ""
