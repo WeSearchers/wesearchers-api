@@ -333,43 +333,45 @@ def get_authentication_url(request):
     oauth = tweepy.OAuthHandler(consumer_key, consumer_secret,callback=callback_url)
     url_redirect = oauth.get_authorization_url()
 
-    return JsonResponse(url_redirect,safe=False)
+    request.session['request_token'] = oauth.request_token
+
+    return JsonResponse(url_redirect, safe=False)
 
 def save_access_tokens(request):
     access_token = ""
     access_token_secret = ""
-    session_request_token = ""
+    consumer_key = "XnyRqdYFGxJWDrqPw6FvlozVT"
+    consumer_secret = "MlEGXgLHSo1doQFI71MFOrYE9CPoVx2ModEqzsMD8nOAcI6ygo"
+    verifier = request.GET.get('oauth_verifier')
+    oauth = tweepy.OAuthHandler(consumer_key,consumer_secret)
+    token = request.session.get('request_token')
+    request.session.delete('request_token')
+    oauth.request_token = token
+    try:
+        oauth.get_access_token(verifier)
+    except tweepy.TweepError:
+        print('Error, failed to get access token')
+
+    access_token = oauth.access_token
+    access_token_secret = oauth.access_token_secret
+    profile = Profile.objects.filter(user=request.user).first()
+    profile.access_token = access_token
+    profile.access_token_secret = access_token_secret
+    profile.save()
 
 
 @require_login
 def publish(request):
-    #insert code here
-    """
     access_token = ""
     access_token_secret = ""
-    session_request_token = ""
+    consumer_key = "XnyRqdYFGxJWDrqPw6FvlozVT"
+    consumer_secret = "MlEGXgLHSo1doQFI71MFOrYE9CPoVx2ModEqzsMD8nOAcI6ygo"
 
-    session_request_token = auth.request_token
-    verifier = request.GET.get('oauth_verifier')
+    auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth)
 
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    token = session_request_token
-    session_request_token = ""
-    auth.request_token = token
-
-    try:
-        auth.get_access_token(verifier)
-    except tweepy.TweepError:
-        print "Error! Failed to get access token."
-
-    access_token = auth.access_token
-    access_token_secret = auth.access_token_secret
-
-
-    profile.twitter_access_token = acces_token
-    profile.twitter_access_token_secret = access_token_secret
-    profile.save()
-    """
+    api.update_status("Tweet")
 
 @require_login
 def follow_view(request):
