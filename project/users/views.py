@@ -357,6 +357,7 @@ def save_access_tokens(request):
     profile.access_token = access_token
     profile.access_token_secret = access_token_secret
     profile.save()
+    return HttpResponseRedirect(settings.RUNNING_HOST + "/user/profile")
 
 
 @require_login
@@ -366,11 +367,15 @@ def publish(request):
     consumer_key = "XnyRqdYFGxJWDrqPw6FvlozVT"
     consumer_secret = "MlEGXgLHSo1doQFI71MFOrYE9CPoVx2ModEqzsMD8nOAcI6ygo"
 
+    profile = Profile.objects.filter(user=request.user).first()
+    access_token = profile.twitter_access_token
+    access_token_secret = profile.twitter_access_token_secret
     auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth)
 
-    api.update_status("Tweet")
+    api.update_status(status="Tweet Worked!")
+    return HttpResponse()
 
 @require_login
 def follow_view(request):

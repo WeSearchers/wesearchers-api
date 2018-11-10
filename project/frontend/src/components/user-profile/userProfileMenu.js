@@ -70,7 +70,8 @@ class UserProfileMenu extends Component {
               </a>
             </div>
             <a href="http://localhost:8000/api/user/authentication"><button>Twitter Authentication</button></a>
-          </div>
+            <a href="http://localhost:8000/api/user/publish"><button>Publish</button></a>
+            </div>
         </div>
         <UserProfileMenuSection data={this.props.data} toShow={this.state.showSection} />
       </React.Fragment>
