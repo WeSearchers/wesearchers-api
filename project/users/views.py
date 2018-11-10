@@ -354,8 +354,8 @@ def save_access_tokens(request):
     access_token = oauth.access_token
     access_token_secret = oauth.access_token_secret
     profile = Profile.objects.filter(user=request.user).first()
-    profile.access_token = access_token
-    profile.access_token_secret = access_token_secret
+    profile.twitter_access_token = access_token
+    profile.twitter_access_token_secret = access_token_secret
     profile.save()
     return HttpResponseRedirect(settings.RUNNING_HOST + "/user/profile")
 
