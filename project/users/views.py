@@ -1,20 +1,16 @@
-from django.core.exceptions import ValidationError
-from django.db import IntegrityError
-from django.forms import ModelForm
-from django.forms.utils import ErrorDict
-from django.http import *
-from django.contrib.auth import authenticate, login, logout
+import tweepy
 from django.conf import settings
+from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
-from django.views.decorators.csrf import csrf_exempt
-import tweepy, requests
+from django.forms import ModelForm
+from django.http import *
 
-from .responses import HttpResponseUnauthorized
-from .validators import PasswordValidator
 from .decorators import require_login
 from .forms import ProfileForm, UserCreationForm, UserUpdateForm, ProfileUpdateForm, ResourceForm
 from .models import *
-import sys
+from .responses import HttpResponseUnauthorized
+from .validators import PasswordValidator
 
 
 def error_dict(*args):
@@ -324,32 +320,26 @@ def resources_by_interest(request):
     return JsonResponse(final_list, safe=False)
 
 
-#@require_login
+@require_login
 def get_authentication_url(request):
-    consumer_key = "9JzpHC6cHUXhhTi53m2q2dbOE"
-    consumer_secret = "ToyJ7j7zjI7OfG4JKbwhgr7VdB2BU4alvBHbmwLh2BkzzPxETA"
-    callback_url = "http://localhost:8000/api/user/saveaccesstokens"
+    callback_url = settings.RUNNING_HOST + "/api/user/saveaccesstokens"
 
-    oauth = tweepy.OAuthHandler(consumer_key, consumer_secret,callback=callback_url)
+    oauth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET, callback=callback_url)
     url_redirect = oauth.get_authorization_url()
 
     request.session['request_token'] = oauth.request_token
 
     return JsonResponse(url_redirect, safe=False)
 
+
+@require_login
 def save_access_tokens(request):
-    access_token = ""
-    access_token_secret = ""
-    consumer_key = "9JzpHC6cHUXhhTi53m2q2dbOE"
-    consumer_secret = "ToyJ7j7zjI7OfG4JKbwhgr7VdB2BU4alvBHbmwLh2BkzzPxETA"
-    
     verifier = request.GET.get('oauth_verifier')
-    oauth = tweepy.OAuthHandler(consumer_key,consumer_secret)
+    oauth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
     token = request.session.get('request_token')
     request.session.delete('request_token')
     oauth.request_token = token
     oauth.get_access_token(verifier)
-
 
     access_token = oauth.access_token
     access_token_secret = oauth.access_token_secret
@@ -362,20 +352,16 @@ def save_access_tokens(request):
 
 @require_login
 def publish(request):
-    access_token = ""
-    access_token_secret = ""
-    consumer_key = "9JzpHC6cHUXhhTi53m2q2dbOE"
-    consumer_secret = "ToyJ7j7zjI7OfG4JKbwhgr7VdB2BU4alvBHbmwLh2BkzzPxETA"
-
     profile = Profile.objects.filter(user=request.user).first()
     access_token = profile.twitter_access_token
     access_token_secret = profile.twitter_access_token_secret
-    auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
+    auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth)
 
     api.update_status(status="Tweet funcionou!")
     return HttpResponse()
+
 
 @require_login
 def follow_view(request):
