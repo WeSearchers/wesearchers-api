@@ -2,6 +2,7 @@ import tweepy
 from django.apps import apps
 from django.conf import settings
 from django.http import *
+from django.shortcuts import render
 
 from .decorators import require_login
 from .forms import *
@@ -27,6 +28,36 @@ def error_dict(*args):
 
 @require_login
 def publish(request):
+    if (request.method == "POST"):
+        errors = {}
+        tweet_form = TweetPublishingForm(request.POST)
+        if tweet_form.is_valid():
+            print("1")
+            text = tweet_form.clean_text['text']
+            print("2")
+            profile = Profile.objects.filter(user=request.user).first()
+            print("3")
+            access_token = profile.twitter_access_token
+            print("4")
+            access_token_secret = profile.twitter_access_token_secret
+            print("5")
+            auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
+            print("6")
+            auth.set_access_token(access_token, access_token_secret)
+            print("7")
+            api = tweepy.API(auth)
+            print("8")
+            api.update_status(status = tweet_text)
+            print("9")
+            return HttpResponse()
+        else:
+            print("form not valid")
+            return HttpResponseNotFound()
+            #return JsonResponse(error_dict(tweet_form, errors), status=400)
+    else:
+        print("Not a post")
+        return HttpResponseNotAllowed("Method not allowed")
+    """
     if request.method == "POST":
         errors = {}
         tweet_form = TweetPublishingForm(request.POST)
@@ -50,7 +81,7 @@ def publish(request):
                 error_dict(tweet_form, {k.args[0]: "field missing in form"}), status=400)
     else:
         return HttpResponseNotAllowed()
-
+    """
 @require_login
 def post_comment(request):
     if request.method == "POST":
