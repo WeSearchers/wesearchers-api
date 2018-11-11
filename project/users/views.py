@@ -351,19 +351,6 @@ def save_access_tokens(request):
 
 
 @require_login
-def publish(request):
-    profile = Profile.objects.filter(user=request.user).first()
-    access_token = profile.twitter_access_token
-    access_token_secret = profile.twitter_access_token_secret
-    auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
-    auth.set_access_token(access_token, access_token_secret)
-    api = tweepy.API(auth)
-
-    api.update_status(status="Tweet funcionou!")
-    return HttpResponse()
-
-
-@require_login
 def follow_view(request):
     if request.method == "POST":
         try:

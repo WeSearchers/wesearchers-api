@@ -54,6 +54,8 @@ class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="votes")
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="votes")
 
+class Tweet(models.Model):
+    text = models.CharField(max_length=280)
 
 class Comment(models.Model):
 

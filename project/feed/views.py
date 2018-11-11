@@ -7,6 +7,7 @@ from .decorators import require_login
 from .forms import *
 from .models import *
 
+Profile = apps.get_model('users','Profile')
 UserInterest = apps.get_model('users', 'UserInterest')
 
 
@@ -23,6 +24,32 @@ def error_dict(*args):
                 final = {**final, **item}
     return final
 
+
+@require_login
+def publish(request):
+    if request.method == "POST":
+        errors = {}
+        tweet_form = TweetPublishingForm(request.POST)
+        try:   
+            if(tweet_form.is_valid()):
+                tweet_form.save()
+                profile = Profile.objects.filter(user=request.user).first()
+                access_token = profile.twitter_access_token
+                access_token_secret = profile.twitter_access_token_secret
+                auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
+                auth.set_access_token(access_token, access_token_secret)
+                api = tweepy.API(auth)
+                tweet_text = tweet_form.cleaned_data['text']
+                api.update_status(status = tweet_text)
+                return HttpResponse()
+            else:
+                return JsonResponse(
+                    error_dict(tweet_form), status=400)
+        except KeyError as k:
+            return JsonResponse(
+                error_dict(tweet_form, {k.args[0]: "field missing in form"}), status=400)
+    else:
+        return HttpResponseNotAllowed()
 
 @require_login
 def post_comment(request):

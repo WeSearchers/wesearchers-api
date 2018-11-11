@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 from django.forms import ModelForm, forms, URLField, ImageField
 
-from .models import Article, Comment
+from .models import Article, Comment, Tweet
 
 
 class ArticlePublishingForm(ModelForm):
@@ -65,6 +65,25 @@ class CommentPublishingForm(ModelForm):
     def clean_text(self):
         text = self.cleaned_data.get("text")
         if len(text) > 7900:
+            raise forms.ValidationError(
+                self.error_messages['text_too_long'],
+                code='text_too_long',
+            )
+        return text
+
+class TweetPublishingForm(ModelForm):
+    error_messages = {
+    'text_too_long': "Tweet exceeds 280 character limit"
+    }
+
+    class Meta:
+        model = Tweet
+        fields =("text",)
+
+
+    def clean_text(self):
+        text = self.cleaned_data.get("text")
+        if len(text) > 280:
             raise forms.ValidationError(
                 self.error_messages['text_too_long'],
                 code='text_too_long',
