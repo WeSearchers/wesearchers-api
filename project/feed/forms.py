@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
-from django.forms import ModelForm, forms, URLField, ImageField, CharField
+from django.forms import ModelForm, forms, URLField, ImageField, CharField, FileField
 
 from .models import Article, Comment
 
@@ -71,12 +71,15 @@ class CommentPublishingForm(ModelForm):
             )
         return text
 
+
 class TweetPublishingForm(forms.Form):
     error_messages = {
-    'text_too_long': "Tweet exceeds 280 character limit"
+        'text_too_long': "Tweet exceeds 280 character limit",
+        'media_format': "Unsupported media format"
     }
 
-    text = CharField()
+    text = CharField(required=True)
+    media = FileField()
 
     def clean_text(self):
         text = self.cleaned_data.get("text")
@@ -86,3 +89,12 @@ class TweetPublishingForm(forms.Form):
                 code='text_too_long',
             )
         return text
+
+    def clean_media(self):
+        media = self.cleaned_data.get("media")
+        if not media.content_type.startswith("image") and not media.content_type.startswith("video"):
+            raise forms.ValidationError(
+                self.error_messages["media_format"],
+                code="media_format"
+            )
+        return media

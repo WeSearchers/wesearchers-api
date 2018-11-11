@@ -2,13 +2,14 @@ import tweepy
 from django.apps import apps
 from django.conf import settings
 from django.http import *
-from django.shortcuts import render
+from os import remove
 
+from .guid import new_guid
 from .decorators import require_login
 from .forms import *
 from .models import *
 
-Profile = apps.get_model('users','Profile')
+Profile = apps.get_model('users', 'Profile')
 UserInterest = apps.get_model('users', 'UserInterest')
 
 
@@ -28,60 +29,33 @@ def error_dict(*args):
 
 @require_login
 def publish(request):
-    if (request.method == "POST"):
-        errors = {}
-        tweet_form = TweetPublishingForm(request.POST)
-        if tweet_form.is_valid():
-            print("1")
-            text = tweet_form.clean_text['text']
-            print("2")
-            profile = Profile.objects.filter(user=request.user).first()
-            print("3")
-            access_token = profile.twitter_access_token
-            print("4")
-            access_token_secret = profile.twitter_access_token_secret
-            print("5")
-            auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
-            print("6")
-            auth.set_access_token(access_token, access_token_secret)
-            print("7")
-            api = tweepy.API(auth)
-            print("8")
-            api.update_status(status = tweet_text)
-            print("9")
-            return HttpResponse()
-        else:
-            print("form not valid")
-            return HttpResponseNotFound()
-            #return JsonResponse(error_dict(tweet_form, errors), status=400)
-    else:
-        print("Not a post")
-        return HttpResponseNotAllowed("Method not allowed")
-    """
     if request.method == "POST":
         errors = {}
-        tweet_form = TweetPublishingForm(request.POST)
-        try:   
-            if(tweet_form.is_valid()):
-                tweet_form.save()
-                profile = Profile.objects.filter(user=request.user).first()
-                access_token = profile.twitter_access_token
-                access_token_secret = profile.twitter_access_token_secret
-                auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
-                auth.set_access_token(access_token, access_token_secret)
-                api = tweepy.API(auth)
-                tweet_text = tweet_form.cleaned_data['text']
-                api.update_status(status = tweet_text)
-                return HttpResponse()
+        tweet_form = TweetPublishingForm(request.POST, request.FILES)
+        if tweet_form.is_valid():
+            text = tweet_form.cleaned_data['text']
+            access_token = request.user.profile.twitter_access_token
+            access_token_secret = request.user.profile.twitter_access_token_secret
+            auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
+            auth.set_access_token(access_token, access_token_secret)
+            api = tweepy.API(auth)
+            if "image" in request.FILES.keys():
+                img = request.FILES["image"]
+                filename = "media/temp/" + new_guid() + "_" + img.name
+                with open(filename, 'wb+') as destination:
+                    for chunk in img.chunks():
+                        destination.write(chunk)
+                api.update_with_media(filename, status=text)
+                remove(filename)
             else:
-                return JsonResponse(
-                    error_dict(tweet_form), status=400)
-        except KeyError as k:
-            return JsonResponse(
-                error_dict(tweet_form, {k.args[0]: "field missing in form"}), status=400)
+                api.update_status(status=text)
+            return HttpResponse()
+        else:
+            return JsonResponse(error_dict(tweet_form.errors, errors), status=400)
     else:
         return HttpResponseNotAllowed()
-    """
+
+
 @require_login
 def post_comment(request):
     if request.method == "POST":
@@ -224,7 +198,8 @@ def get_tweets(request):
         api = tweepy.API(auth)
         tweet_list = []
         for interest in UserInterest.objects.filter(user=request.user):
-            for tweet in tweepy.Cursor(api.search, tweet_mode="extended", q=("%23" + interest.interest)).items(max_tweets):
+            for tweet in tweepy.Cursor(api.search, tweet_mode="extended", q=("%23" + interest.interest)).items(
+                    max_tweets):
                 if hasattr(tweet, 'retweeted_status'):
                     tweet = tweet.retweeted_status
                 tags = list()
