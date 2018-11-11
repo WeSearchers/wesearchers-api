@@ -39,11 +39,11 @@ def publish(request):
             auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
             auth.set_access_token(access_token, access_token_secret)
             api = tweepy.API(auth)
-            if "image" in request.FILES.keys():
-                img = request.FILES["image"]
-                filename = "media/temp/" + new_guid() + "_" + img.name
+            if "media" in request.FILES.keys():
+                media = request.FILES["media"]
+                filename = "media/temp/" + new_guid() + "_" + media.name
                 with open(filename, 'wb+') as destination:
-                    for chunk in img.chunks():
+                    for chunk in media.chunks():
                         destination.write(chunk)
                 api.update_with_media(filename, status=text)
                 remove(filename)
