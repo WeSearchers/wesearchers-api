@@ -1,13 +1,11 @@
-import json
-
 import tweepy
-from django.shortcuts import render
+from django.apps import apps
+from django.conf import settings
 from django.http import *
 
 from .decorators import require_login
-from django.apps import apps
-from .models import *
 from .forms import *
+from .models import *
 
 UserInterest = apps.get_model('users', 'UserInterest')
 
@@ -162,11 +160,9 @@ def article_by_interests(request):
 @require_login
 def get_tweets(request):
     if request.method == "GET":
-        consumer_token = "XnyRqdYFGxJWDrqPw6FvlozVT"
-        consumer_secret = "MlEGXgLHSo1doQFI71MFOrYE9CPoVx2ModEqzsMD8nOAcI6ygo"
         max_tweets = 8
 
-        auth = tweepy.OAuthHandler(consumer_token, consumer_secret)
+        auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
         api = tweepy.API(auth)
         tweet_list = []
         for interest in UserInterest.objects.filter(user=request.user):

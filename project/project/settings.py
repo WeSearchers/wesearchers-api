@@ -91,6 +91,11 @@ DATABASES = {
     'default': credentials["DATABASE"]
 }
 
+twitter = credentials["TWITTER"]
+
+TWITTER_KEY = twitter["KEY"]
+TWITTER_SECRET = twitter["SECRET"]
+
 smtp = credentials["SMTP"]
 
 EMAIL_HOST = smtp["EMAIL_HOST"]
