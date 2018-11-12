@@ -71,7 +71,7 @@
 /* Popup */
 
 .resources-popup-container {
-  position: absolute;
+  position: fixed;
   display: flex;
   justify-content: center;
   width: 100vw;
@@ -87,10 +87,12 @@
   margin: 0;
 }
 
-.resources-popup {
+.container.resources-popup {
+  position: relative;
   display: flex;
   flex-direction: column;
-  height: 330px;
+  height: fit-content;
+  padding: 40px;
 }
 
 .resources-popup input {
@@ -99,11 +101,21 @@
 .resources-popup button {
   align-self: flex-end;
   margin-bottom: 0;
+  margin-top: 20px;
 }
 
 .resources-popup .close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: #002f54;
+  font-size: 20px;
   margin-bottom: 15px;
   text-align: right;
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* checkbox */

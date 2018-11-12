@@ -1,7 +1,31 @@
 import React, { Component } from "react";
+import Popup from "../popup";
 
 class ProfileAbout extends Component {
-  state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      showPopup: "hidden",
+      socialMedia: ""
+    };
+    this.handleShowPopup = this.handleShowPopup.bind(this);
+  }
+
+  handleShowPopup(show, name) {
+    if (this.state.showPopup !== show) {
+      this.setState({
+        showPopup: show,
+        socialMedia: name
+      });
+    }
+  }
+
+  handleChangeSocialMedia = name => {
+    this.setState({
+      socialMedia: name
+    });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -23,21 +47,19 @@ class ProfileAbout extends Component {
                 Não existe em BD
               </li>
               */}
-              </ul>
+            </ul>
           </div>
           <div className="section-title">Biography</div>
           <div className="section-card">
-            <div className="sub-text">
-              {this.props.data.bio}
-            </div>
+            <div className="sub-text">{this.props.data.bio}</div>
           </div>
           <div className="section-title">Research interests</div>
           <div className="section-card interest-area">
             {this.props.data.interests.map(interest => (
               <div key={interest} className="multi-choice-area">
                 <i>#</i>
-                  {interest}
-                </div>
+                {interest}
+              </div>
             ))}
           </div>
           <div className="section-title">language</div>
@@ -59,7 +81,32 @@ class ProfileAbout extends Component {
               </div>
             </div>
           </div>
+          <div className="row col-md-12 connect-buttons-section">
+            <a
+              className="connect-profile-btn general-btn yellow-btn"
+              onClick={() => this.handleShowPopup("show", "reddit")}
+            >
+              <div className="logo">
+                <i class="fa fa-reddit-alien" aria-hidden="true" />
+              </div>
+              <div className="text">connect with twitter</div>
+            </a>
+            <a
+              className="connect-profile-btn general-btn yellow-btn"
+              onClick={() => this.handleShowPopup("show", "twitter")}
+            >
+              <div className="logo">
+                <i class="fa fa-twitter" aria-hidden="true" />
+              </div>
+              <div className="text">connect with reddit</div>
+            </a>
+          </div>
         </div>
+        <Popup
+          toShow={this.state.showPopup}
+          toHide={this.handleShowPopup}
+          socialMedia={this.state.socialMedia}
+        />
       </React.Fragment>
     );
   }
