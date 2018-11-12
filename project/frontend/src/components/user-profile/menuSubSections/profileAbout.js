@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Popup from "../popup";
+import Request from "../../../request";
 
 class ProfileAbout extends Component {
   constructor(props) {
@@ -9,6 +10,14 @@ class ProfileAbout extends Component {
       socialMedia: ""
     };
     this.handleShowPopup = this.handleShowPopup.bind(this);
+  }
+
+  authTwitter() {
+    Request.get("api/user/twitterauth").then(response => {
+      response.json().then(url => {
+        window.location.assign(url);
+      })
+    });
   }
 
   handleShowPopup(show, name) {
@@ -93,7 +102,7 @@ class ProfileAbout extends Component {
             </a>
             <a
               className="connect-profile-btn general-btn yellow-btn"
-              onClick={() => this.handleShowPopup("show", "twitter")}
+              onClick={this.authTwitter}
             >
               <div className="logo">
                 <i class="fa fa-twitter" aria-hidden="true" />
