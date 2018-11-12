@@ -11,9 +11,11 @@
 
 .login-page .container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 40%;
+  width: 50%;
+  height: 90%;
   background-color: rgba(0, 59, 105, 0.6);
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
@@ -156,6 +158,25 @@
 .login-page .confirm-account .message,
 .login-page .activate-account .message {
   text-align: center;
+  font-size: 18px;
+}
+.message {
+  width: 257px;
+}
+.welcome p,
+.welcome h1 {
+  color: #ffc95e;
+}
+.welcome h1 {
+  font-size: 144px;
+  font-weight: bold;
+}
+.url .welcome p {
+  font-size: 24px;
+  font-weight: bold;
+}
+.url .message p {
+  letter-spacing: 0.15em;
 }
 
 /* general */
@@ -167,4 +188,10 @@
   height: 40px;
   width: 40px;
   border-radius: 50%;
+}
+
+/* URL */
+.url {
+  background: #002f54;
+  height: 100vh;
 }
