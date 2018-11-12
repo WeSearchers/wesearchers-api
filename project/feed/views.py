@@ -45,7 +45,8 @@ def publish(request):
                 with open(filename, 'wb+') as destination:
                     for chunk in media.chunks():
                         destination.write(chunk)
-                api.update_with_media(filename, status=text)
+                media = api.media_upload(filename)
+                api.update_status(status=text, media_ids=[media.media_id])
                 remove(filename)
             else:
                 api.update_status(status=text)
