@@ -89,7 +89,7 @@ class ProfileAbout extends Component {
               <div className="logo">
                 <i class="fa fa-reddit-alien" aria-hidden="true" />
               </div>
-              <div className="text">connect with twitter</div>
+              <div className="text">connect with reddit</div>
             </a>
             <a
               className="connect-profile-btn general-btn yellow-btn"
@@ -98,7 +98,7 @@ class ProfileAbout extends Component {
               <div className="logo">
                 <i class="fa fa-twitter" aria-hidden="true" />
               </div>
-              <div className="text">connect with reddit</div>
+              <div className="text">connect with twitter</div>
             </a>
           </div>
         </div>
