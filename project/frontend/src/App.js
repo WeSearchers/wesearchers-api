@@ -6,6 +6,7 @@ import "./styles/loginSignForm.css";
 import "./styles/innerMenu.css";
 import "./styles/resources.css";
 import "./styles/navbar.css";
+import "./styles/errorPage.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import UserProfileMain from "./components/user-profile/userProfileMain";
 import EditUserProfileForm from "./components/user-profile/editUserProfileForm";
@@ -23,6 +24,7 @@ import ResetPassword from "./components/Login/resetPassword";
 import InnerMenuMain from "./components/navbar/innerMenu/innerMenuMain";
 import ResourcesMain from "./components/resources/resourcesMain";
 import UserRegister from "./components/Login/userRegister";
+import ErrorPage from "./views/errorPage";
 
 class App extends Component {
   constructor(props) {
@@ -42,6 +44,7 @@ class App extends Component {
             <div className="App">
               <Switch>
                 <Route path="/user/profile" component={UserProfileMain} />
+                <Route path="/errorpage" component={ErrorPage} />
                 <Route path="/user/settings" component={InnerMenuMain} />
                 <Route path="/user/resources" component={ResourcesMain} />
                 <Route path="/user/edit" component={EditUserProfileForm} />

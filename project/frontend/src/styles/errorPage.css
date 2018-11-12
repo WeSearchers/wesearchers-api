@@ -1,0 +1,42 @@
+.error-page .error {
+  position: relative;
+}
+
+.error-page .error .number {
+  position: relative;
+  z-index: 1;
+  font-size: 8em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #ffc95e;
+  display: flex;
+  justify-content: center;
+}
+
+.error-page .error .shadow {
+  position: absolute;
+  z-index: -1;
+  bottom: 40px;
+  left: calc((100% - 300px) / 2);
+  width: 300px;
+  background: rgba(0, 0, 0, 0.3);
+  height: 30px;
+  border-radius: 50%;
+  box-shadow: none !important;
+}
+
+.error .message .title {
+  color: #ffc95e;
+  font-size: 1.5em;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.error .message .sub-text {
+  color: #fff;
+  font-size: 1.1em;
+  letter-spacing: 1px;
+  text-align: center;
+}
