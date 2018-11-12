@@ -1,14 +1,15 @@
-import json
-
 import tweepy
-from django.shortcuts import render
-from django.http import *
-
-from .decorators import require_login
 from django.apps import apps
-from .models import *
-from .forms import *
+from django.conf import settings
+from django.http import *
+from os import remove
 
+from .guid import new_guid
+from .decorators import require_login
+from .forms import *
+from .models import *
+
+Profile = apps.get_model('users', 'Profile')
 UserInterest = apps.get_model('users', 'UserInterest')
 
 
@@ -24,6 +25,35 @@ def error_dict(*args):
             else:
                 final = {**final, **item}
     return final
+
+
+@require_login
+def publish(request):
+    if request.method == "POST":
+        errors = {}
+        tweet_form = TweetPublishingForm(request.POST, request.FILES)
+        if tweet_form.is_valid():
+            text = tweet_form.cleaned_data['text']
+            access_token = request.user.profile.twitter_access_token
+            access_token_secret = request.user.profile.twitter_access_token_secret
+            auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
+            auth.set_access_token(access_token, access_token_secret)
+            api = tweepy.API(auth)
+            if "media" in request.FILES.keys():
+                media = request.FILES["media"]
+                filename = "media/temp/" + new_guid() + "_" + media.name
+                with open(filename, 'wb+') as destination:
+                    for chunk in media.chunks():
+                        destination.write(chunk)
+                api.update_with_media(filename, status=text)
+                remove(filename)
+            else:
+                api.update_status(status=text)
+            return HttpResponse()
+        else:
+            return JsonResponse(error_dict(tweet_form.errors, errors), status=400)
+    else:
+        return HttpResponseNotAllowed()
 
 
 @require_login
@@ -162,15 +192,14 @@ def article_by_interests(request):
 @require_login
 def get_tweets(request):
     if request.method == "GET":
-        consumer_token = "XnyRqdYFGxJWDrqPw6FvlozVT"
-        consumer_secret = "MlEGXgLHSo1doQFI71MFOrYE9CPoVx2ModEqzsMD8nOAcI6ygo"
         max_tweets = 8
 
-        auth = tweepy.OAuthHandler(consumer_token, consumer_secret)
+        auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
         api = tweepy.API(auth)
         tweet_list = []
         for interest in UserInterest.objects.filter(user=request.user):
-            for tweet in tweepy.Cursor(api.search, tweet_mode="extended", q=("%23" + interest.interest)).items(max_tweets):
+            for tweet in tweepy.Cursor(api.search, tweet_mode="extended", q=("%23" + interest.interest)).items(
+                    max_tweets):
                 if hasattr(tweet, 'retweeted_status'):
                     tweet = tweet.retweeted_status
                 tags = list()

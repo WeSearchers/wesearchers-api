@@ -11,6 +11,8 @@ urlpatterns = [
     re_path('password', views.change_password),
     re_path('followers', views.get_followers),
     re_path('following', views.get_following),
+    re_path('authentication',views.get_authentication_url),
+    re_path('saveaccesstokens',views.save_access_tokens),
     # re_path('<int:user_id>/collaborators',views.get_collaborators),
     re_path('resource/delete', views.delete_resource),
     re_path('resource/gettags', views.resource_tags),

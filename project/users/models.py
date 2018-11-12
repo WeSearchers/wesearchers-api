@@ -3,7 +3,6 @@ from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.db import models
-from django.conf import settings
 
 from .guid import new_guid
 
@@ -30,6 +29,8 @@ class Profile(models.Model):
     bio = models.CharField(max_length=240)
     image = models.ImageField(upload_to="media/profile/avatar/")
     email_guid = models.CharField(max_length=40, default=new_guid)
+    twitter_access_token = models.CharField(max_length=240, default="")
+    twitter_access_token_secret = models.CharField(max_length=240,default="")
 
     def serialize(self):
         u = self.user
@@ -44,7 +45,9 @@ class Profile(models.Model):
             "bio": p.bio,
             "image_data": path_to_base64(p.image.path),
             "institution": p.institution_id,
-            "interests": list(map(lambda i: i.interest, list(UserInterest.objects.filter(user=u))))
+            "interests": list(map(lambda i: i.interest, list(UserInterest.objects.filter(user=u)))),
+            "twitter_access_token": p.twitter_access_token,
+            "twitter_access_token_secret": p.twitter_access_token_secret,
         }
 
 

@@ -38,7 +38,7 @@ class Feed extends Component {
     return (
       <React.Fragment>
         <NavBar />
-          {/*<Jumbotron userData={this.state.userData}/>*/}
+        <Jumbotron userData={this.state.userData}/>
         {this.state.tweets.map( tweet => (
           <TweetPub data={tweet}/>
         ))}

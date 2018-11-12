@@ -1,19 +1,16 @@
-from django.core.exceptions import ValidationError
-from django.db import IntegrityError
-from django.forms import ModelForm
-from django.forms.utils import ErrorDict
-from django.http import *
-from django.contrib.auth import authenticate, login, logout
+import tweepy
 from django.conf import settings
+from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
-from django.views.decorators.csrf import csrf_exempt
+from django.forms import ModelForm
+from django.http import *
 
-from .responses import HttpResponseUnauthorized
-from .validators import PasswordValidator
 from .decorators import require_login
 from .forms import ProfileForm, UserCreationForm, UserUpdateForm, ProfileUpdateForm, ResourceForm
 from .models import *
-import sys
+from .responses import HttpResponseUnauthorized
+from .validators import PasswordValidator
 
 
 def error_dict(*args):
@@ -321,6 +318,36 @@ def resources_by_interest(request):
     resources.sort(key=lambda x: x.date, reverse=True)
     final_list = list(map(lambda x: x.serialize(), resources))
     return JsonResponse(final_list, safe=False)
+
+
+@require_login
+def get_authentication_url(request):
+    callback_url = settings.RUNNING_HOST + "/api/user/saveaccesstokens"
+
+    oauth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET, callback=callback_url)
+    url_redirect = oauth.get_authorization_url()
+
+    request.session['request_token'] = oauth.request_token
+
+    return JsonResponse(url_redirect, safe=False)
+
+
+@require_login
+def save_access_tokens(request):
+    verifier = request.GET.get('oauth_verifier')
+    oauth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
+    token = request.session.get('request_token')
+    request.session.delete('request_token')
+    oauth.request_token = token
+    oauth.get_access_token(verifier)
+
+    access_token = oauth.access_token
+    access_token_secret = oauth.access_token_secret
+    profile = Profile.objects.filter(user=request.user).first()
+    profile.twitter_access_token = access_token
+    profile.twitter_access_token_secret = access_token_secret
+    profile.save()
+    return HttpResponseRedirect(settings.RUNNING_HOST + "/user/profile")
 
 
 @require_login
