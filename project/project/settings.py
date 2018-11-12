@@ -91,6 +91,13 @@ DATABASES = {
     'default': credentials["DATABASE"]
 }
 
+
+
+reddit = credentials["REDDIT"]
+
+REDDIT_CLIENT_ID = reddit["ID"]
+REDDIT_CLIENT_SECRET = reddit["SECRET"]
+
 twitter = credentials["TWITTER"]
 
 TWITTER_KEY = twitter["KEY"]
