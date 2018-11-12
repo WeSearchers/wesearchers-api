@@ -16,14 +16,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60%;
-  min-height: calc(100vh - 40px);
+  min-height: calc(100vh - 80px);
   background-color: rgba(0, 59, 105, 0.6);
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
 }
 
 /*register exception*/
+.register-page {
+  padding: 40px 0;
+}
 
 .register-page .container {
   display: block;
@@ -75,6 +77,7 @@
 .register-page button {
   height: 40px;
   width: 100%;
+  border-radius: 6px;
 }
 .register-page textarea {
   padding-top: 15px;
@@ -242,16 +245,29 @@
 
 /*media queries*/
 
-@media (min-width: 768px) and (max-width: 991px) {
+@media (min-width: 992px) {
   .login-page .container,
   .register-page .container {
-    width: 85%;
+    max-width: 695px;
   }
 }
 
+@media (min-width: 768px) and (max-width: 991px) {
+  /* .login-page .container,
+  .register-page .container {
+    width: 85%;
+  } */
+}
+
 @media (min-width: 0px) and (max-width: 767px) {
-  .login-page .container,
+  /* .login-page .container,
   .register-page .container {
     width: 100%;
+  } */
+  .register-page .register-header .row > div {
+    align-items: center;
+  }
+  .register-page .container-upload-img input {
+    width: 170px;
   }
 }
