@@ -76,7 +76,7 @@
     height: auto;
     padding-bottom: 0;
     margin-bottom: 0;
-    border-bottom: 20px solid #002f54;
+    border-bottom: 20px solid #ccc;
   }
   .inner-menu-main .actions {
     background: transparent;
@@ -85,5 +85,15 @@
   .form-change-password {
     background: #e7e7e7;
     padding: 40px 30px;
+    min-height: 83vh;
+  }
+  .form-change-password .input-password {
+    width: 100%;
+  }
+
+  .form-change-password .yellow-btn {
+    margin: auto;
+    margin-top: 30px;
+    width: 150px;
   }
 }
