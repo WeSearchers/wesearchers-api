@@ -1,4 +1,5 @@
 import tweepy
+import praw
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ValidationError
@@ -319,9 +320,33 @@ def resources_by_interest(request):
     final_list = list(map(lambda x: x.serialize(), resources))
     return JsonResponse(final_list, safe=False)
 
+@require_login
+def get_reddit_authentication_url(request):
+    reddit = praw.Reddit(client_id=settings.REDDIT_CLIENT_ID,
+                        client_secret=settings.REDDIT_CLIENT_SECRET, 
+                        redirect_uri=settings.RUNNING_HOST + "/api/user/saveredditrequesttoken",
+                        user_agent="web:WeSearchers:v0.1 (by /u/FabioGC)")
+
+    return JsonResponse(reddit.auth.url(['identity','mysubreddits'], '...', 'permanent'),safe=False)
+
 
 @require_login
-def get_authentication_url(request):
+def save_reddit_request_token(request):
+    reddit = praw.Reddit(client_id=settings.REDDIT_CLIENT_ID,
+                        client_secret=settings.REDDIT_CLIENT_SECRET, 
+                        redirect_uri=settings.RUNNING_HOST + "/api/user/saveredditrequesttoken",
+                        user_agent="web:WeSearchers:v0.1 (by /u/FabioGC)")
+    
+    code = request.GET.get('code')
+    refresh_token = reddit.auth.authorize(code)
+    profile = request.user.profile
+    profile.reddit_refresh_token = refresh_token
+    profile.save()
+
+    return HttpResponse()
+
+@require_login
+def get_twitter_authentication_url(request):
     callback_url = settings.RUNNING_HOST + "/api/user/saveaccesstokens"
 
     oauth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET, callback=callback_url)
@@ -331,9 +356,8 @@ def get_authentication_url(request):
 
     return JsonResponse(url_redirect, safe=False)
 
-
 @require_login
-def save_access_tokens(request):
+def save_twitter_access_tokens(request):
     verifier = request.GET.get('oauth_verifier')
     oauth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
     token = request.session.get('request_token')

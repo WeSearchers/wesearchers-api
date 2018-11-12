@@ -10,6 +10,7 @@ django-webpack-loader = "*"
 "psycopg2" = "*"
 "psycopg2-binary" = "*"
 pillow = "*"
+praw = "*"
 tweepy = {git = "https://github.com/Spyder-exe/tweepy.git"}
 
 [dev-packages]
