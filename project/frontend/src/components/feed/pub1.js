@@ -77,10 +77,7 @@ class Pub1 extends React.Component {
     return (
       <div className="container">
         <div className="pub1 m-5 bg-grey d-flex flex-column mr-auto ml-auto ">
-          <div className=" d-flex flex-row justify-content-between mr-4">
-            <p className="twitter-pub mt-3 ml-4">
-              <i>#FromTwitter</i>
-            </p>
+          <div className=" d-flex flex-row justify-content-end mr-4">
             <div className="icons">
               <img className="mt-3" src={save} width="14" height="14" />
               <img className="mt-3 ml-3" src={trash} width="14" height="16" />
@@ -116,7 +113,15 @@ class Pub1 extends React.Component {
               </p>
             </div>
           </div>
-          <div className="content d-flex flex-row justify-content-center bg-white mr-2 ml-2 mt-4 mr-auto ml-auto">
+          {/*
+          <div className=" d-flex flex-row justify-content-end mr-5">
+            <p className="twitter-pub mt-4 ml-4">From Twitter</p>
+          </div>
+          */}
+          <div className="d-flex flex-row justify-content-end mr-5">
+            <p className="reddit-pub mt-4 ml-4">From Reddit</p>
+          </div>
+          <div className="content d-flex flex-row justify-content-center bg-white mr-2 ml-2 mr-auto ml-auto">
             {this.props.data !== undefined && this.props.data !== null ? (
               <p className="font-weight-light m-2 ml-4 mr-4 mt-4 mb-4">
                 <strong>{this.props.data.title}</strong>
