@@ -80,7 +80,7 @@ class ProfileUpdateForm(ProfileForm):
 class ResourceForm(ModelForm):
     error_messages = {
         'title_too_long': "The title exceeds the 50 character limit",
-                          'url_invalid': "The url is invalid"
+        'url_invalid': "The url is invalid"
     }
 
     class Meta:

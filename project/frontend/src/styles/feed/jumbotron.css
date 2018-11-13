@@ -6,6 +6,7 @@
   color: #002f54;
 }
 .background-image-profile {
+  clip-path: circle(50% at center);
   background-image: url("../../images/ProfileBlue.png");
   background-position: center;
   background-repeat: no-repeat;

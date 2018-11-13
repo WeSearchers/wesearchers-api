@@ -25,6 +25,6 @@ urlpatterns = [
     re_path('article', views.post_article),
     re_path('comment', views.post_comment),
     re_path('vote', views.vote_view),
-    re_path('tweet', views.get_tweets),
+    re_path('posts', views.get_posts),
     re_path('publish', views.publish),
 ]

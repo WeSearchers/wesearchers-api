@@ -92,7 +92,8 @@ class TweetPublishingForm(forms.Form):
 
     def clean_media(self):
         media = self.cleaned_data.get("media")
-        if media is not None and not media.content_type.startswith("image") and not media.content_type.startswith("video"):
+        if media is not None and not media.content_type.startswith("image") and not media.content_type.startswith(
+                "video"):
             raise forms.ValidationError(
                 self.error_messages["media_format"],
                 code="media_format"

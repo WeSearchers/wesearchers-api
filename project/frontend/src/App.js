@@ -25,6 +25,7 @@ import InnerMenuMain from "./components/navbar/innerMenu/innerMenuMain";
 import ResourcesMain from "./components/resources/resourcesMain";
 import UserRegister from "./components/Login/userRegister";
 import ErrorPage from "./views/errorPage";
+import SettingsAndPrivacy from "./components/navbar/innerMenu/sideMenu/settingsAndPrivacy";
 
 class App extends Component {
   constructor(props) {
@@ -44,14 +45,13 @@ class App extends Component {
             <div className="App">
               <Switch>
                 <Route path="/user/profile" component={UserProfileMain} />
-                <Route path="/user/edit" component={EditUserProfileForm} />
-                <Route path="/changepassword" component={ChangePassword} />
-                <Route
-                  path="/changepasswordmessage"
-                  component={changePasswordMessage}
-                />
-                <Route path="/feed" component={Feed} />
-                <Route component={Feed} />
+                <Route exact path="/user/settings" component={InnerMenuMain} />
+                <Route exact path="/user/resources" component={ResourcesMain} />
+                <Route exact path="/user/edit" component={EditUserProfileForm} />
+                <Route exact path="/changepassword" component={ChangePassword} />
+                <Route exact path="/feed" component={Feed} />
+                <Route exact path="/" component={Feed} />
+                <Route component={ErrorPage}/>
               </Switch>
             </div>
           </Router>
@@ -61,12 +61,18 @@ class App extends Component {
           <Router>
             <div className="App">
               <Switch>
-                <Route path="/register/success" component={ConfirmAccount} />
-                <Route path="/register" component={LoginSignUp} />
-                <Route path="/confirm" component={ConfirmAccount} />
-                <Route path="/forgotpass" component={ForgotPassword} />
-                <Route path="/activate" component={ActivateAccount} />
-                <Route component={UserLogin} />
+                <Route exact path="/resetpw" component={ResetPassword} />
+                <Route exact path="/register/success" component={ConfirmAccount} />
+                <Route exact path="/register" component={LoginSignUp} />
+                <Route exact
+                  path="/changepasswordmessage"
+                  component={changePasswordMessage}
+                />
+                <Route exact path="/confirm" component={ConfirmAccount} />
+                <Route exact path="/forgotpass" component={ForgotPassword} />
+                <Route exact path="/activate" component={ActivateAccount} />
+                <Route exact path="/" component={UserLogin} />
+                <Route component={ErrorPage}/>
               </Switch>
             </div>
           </Router>

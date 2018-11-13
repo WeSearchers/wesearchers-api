@@ -20,6 +20,14 @@ class ProfileAbout extends Component {
     });
   }
 
+  authReddit() {
+    Request.get("api/user/redditauth").then(response => {
+      response.json().then(url => {
+        window.location.assign(url);
+      })
+    });
+  }
+
   handleShowPopup(show, name) {
     if (this.state.showPopup !== show) {
       this.setState({
@@ -93,7 +101,7 @@ class ProfileAbout extends Component {
           <div className="row col-md-12 connect-buttons-section">
             <a
               className="connect-profile-btn general-btn yellow-btn"
-              onClick={() => this.handleShowPopup("show", "reddit")}
+              onClick={this.authReddit}
             >
               <div className="logo">
                 <i class="fa fa-reddit-alien" aria-hidden="true" />

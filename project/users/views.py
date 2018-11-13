@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
-from django.forms import ModelForm
+from django.forms import ModelForm, Form
 from django.http import *
 
 from .decorators import require_login
@@ -320,30 +320,32 @@ def resources_by_interest(request):
     final_list = list(map(lambda x: x.serialize(), resources))
     return JsonResponse(final_list, safe=False)
 
+
 @require_login
 def get_reddit_authentication_url(request):
     reddit = praw.Reddit(client_id=settings.REDDIT_CLIENT_ID,
-                        client_secret=settings.REDDIT_CLIENT_SECRET, 
-                        redirect_uri=settings.RUNNING_HOST + "/api/user/saveredditrequesttoken",
-                        user_agent="web:WeSearchers:v0.1 (by /u/FabioGC)")
+                         client_secret=settings.REDDIT_CLIENT_SECRET,
+                         redirect_uri=settings.RUNNING_HOST + "/api/user/saveredditrequesttoken",
+                         user_agent="web:WeSearchers:v0.1 (by /u/FabioGC)")
 
-    return JsonResponse(reddit.auth.url(['identity','mysubreddits'], '...', 'permanent'),safe=False)
+    return JsonResponse(reddit.auth.url(['identity', 'mysubreddits', 'read'], '...', 'permanent'), safe=False)
 
 
 @require_login
 def save_reddit_request_token(request):
     reddit = praw.Reddit(client_id=settings.REDDIT_CLIENT_ID,
-                        client_secret=settings.REDDIT_CLIENT_SECRET, 
-                        redirect_uri=settings.RUNNING_HOST + "/api/user/saveredditrequesttoken",
-                        user_agent="web:WeSearchers:v0.1 (by /u/FabioGC)")
-    
+                         client_secret=settings.REDDIT_CLIENT_SECRET,
+                         redirect_uri=settings.RUNNING_HOST + "/api/user/saveredditrequesttoken",
+                         user_agent="web:WeSearchers:v0.1 (by /u/FabioGC)")
+
     code = request.GET.get('code')
     refresh_token = reddit.auth.authorize(code)
     profile = request.user.profile
     profile.reddit_refresh_token = refresh_token
     profile.save()
 
-    return HttpResponse()
+    return HttpResponseRedirect(settings.RUNNING_HOST + "/user/profile")
+
 
 @require_login
 def get_twitter_authentication_url(request):
@@ -355,6 +357,7 @@ def get_twitter_authentication_url(request):
     request.session['request_token'] = oauth.request_token
 
     return JsonResponse(url_redirect, safe=False)
+
 
 @require_login
 def save_twitter_access_tokens(request):

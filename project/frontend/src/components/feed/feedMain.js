@@ -7,6 +7,7 @@ import Request from "../../request";
 import AddComent from "./addcoment";
 import Popup from "./popup";
 import TweetPub from "./tweetpub";
+import RedditPub from "./redditpub";
 
 class Feed extends Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class Feed extends Component {
         });
       });
     });
-    Request.get("api/feed/tweet").then( response => {
+    Request.get("api/feed/posts").then( response => {
       response.json().then( data => {
         this.setState({
           tweets: data,
@@ -39,9 +40,12 @@ class Feed extends Component {
       <React.Fragment>
         <NavBar />
         <Jumbotron userData={this.state.userData}/>
-        {this.state.tweets.map( tweet => (
-          <TweetPub data={tweet}/>
-        ))}
+        {this.state.tweets.map( post => {
+          if (post.type === "twitter")
+            return <TweetPub data={post}/>;
+          else if (post.type === "reddit")
+            return <RedditPub data={post}/>;
+        })}
         {/*
         <Pub1 />
         <Pub1 />
