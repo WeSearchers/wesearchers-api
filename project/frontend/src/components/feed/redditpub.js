@@ -96,7 +96,10 @@ class RedditPub extends React.Component {
             </p>
           </div>
         </div>
-        <div className="content d-flex flex-row justify-content-center bg-white mr-2 ml-2 mt-4 mr-auto ml-auto">
+        <div className="d-flex flex-row justify-content-end mr-5">
+            <p className="reddit-pub mt-2 mr-3 ml-4">From Reddit</p>
+          </div>
+        <div className="content d-flex flex-row justify-content-center bg-white mr-2 ml-2 mr-auto ml-auto">
           {this.props.data !== undefined && this.props.data !== null ? (
               <div>
               <p className="font-weight-bold m-2 ml-4 mr-4 mt-4 mb-4">

@@ -1,3 +1,5 @@
+import time
+
 import tweepy
 from django.apps import apps
 from django.conf import settings
@@ -49,6 +51,7 @@ def publish(request):
                         for chunk in media.chunks():
                             destination.write(chunk)
                     media = api.media_upload(filename)
+                    time.sleep(2)
                     api.update_status(status=text, media_ids=[media.media_id])
                     remove(filename)
                 else:
