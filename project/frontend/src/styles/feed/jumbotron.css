@@ -17,7 +17,6 @@
 
 .textField {
   width: 74%;
-  margin-left: 1.7rem;
 }
 .descrition {
   margin-left: 6rem;
@@ -80,4 +79,14 @@ opacity */
 }
 .btn-create-account {
   background: #ffc95e;
+}
+.buttons .input-jumbotron [type="file"] + label {
+  text-align: center;
+  border-radius: 2px;
+  top: 0.5em;
+  /* Decorative */
+  background: #fcfcfc;
+  color: #aaaaaa;
+  border: none;
+  cursor: pointer;
 }

@@ -16,20 +16,20 @@ btn:focus {
   padding: 4px;
   color: #495057;
 }
-.buttons .btn-publish{
-  font-size: 10px;
-  height: 10%;
-  width: 15%;
+.buttons .btn-publish {
+  font-size: 14px;
+  height: 30px;
+  width: 134px;
   padding: 4px;
-  background: #FFC95E;
+  background: #ffc95e;
   color: #fff;
 }
-.buttons .btn-foto{
-    width: 17%;
-    font-size: 10px;
-    height: 10%;
-    padding: 4px;
-    color: #495057;
+.buttons .btn-foto {
+  width: 17%;
+  font-size: 10px;
+  height: 10%;
+  padding: 4px;
+  color: #495057;
 }
 .buttons .btn-id {
   width: 20%;
@@ -37,8 +37,8 @@ btn:focus {
 .pub-btn .btn-seemore {
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  background: #FFC95E;
-  border-color: #FFC95E;
+  background: #ffc95e;
+  border-color: #ffc95e;
 }
 .img-btn {
   width: 50px;
@@ -64,11 +64,11 @@ btn:focus {
   height: 30px;
   width: 30px;
 }
-.addurl .save-btn{
+.addurl .save-btn {
   font-size: 10px;
   height: 10%;
   width: 15%;
   padding: 4px;
-  background: #FFC95E;
+  background: #ffc95e;
   color: #fff;
 }
