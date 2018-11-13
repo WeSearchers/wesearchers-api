@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 import json
 import os
-#import django_heroku
+
+# import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -69,11 +70,15 @@ TEMPLATES = [
     },
 ]
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "assets"),
+]
+
 WEBPACK_LOADER = {
     'DEFAULT': {
-        'BUNDLE_DIR_NAME': 'bundles/',
-        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.dev.json'),
-    }
+            'BUNDLE_DIR_NAME': 'bundles/',
+            'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.prod.json'),
+        }
 }
 
 WSGI_APPLICATION = 'project.wsgi.application'
@@ -96,6 +101,12 @@ DATABASES = {
     }
 }
 
+REDDIT_CLIENT_ID = os.environ.get("REDDIT_ID", '')
+REDDIT_CLIENT_SECRET = os.environ.get("REDDIT_SECRET", '')
+
+TWITTER_KEY = os.environ.get("TWITTER_KEY", '')
+TWITTER_SECRET = os.environ.get("TWITTER_SECRET", '')
+
 EMAIL_HOST = os.environ.get("EMAIL_HOST", '')
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", '')
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", '')
@@ -111,6 +122,7 @@ AUTHENTICATION_BACKENDS = (
 
 AUTH_PASSWORD_VALIDATORS = [
     {
+
         'NAME': "users.validators.PasswordValidator"
     }
 ]
@@ -134,4 +146,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Activate Django-Heroku.
-#django_heroku.settings(locals())
+# django_heroku.settings(locals())
