@@ -69,7 +69,7 @@ class UserProfileMenu extends Component {
                 <i className="fa fa-file-text" />
               </a>
             </div>
-          </div>
+            </div>
         </div>
         <UserProfileMenuSection data={this.props.data} toShow={this.state.showSection} />
       </React.Fragment>

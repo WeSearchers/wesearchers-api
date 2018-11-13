@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -53,15 +53,13 @@ class Vote(models.Model):
     score = models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="votes")
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="votes")
-
-
+    
 class Comment(models.Model):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.date = datetime.datetime.today()
 
-    date = models.DateTimeField()
+    date = models.DateTimeField(default=datetime.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
     text = models.CharField(max_length=7900)
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comments")

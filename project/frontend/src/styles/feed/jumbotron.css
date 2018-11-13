@@ -1,19 +1,25 @@
 .write-pub {
   width: 60%;
-  height: 30vh;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
+  height: 100%;
+  /*box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
+  background: #F5F5F5;*/
+  color: #002f54;
 }
 .background-image-profile {
-  background-image: url("../../images/Ellipse.png");
+  clip-path: circle(50% at center);
+  background-image: url("../../images/ProfileBlue.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  height: 60px;
-  width: 60px;
+  height: 100px;
+  width: 100px;
 }
 
 .textField {
-  width: 84%;
+  width: 74%;
+}
+.descrition {
+  margin-left: 6rem;
 }
 
 .form-control {
@@ -28,4 +34,59 @@
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.addPhoto textarea {
+  outline: none;
+}
+.addPhoto label,
+input {
+  color: #333;
+}
+.addPhoto label {
+  display: inline-block;
+  text-align: right;
+}
+
+/* Hide the file input using
+opacity */
+.addPhoto [type="file"] {
+  position: absolute;
+  filter: alpha(opacity=0);
+  opacity: 0;
+}
+.addPhoto input,
+[type="file"] + label {
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  font-size: 10px;
+  text-align: left;
+  position: relative;
+}
+.addPhoto [type="file"] + label {
+  text-align: center;
+  border-radius: 12.5px;
+  top: 0.5em;
+  /* Decorative */
+  background-color: #f8f9fa;
+  color: #495057;
+  border: none;
+  cursor: pointer;
+}
+.addPhoto [type="file"] + label:hover {
+  background: #6c757d;
+}
+.btn-create-account {
+  background: #ffc95e;
+}
+.buttons .input-jumbotron [type="file"] + label {
+  text-align: center;
+  border-radius: 2px;
+  top: 0.5em;
+  /* Decorative */
+  background: #fcfcfc;
+  color: #aaaaaa;
+  border: none;
+  cursor: pointer;
 }

@@ -20,10 +20,7 @@ class Post extends Component {
               Maecenas sollicitudin. Pellentesque habitant morbi tristique.
             </div>
             {/* jmmonteiro colocar autor da publicação através do fetch */}
-            <div className="publication-author">
-              {" "}
-              <i>Author's Name</i>
-            </div>
+            <div className="publication-author"> Author's Name</div>
           </div>
         </div>
       </React.Fragment>

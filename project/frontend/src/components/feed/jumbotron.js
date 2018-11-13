@@ -1,111 +1,121 @@
 import React, { Component } from "react";
 import photo from "../../images/images.png";
 import group from "../../images/group.png";
-import local from "../../images/mappin.png";
+import local from "../../images/mapin.png";
 import clip from "../../images/clip.png";
-import Request from "../../request"
+import Request from "../../request";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import Popup from "./popup";
+import AddPhoto from "./addphoto";
+import AddURL from "./addurl";
+import Tag from "./tag";
+import Location from "./location";
 
 class Jumbotron extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '',
-      text: '',
-      url: '',
-      media_url: '',
-      tags: '',
-    }
+      text: "",
+      filename: null,
+      media: null,
+      errors: {}
+    };
+    this.media = React.createRef();
+    this.text = React.createRef();
   }
 
   handleChange = ev => {
-    let tags = "";
-    if(ev.target.name === "text"){
-      let words = ev.target.value.split(" ");
-      words.forEach(word => {
-        if(word.startsWith("#")){
-          tags = tags + word.substring(1) + " ";
-        }
-      });
-      this.setState({["text"]: ev.target.value, tags: tags});
-    }
-    else
-      this.setState({[ev.target.name]: ev.target.value});
+    if (ev.target.name === "media") {
+      this.setState({ ["media"]: ev.target.files[0] });
+      this.setState({ ["filename"]: ev.target.files[0].name });
+    } else this.setState({ [ev.target.name]: ev.target.value });
   };
 
   handleSubmit = ev => {
     let fd = new FormData();
-    fd.append("title", this.state.title);
     fd.append("text", this.state.text);
-    fd.append("url", this.state.url);
-    fd.append("media_url", this.state.media_url);
-    fd.append("tags", this.state.tags);
-    Request.post('api/feed/article', fd);
+    fd.append("media", this.state.media, this.state.filename);
+    Request.post("api/feed/publish", fd).then(response => {
+      if (response.status === 200){
+        this.text.current.value = "";
+        this.media.current.value = "";
+        this.setState({
+          text: "",
+          filename: null,
+          media: null,
+          errors: {}
+        });
+      } else {
+        response.json().then(errors => {
+          this.setState({ errors: errors });
+        });
+      }
+    });
   };
 
   render() {
+    console.log(this.state.errors);
     return (
-      <div className="write-pub bg-grey m-5 d-flex flex-column mr-auto ml-auto ">
-        <div className="bla d-flex flex-row align-content-baseline">
-          <div className="background-image-profile ml-3 mt-4" />
-          <div className="textField align-self-end mt-4 ml-3 d-flex flex-row justify-content-end ">
-            <input
-              className="form-control z-depth-1"
-              name="title"
-              onChange={this.handleChange}
-              placeholder="Title"
-            />
+      <div className="write-pub bg-grey m-5 d-flex flex-column mr-auto ml-auto pb-3">
+        <div className="bla d-flex flex-row ">
+          <div className="d-flex flex-row align-content-baseline mb-4">
+            <div className="background-image-profile ml-3 mt-4" />
+            {/*{this.props.userData !== null && this.props.userData !== undefined ? (
+            <img
+                  className="circle"
+                  src={
+                    "data:image/jpeg;base64, " + this.props.userData.image_data
+                  }
+                  width={"100%"}
+                  style={{}}
+                />
+                ) : null}*/}
           </div>
-          <div className="textField align-self-end mt-4 ml-3 d-flex flex-row justify-content-end ">
+          <div className=" textField mb-3 mt-4">
             <textarea
-              className="form-control z-depth-1"
+              className="form-control z-depth-1 ml-5"
               id="exampleFormControlTextarea6"
               rows="3"
               name="text"
+              ref={this.text}
               onChange={this.handleChange}
-              placeholder="Create a new post..."
+              placeholder="Write here..."
             />
           </div>
-          <div className="textField align-self-end mt-4 ml-3 d-flex flex-row justify-content-end ">
-            <input
-              className="form-control z-depth-1"
-              name="url"
-              onChange={this.handleChange}
-              placeholder="Article URL"
-            />
-          </div>
-          <div className="textField align-self-end mt-4 ml-3 d-flex flex-row justify-content-end ">
-            <input
-              className="form-control z-depth-1"
-              name="media_url"
-              onChange={this.handleChange}
-              placeholder="Media URL"
-            />
-          </div>
+          {this.state.errors.text !== undefined &&
+          this.state.errors.text !== null ? (
+            <div className="wrongpass">
+              <p>{this.state.errors.text}</p>
+            </div>
+          ) : null}
         </div>
-        <div className="buttons d-flex flex-row justify-content-end mr-4 mt-3">
-          <button type="button" className="btn-linx btn btn-light m-1">
-            <img className="pr-1" src={clip} width="18" height="18" />
-            Link
-          </button>
-
-          <button type="button" className="btn-foto btn btn-light m-1">
-            <img className="pr-1" src={photo} width="18" height="18" />
-            Image / Video
-          </button>
-
-          <button type="button" className="btn-id btn btn-light m-1">
-            <img className="pr-1" src={group} width="18" height="18" />
-            Identify (...)
-          </button>
-
-          <button type="button" className="btn-local btn btn-light m-1">
-            <img className="pr-1" src={local} width="18" height="18" />
-            Location
-          </button>
-
+        <div className="buttons d-flex flex-row justify-content-between mr-4 mt-3">
+          <div className="input-jumbotron upload-btn ml-5">
+            <input
+              id="f02"
+              type="file"
+              ref={this.media}
+              name="media"
+              accept="image/*,video/*"
+              onChange={this.handleChange}
+            />
+            <label for="f02">Upload</label>
+            {this.state.errors.image !== undefined &&
+            this.state.errors.image !== null ? (
+              <div className="wrongpass">
+                <p>{this.state.errors.image}</p>
+              </div>
+            ) : null}
+          </div>
+          {this.state.errors.media !== undefined &&
+          this.state.errors.media !== null ? (
+            <div className="wrongpass">
+              <p>{this.state.errors.media}</p>
+            </div>
+          ) : null}
           <button
             type="button"
-            className="btn-local btn btn-secondary text-white m-1 ml-4 mt-2"
+            className="btn-publish btn text-white m-1 mr-2 mt-2 "
             onClick={this.handleSubmit}
           >
             Publish

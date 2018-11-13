@@ -1,0 +1,99 @@
+.inner-menu-main .side-menu ul {
+  height: calc(100vh - 60px);
+  background: #e7e7e7;
+  padding-bottom: 20px;
+}
+.inner-menu-main .side-menu ul h5 {
+  padding: 10px 0;
+  padding-left: 10px;
+  background: #ffc95e;
+  color: #002f54;
+  font-weight: 600;
+  margin: 0;
+}
+.inner-menu-main .side-menu ul > a > li {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  border-bottom: 1px solid #999;
+  border-left: 7px solid #e7e7e7;
+  padding-left: 15px;
+  padding-right: 20px;
+  transition: 0.05s;
+  margin-bottom: 0;
+}
+.inner-menu-main .side-menu ul > a > li:nth-child(2) {
+  border-top: 1px solid #999;
+}
+.inner-menu-main .side-menu ul > a > li:hover {
+  border-color: #999;
+  background: #fafafa;
+  cursor: pointer;
+}
+
+/*on click sideMenu item*/
+.inner-menu-main .side-menu ul > a > li.clicked-side-menu-item {
+  border-color: #002f54;
+  border-bottom-color: #999;
+  background: #fafafa;
+}
+
+/*end*/
+
+/**/
+
+.inner-menu-main .side-menu {
+  background: #f1f1f1;
+  padding-left: 0;
+}
+
+.inner-menu-main .actions {
+  background: #f1f1f1;
+  padding-top: 44px;
+}
+
+/*change password*/
+
+.form-change-password .input-password {
+  margin-bottom: 15px;
+  width: 70%;
+}
+
+.form-change-password .input-password input {
+  border-radius: 5px;
+  padding: 10px 10px;
+  width: 100%;
+}
+
+/*media queries*/
+
+@media only screen and (max-width: 767px) {
+  .inner-menu-main .side-menu {
+    background: transparent;
+    padding: 0;
+  }
+  .inner-menu-main .side-menu ul {
+    height: auto;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: 20px solid #ccc;
+  }
+  .inner-menu-main .actions {
+    background: transparent;
+    padding: 0;
+  }
+  .form-change-password {
+    background: #e7e7e7;
+    padding: 40px 30px;
+    min-height: 83vh;
+  }
+  .form-change-password .input-password {
+    width: 100%;
+  }
+
+  .form-change-password .yellow-btn {
+    margin: auto;
+    margin-top: 30px;
+    width: 150px;
+  }
+}

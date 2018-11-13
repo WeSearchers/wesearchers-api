@@ -45,7 +45,7 @@ class ForgotPassword extends Component {
                 required
               />
 
-              <input type="submit" value="send email"/>
+              <input className="mb-4" type="submit" value="send email"/>
             </form>
           </div>
         </div>

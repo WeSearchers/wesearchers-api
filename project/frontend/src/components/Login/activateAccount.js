@@ -7,21 +7,21 @@ class ActivateAccount extends Component {
     this.state = {
       answered: false,
       activated: false
-    }
+    };
   }
 
   activate = event => {
     let query = new URLSearchParams(window.location.search);
     let fd = new FormData();
-    fd.append("guid", query.get('guid'));
-    Request.post("api/user/validate", fd).then( response => {
+    fd.append("guid", query.get("guid"));
+    Request.post("api/user/validate", fd).then(response => {
       let activated = response.status === 200;
-      this.setState({answered: true, activated: activated});
+      this.setState({ answered: true, activated: activated });
     });
   };
 
   componentDidMount() {
-    this.activate()
+    this.activate();
   }
 
   render() {
@@ -30,32 +30,33 @@ class ActivateAccount extends Component {
         <div className="container">
           <div className="activate-account login-form">
             {this.state.answered ? (
-                this.state.activated ? (
-                  <div>
-                    <div className="title">
-                      <b>All set!</b>
-                    </div>
-                    <div className="message">
-                      Your account has been activated. To login click{" "}
-                      <a href="/login">here</a>
-                    </div>
+              this.state.activated ? (
+                <div>
+                  <div className="title text-white">
+                    <b>All set!</b>
                   </div>
-                ) : (
-                  <div>
-                    <div className="title">
-                      <b>Oops!</b>
-                    </div>
-                    <div className="message">
-                      Something went wrong, this page is not available. To login click{" "}
-                      <a href="/login">here</a>
-                    </div>
+                  <div className="message text-white">
+                    Your account has been activated. To login click{" "}
+                    <a href="/">here</a>
                   </div>
-                )) : (
-                  <div>
-                    <div className="title">
-                      <b>Activating...</b>
-                    </div>
+                </div>
+              ) : (
+                <div>
+                  <div className="title text-white">
+                    <b>Oops!</b>
                   </div>
+                  <div className="message text-white">
+                    Something went wrong, this page is not available. To login
+                    click <a href="/">here</a>
+                  </div>
+                </div>
+              )
+            ) : (
+              <div>
+                <div className="title text-white">
+                  <b>Activating...</b>
+                </div>
+              </div>
             )}
           </div>
         </div>

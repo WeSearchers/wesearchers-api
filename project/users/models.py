@@ -1,8 +1,8 @@
 import base64
+from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.db import models
-from django.conf import settings
 
 from .guid import new_guid
 
@@ -29,6 +29,9 @@ class Profile(models.Model):
     bio = models.CharField(max_length=240)
     image = models.ImageField(upload_to="media/profile/avatar/")
     email_guid = models.CharField(max_length=40, default=new_guid)
+    twitter_access_token = models.CharField(max_length=240)
+    twitter_access_token_secret = models.CharField(max_length=240)
+    reddit_refresh_token = models.CharField(max_length=240)
 
     def serialize(self):
         u = self.user
@@ -43,7 +46,7 @@ class Profile(models.Model):
             "bio": p.bio,
             "image_data": path_to_base64(p.image.path),
             "institution": p.institution_id,
-            "interests": list(map(lambda i: i.interest, list(UserInterest.objects.filter(user=u))))
+            "interests": list(map(lambda i: i.interest, list(UserInterest.objects.filter(user=u)))),
         }
 
 
@@ -55,6 +58,30 @@ class UserInterest(models.Model):
 class UserFollow(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following_user")
     followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followed")
+
+
+class Resource(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50)
+    url = models.URLField(blank=True)
+    date = models.DateTimeField(default=datetime.now)
+
+    def serialize(self):
+        u = self.user
+        r = self
+        return {
+            "id": r.id,
+            "user_id": u.id,
+            "title": r.title,
+            "url": r.url,
+            "interests": list(map(lambda ri: ri.interest, ResourceInterest.objects.filter(resource=self)))
+        }
+
+
+class ResourceInterest(models.Model):
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE, related_name="interests")
+    interest = models.CharField(max_length=50)
 
 
 """

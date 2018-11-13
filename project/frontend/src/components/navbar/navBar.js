@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import "../styles/navbar.css";
-import Request from "../request";
+import Request from "../../request";
 
 class NavBar extends Component {
   state = {
@@ -22,11 +21,18 @@ class NavBar extends Component {
         break;
       case "profile":
         window.location.assign(window.location.origin + "/user/profile");
+        break;
+      case "settings":
+        window.location.assign(window.location.origin + "/user/settings");
+        break;
+      case "resources":
+        window.location.assign(window.location.origin + "/user/resources");
+        break;
     }
   }
 
   logout() {
-    Request.post("api/user/logout").then( response => {
+    Request.post("api/user/logout").then(response => {
       window.location.assign(window.location.origin + "/");
     });
   }
@@ -36,9 +42,9 @@ class NavBar extends Component {
       <div className="nav-bar">
         <div className="container nav-bar-container">
           <ul className="menu">
-            <li className="logo-nav" id="home" onClick={NavBar.clickButton}/>
-            <li id="" onClick={NavBar.clickButton}>
-              <i className="fa fa-window-maximize" />
+            <li className="logo-nav" id="home" onClick={NavBar.clickButton} />
+            <li id="resources" onClick={NavBar.clickButton}>
+              <i className="fa fa-floppy-o" />
             </li>
             <li id="profile" onClick={NavBar.clickButton}>
               <i className="fa fa-user" />
@@ -66,7 +72,7 @@ class NavBar extends Component {
                 <a>
                   <span>Community</span> <i className="fa  fa-chevron-right" />
                 </a>
-                <a>
+                <a id="settings" onClick={NavBar.clickButton}>
                   <span>Settings and Privacy</span>{" "}
                   <i className="fa  fa-chevron-right" />
                 </a>
