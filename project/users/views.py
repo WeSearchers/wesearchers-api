@@ -349,7 +349,7 @@ def save_reddit_request_token(request):
 
 @require_login
 def get_twitter_authentication_url(request):
-    callback_url = settings.RUNNING_HOST + "/api/user/saveaccesstokens"
+    callback_url = settings.RUNNING_HOST + "/api/user/savetwitteraccesstokens"
 
     oauth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET, callback=callback_url)
     url_redirect = oauth.get_authorization_url()

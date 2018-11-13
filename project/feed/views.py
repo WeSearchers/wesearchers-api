@@ -36,7 +36,7 @@ def publish(request):
         access_token = request.user.profile.twitter_access_token
         access_token_secret = request.user.profile.twitter_access_token_secret
         tweet_form = TweetPublishingForm(request.POST, request.FILES)
-        if access_token is not None and access_token_secret is not None:
+        if access_token is not None and access_token is not '' and access_token_secret is not None and access_token_secret is not '':
             if tweet_form.is_valid():
                 text = tweet_form.cleaned_data['text']
                 auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
@@ -199,7 +199,7 @@ def get_posts(request):
     if request.method == "GET":
         max_posts = 8
         post_list = []
-        if request.user.profile.reddit_refresh_token is not None:
+        if request.user.profile.reddit_refresh_token is not '':
             reddit = praw.Reddit(client_id=settings.REDDIT_CLIENT_ID,
                                  client_secret=settings.REDDIT_CLIENT_SECRET,
                                  refresh_token=request.user.profile.reddit_refresh_token,
@@ -231,7 +231,7 @@ def get_posts(request):
         for interest in UserInterest.objects.filter(user=request.user):
             for tweet in tweepy.Cursor(api.search, tweet_mode="extended", q=("%23" + interest.interest),
                                        result_type='popular').items(
-                    max_posts):
+                max_posts):
                 if hasattr(tweet, 'retweeted_status'):
                     tweet = tweet.retweeted_status
                 tags = list()

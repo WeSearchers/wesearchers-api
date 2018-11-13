@@ -14,7 +14,7 @@ class Feed extends Component {
     super(props);
     this.state = {
       userData : null,
-      tweets: []
+      posts: []
     }
   }
 
@@ -29,7 +29,7 @@ class Feed extends Component {
     Request.get("api/feed/posts").then( response => {
       response.json().then( data => {
         this.setState({
-          tweets: data,
+          posts: data,
         })
       })
     });
@@ -40,7 +40,7 @@ class Feed extends Component {
       <React.Fragment>
         <NavBar />
         <Jumbotron userData={this.state.userData}/>
-        {this.state.tweets.map( post => {
+        {this.state.posts.map(post => {
           if (post.type === "twitter")
             return <TweetPub data={post}/>;
           else if (post.type === "reddit")

@@ -39,8 +39,8 @@ class Jumbotron extends Component {
     fd.append("media", this.state.media, this.state.filename);
     Request.post("api/feed/publish", fd).then(response => {
       if (response.status === 200){
-        this.text.value = "";
-        this.media.value = "";
+        this.text.current.value = "";
+        this.media.current.value = "";
         this.setState({
           text: '',
           filename: null,
