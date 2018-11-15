@@ -365,6 +365,9 @@ def get_twitter_authentication_url(request):
 @require_login
 def save_twitter_access_tokens(request):
     verifier = request.GET.get('oauth_verifier')
+    if "denied" in request.GET.keys():
+        return HttpResponseRedirect(settings.RUNNING_HOST + "/user/profile")
+        
     oauth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
     token = request.session.get('request_token')
     request.session.delete('request_token')
