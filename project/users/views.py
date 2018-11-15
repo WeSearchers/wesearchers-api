@@ -333,6 +333,9 @@ def get_reddit_authentication_url(request):
 
 @require_login
 def save_reddit_request_token(request):
+    if "error" in request.GET.keys():
+        return HttpResponseRedirect(settings.RUNNING_HOST + "/user/profile")
+
     reddit = praw.Reddit(client_id=settings.REDDIT_CLIENT_ID,
                          client_secret=settings.REDDIT_CLIENT_SECRET,
                          redirect_uri=settings.RUNNING_HOST + "/api/user/saveredditrequesttoken",
