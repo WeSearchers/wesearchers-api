@@ -1,0 +1,5 @@
+{
+    "scripts": {
+        "postinstall": "cd project/frontend && npm install && npm run build"
+    }
+}
