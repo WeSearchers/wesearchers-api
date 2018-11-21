@@ -5,7 +5,7 @@ from django.apps import apps
 from django.conf import settings
 from django.forms import Form
 from django.http import *
-from os import remove
+from os import remove, makedirs, path
 import praw
 
 from .guid import new_guid
@@ -41,12 +41,15 @@ def publish(request):
         if access_token is not None and access_token is not '' and access_token_secret is not None and access_token_secret is not '':
             if tweet_form.is_valid():
                 text = tweet_form.cleaned_data['text']
-                auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
+                auth = tweepy.OAuthHandler(
+                    settings.TWITTER_KEY, settings.TWITTER_SECRET)
                 auth.set_access_token(access_token, access_token_secret)
                 api = tweepy.API(auth)
                 if "media" in request.FILES.keys():
                     media = request.FILES["media"]
                     filename = "media/temp/" + new_guid() + "_" + media.name
+                    if not path.exists("media/temp"):
+                        makedirs("media/temp")
                     with open(filename, 'wb+') as destination:
                         for chunk in media.chunks():
                             destination.write(chunk)
@@ -70,7 +73,8 @@ def post_comment(request):
         errors = {}
         comment_form = CommentPublishingForm(request.POST)
         try:
-            article = Article.objects.filter(id=int(request.POST["article_id"])).first()
+            article = Article.objects.filter(
+                id=int(request.POST["article_id"])).first()
             if article is not None:
                 if comment_form.is_valid():
                     comment = comment_form.save(commit=False)
@@ -109,9 +113,11 @@ def vote_view(request):
         except ValueError:
             return JsonResponse({"vote": "vote must be an integer"}, status=400)
         if any([value == 0, value == -1, value == 1]):
-            article = Article.objects.filter(id=int(request.POST["article_id"])).first()
+            article = Article.objects.filter(
+                id=int(request.POST["article_id"])).first()
             if article is not None:
-                vote = Vote.objects.filter(user=request.user, article=article).first()
+                vote = Vote.objects.filter(
+                    user=request.user, article=article).first()
                 if vote is not None:
                     if value == 0:
                         vote.delete()
@@ -119,7 +125,8 @@ def vote_view(request):
                         vote.score = value
                         vote.save()
                 else:
-                    vote = Vote(score=value, user=request.user, article=article)
+                    vote = Vote(score=value, user=request.user,
+                                article=article)
                     vote.save()
                 return JsonResponse(vote.id, safe=False)
             else:
@@ -171,7 +178,8 @@ def post_article(request):
 def comments_by_article(request, article_id):
     article = Article.objects.filter(id=article_id).first()
     if article is not None:
-        comments = list(map(lambda comment: comment.serialize(), Comment.objects.filter(article=article)))
+        comments = list(map(lambda comment: comment.serialize(),
+                            Comment.objects.filter(article=article)))
         comments.sort(key=lambda x: x["date"], reverse=True)
         return JsonResponse(comments, safe=False)
     else:
@@ -186,10 +194,12 @@ def article_by_interests(request):
         return len(l3)
 
     def match_count(interests, article):
-        article_interests = list(map(lambda a: a.interest, ArticleInterest.objects.filter(article=article)))
+        article_interests = list(
+            map(lambda a: a.interest, ArticleInterest.objects.filter(article=article)))
         return intersection_len(interests, article_interests)
 
-    user_interests = list(map(lambda interest: interest.interest, UserInterest.objects.filter(user=request.user)))
+    user_interests = list(map(lambda interest: interest.interest,
+                              UserInterest.objects.filter(user=request.user)))
     articles = list(Article.objects.all())
     articles.sort(key=lambda x: x.calc_score(), reverse=True)
     articles.sort(key=lambda x: match_count(user_interests, x), reverse=True)
@@ -233,12 +243,13 @@ def get_posts(request):
                         submission_dict["media_url"] = submission.url
                 post_list.append(submission_dict)
 
-        auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
+        auth = tweepy.OAuthHandler(
+            settings.TWITTER_KEY, settings.TWITTER_SECRET)
         api = tweepy.API(auth)
         for interest in UserInterest.objects.filter(user=request.user):
             for tweet in tweepy.Cursor(api.search, tweet_mode="extended", q=("%23" + interest.interest),
                                        result_type='popular').items(
-                max_posts):
+                    max_posts):
                 if hasattr(tweet, 'retweeted_status'):
                     tweet = tweet.retweeted_status
                 tags = list()
@@ -258,7 +269,8 @@ def get_posts(request):
                 }
 
                 if len(tweet.entities.get('media', [])) > 0:
-                    tweet_dict["media_url"] = tweet.entities.get('media', [])[0]["media_url"]
+                    tweet_dict["media_url"] = tweet.entities.get('media', [])[
+                        0]["media_url"]
                 post_list.append(tweet_dict)
         post_list.sort(key=lambda t: t["score"], reverse=True)
         post_list = post_list[:30]
