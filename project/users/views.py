@@ -314,7 +314,7 @@ def resources_by_interest(request):
     resources = list()
     for tag in tags:
         resources += list(
-            map(lambda r: r.resource, ResourceInterest.objects.filter(user=request.user).filter(interest=tag)))
+            map(lambda r: r.resource, ResourceInterest.objects.filter(interest=tag)).filter(user=request.user))
     resources = list({v.id: v for v in resources}.values())
     resources.sort(key=lambda x: x.date, reverse=True)
     final_list = list(map(lambda x: x.serialize(), resources))
