@@ -207,27 +207,31 @@ def get_posts(request):
                                  client_secret=settings.REDDIT_CLIENT_SECRET,
                                  refresh_token=request.user.profile.reddit_refresh_token,
                                  user_agent="web:WeSearchers:v0.1 (by /u/FabioGC)")
+            subs = list(reddit.user.subreddits())
+            namestr = subs[0].display_name
+            for sub in subs[1:]:
+                namestr += "+" + sub.display_name
 
-            for subreddit in reddit.user.subreddits():
-                for submission in subreddit.hot(limit=max_posts):
-                    submission_dict = {
-                        "url": submission.shortlink,
-                        "name": submission.author.name,
-                        "title": submission.title,
-                        "text": submission.selftext,
-                        "date": datetime.fromtimestamp(submission.created),
-                        "profile_pic_url": "http://i.imgur.com/sdO8tAw.png",
-                        "score": submission.ups,
-                        "ratio": str(round(submission.upvote_ratio * 100)) + "%",
-                        "subreddit": subreddit.display_name,
-                        "type": "reddit"
-                    }
+            multi = reddit.subreddit(namestr)
+            for submission in multi.hot(limit=30):
+                submission_dict = {
+                    "url": submission.shortlink,
+                    "name": submission.author.name,
+                    "title": submission.title,
+                    "text": submission.selftext,
+                    "date": datetime.fromtimestamp(submission.created),
+                    "profile_pic_url": "http://i.imgur.com/sdO8tAw.png",
+                    "score": submission.ups,
+                    "ratio": str(round(submission.upvote_ratio * 100)) + "%",
+                    "subreddit": submission.subreddit.display_name,
+                    "type": "reddit"
+                }
 
-                    if hasattr(submission, "url"):
-                        url = submission.url
-                        if url.endswith(".jpg") or url.endswith(".png"):
-                            submission_dict["media_url"] = submission.url
-                    post_list.append(submission_dict)
+                if hasattr(submission, "url"):
+                    url = submission.url
+                    if url.endswith(".jpg") or url.endswith(".png"):
+                        submission_dict["media_url"] = submission.url
+                post_list.append(submission_dict)
 
         auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
         api = tweepy.API(auth)
