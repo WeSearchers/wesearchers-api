@@ -11,7 +11,10 @@ django-webpack-loader = "*"
 "psycopg2-binary" = "*"
 pillow = "*"
 praw = "*"
-tweepy = {git = "https://github.com/Spyder-exe/tweepy.git"}
+tweepy = "*"
+django-heroku = "*"
+gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 

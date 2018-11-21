@@ -1,4 +1,4 @@
--e git://github.com/Spyder-exe/tweepy.git#egg=tweepy
+tweepy
 django
 gunicorn
 django-heroku
