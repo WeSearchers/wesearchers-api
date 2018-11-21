@@ -5,7 +5,7 @@ from django.apps import apps
 from django.conf import settings
 from django.forms import Form
 from django.http import *
-from os import remove, makedirs
+from os import remove, makedirs, path
 import praw
 
 from .guid import new_guid
@@ -48,7 +48,8 @@ def publish(request):
                 if "media" in request.FILES.keys():
                     media = request.FILES["media"]
                     filename = "media/temp/" + new_guid() + "_" + media.name
-                    makedirs("media/temp")
+                    if not path.exists("media/temp"):
+                        makedirs("media/temp")
                     with open(filename, 'wb+') as destination:
                         for chunk in media.chunks():
                             destination.write(chunk)
