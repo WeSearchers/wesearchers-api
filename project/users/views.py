@@ -39,7 +39,8 @@ def register(request):
             interests = request.POST["interests"].split()
             if len(interests) >= 6:
                 try:
-                    institution = Institution.objects.filter(name=request.POST["institution"]).first()
+                    institution = Institution.objects.filter(
+                        name=request.POST["institution"]).first()
                 except KeyError as k:
                     return JsonResponse(
                         error_dict(user_form, profile_form, errors, {k.args[0]: "field missing in form"}), status=400)
@@ -83,7 +84,8 @@ def get_user_info(request, user_id):
 def login_session(request):
     if request.method == "POST":
         try:
-            user = authenticate(username=request.POST["username"], password=request.POST["password"])
+            user = authenticate(
+                username=request.POST["username"], password=request.POST["password"])
         except KeyError as k:
             return JsonResponse({k.args[0]: "field missing in form"}, status=400)
         if user is not None:
@@ -99,9 +101,11 @@ def login_session(request):
 def update(request):
     errors = {}
     user_form = UserUpdateForm(request.POST, instance=request.user)
-    profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+    profile_form = ProfileUpdateForm(
+        request.POST, request.FILES, instance=request.user.profile)
     try:
-        institution = Institution.objects.filter(id=int(request.POST["institution"])).first()
+        institution = Institution.objects.filter(
+            id=int(request.POST["institution"])).first()
         interests = request.POST["interests"].split()
     except KeyError as k:
         return JsonResponse(
@@ -144,7 +148,8 @@ def send_reset_password_email(request):
 
 def reset_password(request):
     try:
-        profile = Profile.objects.filter(email_guid=request.POST["guid"]).first()
+        profile = Profile.objects.filter(
+            email_guid=request.POST["guid"]).first()
         if profile is not None:
             if request.POST["new_password1"] == request.POST["new_password2"]:
                 pv = PasswordValidator()
@@ -168,7 +173,8 @@ def reset_password(request):
 @require_login
 def change_password(request):
     try:
-        user = authenticate(request, username=request.user.username, password=request.POST["old_password"])
+        user = authenticate(request, username=request.user.username,
+                            password=request.POST["old_password"])
         if user is not None:
             if request.POST["new_password1"] != request.POST["old_password"]:
                 if request.POST["new_password1"] == request.POST["new_password2"]:
@@ -193,7 +199,8 @@ def change_password(request):
 def validate(request):
     if request.method == "POST":
         try:
-            profile = Profile.objects.filter(email_guid=request.POST["guid"]).first()
+            profile = Profile.objects.filter(
+                email_guid=request.POST["guid"]).first()
         except KeyError as k:
             return JsonResponse({k.args[0]: "field missing in form"}, status=400)
         if profile is not None and profile.user.is_active is False:
@@ -249,7 +256,8 @@ def get_collaborators(request):
 def delete_resource(request):
     if request.method == "POST":
         try:
-            resource = Resource.objects.filter(id=request.POST["resource_id"]).first()
+            resource = Resource.objects.filter(
+                id=request.POST["resource_id"]).first()
             if resource is not None:
                 if resource.user == request.user:
                     resource.delete()
@@ -314,7 +322,7 @@ def resources_by_interest(request):
     resources = list()
     for tag in tags:
         resources += list(
-            map(lambda r: r.resource, ResourceInterest.objects.filter(user=request.user).filter(interest=tag)))
+            filter(lambda x: x.user == request.user, map(lambda r: r.resource, ResourceInterest.objects.filter(interest=tag))))
     resources = list({v.id: v for v in resources}.values())
     resources.sort(key=lambda x: x.date, reverse=True)
     final_list = list(map(lambda x: x.serialize(), resources))
@@ -333,6 +341,9 @@ def get_reddit_authentication_url(request):
 
 @require_login
 def save_reddit_request_token(request):
+    if "error" in request.GET.keys():
+        return HttpResponseRedirect(settings.RUNNING_HOST + "/user/profile")
+
     reddit = praw.Reddit(client_id=settings.REDDIT_CLIENT_ID,
                          client_secret=settings.REDDIT_CLIENT_SECRET,
                          redirect_uri=settings.RUNNING_HOST + "/api/user/saveredditrequesttoken",
@@ -349,9 +360,10 @@ def save_reddit_request_token(request):
 
 @require_login
 def get_twitter_authentication_url(request):
-    callback_url = settings.RUNNING_HOST + "/api/user/saveaccesstokens"
+    callback_url = settings.RUNNING_HOST + "/api/user/savetwitteraccesstokens"
 
-    oauth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET, callback=callback_url)
+    oauth = tweepy.OAuthHandler(
+        settings.TWITTER_KEY, settings.TWITTER_SECRET, callback=callback_url)
     url_redirect = oauth.get_authorization_url()
 
     request.session['request_token'] = oauth.request_token
@@ -362,6 +374,9 @@ def get_twitter_authentication_url(request):
 @require_login
 def save_twitter_access_tokens(request):
     verifier = request.GET.get('oauth_verifier')
+    if "denied" in request.GET.keys():
+        return HttpResponseRedirect(settings.RUNNING_HOST + "/user/profile")
+
     oauth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
     token = request.session.get('request_token')
     request.session.delete('request_token')

@@ -37,7 +37,7 @@ class ActivateAccount extends Component {
                   </div>
                   <div className="message text-white">
                     Your account has been activated. To login click{" "}
-                    <a href="/login">here</a>
+                    <a href="/">here</a>
                   </div>
                 </div>
               ) : (
@@ -47,7 +47,7 @@ class ActivateAccount extends Component {
                   </div>
                   <div className="message text-white">
                     Something went wrong, this page is not available. To login
-                    click <a href="/login">here</a>
+                    click <a href="/">here</a>
                   </div>
                 </div>
               )

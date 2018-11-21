@@ -79,3 +79,11 @@ project/webpack-stats\.dev\.json
 project/feed/migrations/
 
 project/users/migrations/
+
+project/assets/bundles/
+
+project/staticfiles/
+
+project/webpack-stats\.prod\.json
+
+project/run\.sh

@@ -36,9 +36,9 @@ class Jumbotron extends Component {
     fd.append("text", this.state.text);
     fd.append("media", this.state.media, this.state.filename);
     Request.post("api/feed/publish", fd).then(response => {
-      if (response.status === 200) {
-        this.text.value = "";
-        this.media.value = "";
+      if (response.status === 200){
+        this.text.current.value = "";
+        this.media.current.value = "";
         this.setState({
           text: "",
           filename: null,
@@ -92,12 +92,12 @@ class Jumbotron extends Component {
         <div className="buttons d-flex flex-row justify-content-between mr-4 mt-3">
           <div className="input-jumbotron upload-btn ml-5">
             <input
-              onChange={this.handlechange}
               id="f02"
               type="file"
-              name="image"
-              accept="image/*"
-              placeholder="Upload"
+              ref={this.media}
+              name="media"
+              accept="image/*,video/*"
+              onChange={this.handleChange}
             />
             <label for="f02">Upload</label>
             {this.state.errors.image !== undefined &&
