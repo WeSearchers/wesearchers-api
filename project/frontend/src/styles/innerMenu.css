@@ -76,11 +76,11 @@
     height: auto;
     padding-bottom: 0;
     margin-bottom: 0;
-    border-bottom: 20px solid #002f54;
   }
   .inner-menu-main .actions {
-    background: transparent;
+    background: #e7e7e7;
     padding: 0;
+    min-height: 86.5vh;
   }
   .form-change-password {
     background: #e7e7e7;
