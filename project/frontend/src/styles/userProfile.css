@@ -120,6 +120,10 @@
   color: #002f54;
 }
 
+.publication .section-title {
+  max-width: 700px;
+}
+
 .section-title span {
   color: #999;
   font-weight: 500;
