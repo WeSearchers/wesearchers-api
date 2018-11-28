@@ -56,10 +56,10 @@ class Jumbotron extends Component {
   render() {
     console.log(this.state.errors);
     return (
-      <div className="container-jumb ">
+      <div className="container-jumb">
         <div className="row write-pub bg-grey justify-content-between">
-          <div className="col-md-2">
-            <div className="background-image-profile mt-4 ml-4" />
+          <div className="col-md-2 col-sm-12">
+            <div className="background-image-profile mt-4 " />
           </div>
           <div className="col-md-9 col-sm-12 mt-4 mr-4">
             <div class="comment">
@@ -76,8 +76,8 @@ class Jumbotron extends Component {
           </div>
         </div>
         <div className="row buttons bg-grey justify-content-between ">
-          <div className="col-md-3 ">
-            <div className="input-jumbotron upload-btn ml-2 mb-4 mt-2">
+          <div className="col-md-3 col-sm-1 col-xs-1">
+            <div className="input-jumbotron upload-btn mb-4 mt-2">
               <input
                 id="f02"
                 type="file"
@@ -95,7 +95,7 @@ class Jumbotron extends Component {
               ) : null}
             </div>
           </div>
-          <div className="col-md-3">
+          <div className="col-md-3 col-sm-4 col-xs-0">
             <div class="comment" />
             {this.state.errors.media !== undefined &&
             this.state.errors.media !== null ? (
@@ -105,7 +105,7 @@ class Jumbotron extends Component {
             ) : null}
             <button
               type="button"
-              className="btn-publish btn text-white m-1 mr-2 mt-3 mb-4"
+              className="btn-publish btn  mt-3 mb-4"
               onClick={this.handleSubmit}
             >
               Publish

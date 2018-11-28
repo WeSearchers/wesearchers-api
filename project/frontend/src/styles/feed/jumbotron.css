@@ -1,6 +1,9 @@
 .write-pub {
   color: #002f54;
 }
+.container-jumb:hover {
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
+}
 .background-image-profile {
   clip-path: circle(50% at center);
   background-image: url("../../images/ProfileBlue.png");
@@ -16,6 +19,8 @@
   margin: 0px auto;
   width: 70%;
   margin-top: 50px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.15s ease-in-out;
 }
 .comment {
   float: left;
@@ -40,7 +45,6 @@
   min-height: 75px;
   outline: none;
   resize: none;
-  border: 1px solid grey;
 }
 
 .textField {
@@ -56,11 +60,12 @@
   line-height: 1.5;
   color: #495057;
   background-color: #ffffff;
-
-  border: 1px solid #ced4da;
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
+}
+.form-control:hover {
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .addPhoto textarea {
@@ -108,11 +113,14 @@ opacity */
 }
 .buttons .input-jumbotron [type="file"] + label {
   text-align: center;
-  border-radius: 2px;
+  border-radius: 0;
+  background: #fcfcfc;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
   top: 0.5em;
   /* Decorative */
   background: #fcfcfc;
   color: #aaaaaa;
   border: none;
+  transition: background-color 0.15s ease-in-out;
   cursor: pointer;
 }
