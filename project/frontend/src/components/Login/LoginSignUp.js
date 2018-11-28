@@ -121,7 +121,7 @@ class LoginSignUp extends Component {
         <div className="container">
           <div className="main-content-signup pl-5 pr-5">
             <div className="row ">
-              <div className="col-xs-5 text-white ml-5 mt-4 title mb-4">
+              <div className="col-xs-5 text-white  mt-4 title mb-4">
                 <h1>
                   <b>WE</b>
                   LCOME
