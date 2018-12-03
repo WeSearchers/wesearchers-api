@@ -15,6 +15,8 @@ urlpatterns = [
     re_path('saveredditrequesttoken',views.save_reddit_request_token),
     re_path('twitterauth',views.get_twitter_authentication_url),
     re_path('savetwitteraccesstokens',views.save_twitter_access_tokens),
+    re_path('orcidauth',views.get_orcid_authentication_url),
+    re_path('saveorcidinfo',views.save_orcid_info),
     # re_path('<int:user_id>/collaborators',views.get_collaborators),
     re_path('resource/delete', views.delete_resource),
     re_path('resource/gettags', views.resource_tags),

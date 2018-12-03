@@ -1,5 +1,6 @@
 import tweepy
 import praw
+import orcid
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ValidationError
@@ -9,9 +10,22 @@ from django.http import *
 
 from .decorators import require_login
 from .forms import ProfileForm, UserCreationForm, UserUpdateForm, ProfileUpdateForm, ResourceForm
-from .models import *
 from .responses import HttpResponseUnauthorized
 from .validators import PasswordValidator
+from .models import orcidAPI
+
+"""novos"""
+from bs4 import BeautifulSoup
+import requests
+import simplejson as json
+import sys
+from lxml import etree
+if sys.version_info[0] == 2:
+    from urllib import urlencode
+    string_types = basestring,
+else:
+    from urllib.parse import urlencode
+    string_types = str,
 
 
 def error_dict(*args):
@@ -328,6 +342,32 @@ def resources_by_interest(request):
     final_list = list(map(lambda x: x.serialize(), resources))
     return JsonResponse(final_list, safe=False)
 
+
+def get_orcid_authentication_url(request):
+    redirect_url = settings.RUNNING_HOST + "/api/user/saveorcidinfo"
+    orcAPI = orcidAPI(institution_key='APP-3BINJ467JDZRLB8M',institution_secret='32a561df-bc4d-4461-8b66-770228a2e6ed')
+    url = orcAPI.get_login_url('/authenticate', redirect_url)
+
+    return JsonResponse(url,safe=False)
+
+def save_orcid_info(request):
+    authorization_code = request.GET.get('code')
+    redirect_url = settings.RUNNING_HOST + "/api/user/saveorcidinfo"
+    orcAPI = orcidAPI(institution_key='APP-3BINJ467JDZRLB8M', institution_secret='32a561df-bc4d-4461-8b66-770228a2e6ed')
+    token = orcAPI.get_token_from_authorization_code(authorization_code,settings.RUNNING_HOST+ "/user/profile")
+
+    return HttpResponse()
+
+    """print("FDS")
+    api = orcid.PublicAPI(institution_key='APP-3BINJ467JDZRLB8M', institution_secret='32a561df-bc4d-4461-8b66-770228a2e6ed', sandbox=True)
+    print("FDS")
+    search_token = api.get_search_token_from_orcid()
+    print("FDS")
+    search_results = api.search_public('text:English')
+
+    summary = api.read_record_public('0000-0001-6112-1509','keywords',search_token)
+    print(summary)
+    return HttpResponseRedirect(settings.RUNNING_HOST + "/user/profile")"""
 
 @require_login
 def get_reddit_authentication_url(request):
