@@ -36,7 +36,7 @@ class Jumbotron extends Component {
     fd.append("text", this.state.text);
     fd.append("media", this.state.media, this.state.filename);
     Request.post("api/feed/publish", fd).then(response => {
-      if (response.status === 200){
+      if (response.status === 200) {
         this.text.current.value = "";
         this.media.current.value = "";
         this.setState({
@@ -56,70 +56,61 @@ class Jumbotron extends Component {
   render() {
     console.log(this.state.errors);
     return (
-      <div className="write-pub bg-grey m-5 d-flex flex-column mr-auto ml-auto pb-3">
-        <div className="bla d-flex flex-row ">
-          <div className="d-flex flex-row align-content-baseline mb-4">
-            <div className="background-image-profile ml-3 mt-4" />
-            {/*{this.props.userData !== null && this.props.userData !== undefined ? (
-            <img
-                  className="circle"
-                  src={
-                    "data:image/jpeg;base64, " + this.props.userData.image_data
-                  }
-                  width={"100%"}
-                  style={{}}
-                />
-                ) : null}*/}
+      <div className="container-jumb">
+        <div className="row write-pub bg-grey justify-content-between">
+          <div className="col-md-2 col-sm-12">
+            <div className="background-image-profile mt-4 " />
           </div>
-          <div className=" textField mb-3 mt-4">
-            <textarea
-              className="form-control z-depth-1 ml-5"
-              id="exampleFormControlTextarea6"
-              rows="3"
-              name="text"
-              ref={this.text}
-              onChange={this.handleChange}
-              placeholder="Write here..."
-            />
-          </div>
-          {this.state.errors.text !== undefined &&
-          this.state.errors.text !== null ? (
-            <div className="wrongpass">
-              <p>{this.state.errors.text}</p>
+          <div className="col-md-9 col-sm-12 mt-4 mr-4">
+            <div class="comment">
+              <textarea
+                class="textinput form-control"
+                id="exampleFormControlTextarea6"
+                rows="3"
+                name="text"
+                ref={this.text}
+                onChange={this.handleChange}
+                placeholder="Write here..."
+              />
             </div>
-          ) : null}
+          </div>
         </div>
-        <div className="buttons d-flex flex-row justify-content-between mr-4 mt-3">
-          <div className="input-jumbotron upload-btn ml-5">
-            <input
-              id="f02"
-              type="file"
-              ref={this.media}
-              name="media"
-              accept="image/*,video/*"
-              onChange={this.handleChange}
-            />
-            <label for="f02">Upload</label>
-            {this.state.errors.image !== undefined &&
-            this.state.errors.image !== null ? (
+        <div className="row buttons bg-grey justify-content-between ">
+          <div className="col-md-3 col-sm-1 col-xs-1">
+            <div className="input-jumbotron upload-btn mb-4 mt-2">
+              <input
+                id="f02"
+                type="file"
+                ref={this.media}
+                name="media"
+                accept="image/*,video/*"
+                onChange={this.handleChange}
+              />
+              <label for="f02">Upload</label>
+              {this.state.errors.image !== undefined &&
+              this.state.errors.image !== null ? (
+                <div className="wrongpass">
+                  <p>{this.state.errors.image}</p>
+                </div>
+              ) : null}
+            </div>
+          </div>
+          <div className="col-md-3 col-sm-4 col-xs-0">
+            <div class="comment" />
+            {this.state.errors.media !== undefined &&
+            this.state.errors.media !== null ? (
               <div className="wrongpass">
-                <p>{this.state.errors.image}</p>
+                <p>{this.state.errors.media}</p>
               </div>
             ) : null}
+            <button
+              type="button"
+              className="btn-publish btn  mt-3 mb-4"
+              onClick={this.handleSubmit}
+            >
+              Publish
+            </button>
           </div>
-          {this.state.errors.media !== undefined &&
-          this.state.errors.media !== null ? (
-            <div className="wrongpass">
-              <p>{this.state.errors.media}</p>
-            </div>
-          ) : null}
-          <button
-            type="button"
-            className="btn-publish btn text-white m-1 mr-2 mt-2 "
-            onClick={this.handleSubmit}
-          >
-            Publish
-          </button>
         </div>
       </div>
     );
