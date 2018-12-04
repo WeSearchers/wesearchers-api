@@ -79,8 +79,9 @@
     border-bottom: 20px solid #ccc;
   }
   .inner-menu-main .actions {
-    background: transparent;
+    background: #e7e7e7;
     padding: 0;
+    min-height: 86.5vh;
   }
   .form-change-password {
     background: #e7e7e7;
