@@ -74,7 +74,7 @@ class ProfileUpdateForm(ProfileForm):
 
     class Meta:
         model = Profile
-        fields = ["orcid", "bio", "image"]
+        fields = ["bio", "image"]
 
 
 class ResourceForm(ModelForm):

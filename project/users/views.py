@@ -14,7 +14,7 @@ from .decorators import require_login
 from .forms import ProfileForm, UserCreationForm, UserUpdateForm, ProfileUpdateForm, ResourceForm
 from .responses import HttpResponseUnauthorized
 from .validators import PasswordValidator
-from .models import Institution, UserInterest, Profile, UserFollow, Resource, ResourceInterest
+from .models import UserInterest, Profile, UserFollow, Resource, ResourceInterest
 
 """novos"""
 from bs4 import BeautifulSoup
@@ -46,42 +46,35 @@ def register(request):
         user_form = UserCreationForm(request.POST)
         profile_form = ProfileForm(request.POST, request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
-
-            interests = request.POST["interests"].split()
-            if len(interests) >= 6:
-                try:
-                    institution = Institution.objects.filter(
-                        name=request.POST["institution"]).first()
-                except KeyError as k:
-                    return JsonResponse(
-                        error_dict(user_form, profile_form, errors, {k.args[0]: "field missing in form"}), status=400)
-                if institution is None:
-                    institution = Institution(name=request.POST["institution"])
-                    institution.save()
+            try:
                 user = user_form.save(commit=False)
                 user.is_active = False
                 user.save()
-                for interest in interests:
-                    user_interest = UserInterest(interest=interest)
-                    user_interest.user = user
-                    user_interest.save()
                 profile = profile_form.save(commit=False)
                 profile.user = user
-                profile.institution = institution
                 profile.save()
-                send_mail("WeSearchers account activation",
-                          settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid,
+                send_mail("WeSearchers account activation with ORCID",
+                          get_orcid_authentication_url(request),
                           "activate@wesearchers.pt", [user.email])
                 return JsonResponse(user.id, safe=False)
-            else:
-                errors["interests"] = "must select 6 interests or more"
-        return JsonResponse(error_dict(user_form, profile_form, errors), status=400)
+            except KeyError as k:
+                return JsonResponse(error_dict(user_form,profile_form,errors,{k.args[0]:"field missing in form"}), status=400)
+        else:
+            return JsonResponse(error_dict(user_form, profile_form, errors), status=400)
     else:
         return HttpResponseNotAllowed("Method not Allowed")
 
 
 @require_login
 def get_user_info(request, user_id):
+    orcid_info = []
+    orcid_info = get_orcid_info(request)
+
+    name = orcid_info[0]
+    interests = orcid_info[1]
+    affiliation = orcid_info[2]
+    orcid_id = orcid_info[3]
+    
     if user_id == 0:
         user = request.user
     else:
@@ -115,30 +108,29 @@ def update(request):
     profile_form = ProfileUpdateForm(
         request.POST, request.FILES, instance=request.user.profile)
     try:
-        institution = Institution.objects.filter(
-            id=int(request.POST["institution"])).first()
-        interests = request.POST["interests"].split()
+        institution = orcid_info[2]
+        interests = orcid_info[1].split()
     except KeyError as k:
         return JsonResponse(
             error_dict(user_form, profile_form, errors, {k.args[0]: "field missing in form"}), status=400)
     if user_form.is_valid() and profile_form.is_valid():
-        if len(interests) >= 6:
-            for interest in list(UserInterest.objects.filter(user=request.user)):
-                interest.delete()
-            for interest in interests:
-                user_interest = UserInterest(interest=interest)
-                user_interest.user = request.user
-                user_interest.save()
-            user_form.save()
-            profile = profile_form.save(commit=False)
-            if institution is None:
-                institution = Institution(name=request.POST["institution"])
-                institution.save()
-            profile.institution = institution
-            profile.save()
-            return HttpResponse()
-        else:
-            errors["interests"] = "must select 6 interests or more"
+        for interest in list(UserInterest.objects.filter(user=request.user)):
+            interest.delete()
+        for interest in interests:
+            user_interest = UserInterest(interest=interest)
+            user_interest.user = request.user
+            user_interest.save()
+        user_form.save()
+        profile = profile_form.save(commit=False)
+        if institution is None:
+            institution = Institution(name="No institution")
+            institution.save()
+        profile.institution = institution
+        profile.save()
+
+
+
+        return HttpResponse()
     return JsonResponse(error_dict(user_form, profile_form, errors), status=400)
 
 
@@ -343,39 +335,74 @@ def resources_by_interest(request):
 def get_orcid_authentication_url(request):
     redirect_url = settings.RUNNING_HOST + "/api/user/saveorcidinfo"
     orcAPI = PublicAPI(institution_key=settings.ORCID_KEY,
-                       institution_secret=settings.ORCID_SECRET, sandbox=False)
+                       institution_secret=settings.ORCID_SECRET)
     #url = orcAPI.get_login_url('/read-limited', redirect_url, )
     url = orcAPI.get_login_url('/authenticate', redirect_url, )
 
-    return JsonResponse(url, safe=False)
+    return url
 
 
 def save_orcid_info(request):
     authorization_code = request.GET.get('code')
     redirect_url = settings.RUNNING_HOST + "/api/user/saveorcidinfo"
     orcAPI = PublicAPI(institution_key=settings.ORCID_KEY,
-                       institution_secret=settings.ORCID_SECRET, sandbox=False)
+                       institution_secret=settings.ORCID_SECRET)
     token = orcAPI.get_token_from_authorization_code(authorization_code,
                                                      redirect_url)
 
     search_token = orcAPI.get_search_token_from_orcid()
-    summary = orcAPI.read_record_public(token["orcid"], 'record', search_token)
+
+
+    orcid_id = token['orcid']
+    orcids = orcid_id.split("-")
+    orcid_final = ""
+    for x in orcids:
+        orcid_final += x
+
+    profile = Profile.objects.filter(orcid = orcid_final).first()
+    profile.orcid_search_token = search_token
+    profile.save()
+
+
+    return HttpResponseRedirect(settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid)
+
+
+
+@require_login
+def get_orcid_info(request):
+    orcAPI = PublicAPI(institution_key=settings.ORCID_KEY,
+                       institution_secret=settings.ORCID_SECRET)
+
+    orcid_id = request.user.profile.orcid
+    orcid_id = '-'.join(orcid_id[i:i+4] for i in range(0, len(orcid_id), 4))
+    summary = orcAPI.read_record_public(orcid_id, 'record', request.user.profile.orcid_search_token)
+
     profile_name = summary['person']['name']['given-names']['value'] + " " + summary['person']['name']['family-name']['value']
     
     keywords = summary['person']['keywords']['keyword']
     interests = list()
     for keyword in keywords:
-        interests += keyword['content']
+        interests.append(keyword['content'])
 
     research_units = summary['activities-summary']['employments']['employment-summary']
     units = list()
     for unit in research_units:
-        units += unit['organization']['name']
-
-    orcid_id = token['orcid']
+        units.append(unit['organization']['name'])
 
 
-    return HttpResponseRedirect(settings.RUNNING_HOST + "/user/profile")
+
+
+    final_array = []
+    final_array.append(profile_name)
+    final_array.append(interests)
+    final_array.append(units)
+    final_array.append(orcid_id)
+
+
+
+    return final_array
+
+
 @require_login
 def get_reddit_authentication_url(request):
     reddit = praw.Reddit(client_id=settings.REDDIT_CLIENT_ID,
@@ -454,7 +481,6 @@ def follow_view(request):
             return JsonResponse({k.args[0]: "field missing in form"}, status=400)
     else:
         return HttpResponseNotAllowed()
-
 
 @require_login
 def is_logged_in(request):
