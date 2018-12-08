@@ -342,9 +342,10 @@ def resources_by_interest(request):
 
 def get_orcid_authentication_url(request):
     redirect_url = settings.RUNNING_HOST + "/api/user/saveorcidinfo"
-    orcAPI = MemberAPI(institution_key=settings.ORCID_KEY,
-                       institution_secret=settings.ORCID_SECRET, sandbox=True)
-    url = orcAPI.get_login_url('/read-limited', redirect_url, )
+    orcAPI = PublicAPI(institution_key=settings.ORCID_KEY,
+                       institution_secret=settings.ORCID_SECRET, sandbox=False)
+    #url = orcAPI.get_login_url('/read-limited', redirect_url, )
+    url = orcAPI.get_login_url('/authenticate', redirect_url, )
 
     return JsonResponse(url, safe=False)
 
@@ -352,18 +353,29 @@ def get_orcid_authentication_url(request):
 def save_orcid_info(request):
     authorization_code = request.GET.get('code')
     redirect_url = settings.RUNNING_HOST + "/api/user/saveorcidinfo"
-    orcAPI = MemberAPI(institution_key=settings.ORCID_KEY,
-                       institution_secret=settings.ORCID_SECRET, sandbox=True)
+    orcAPI = PublicAPI(institution_key=settings.ORCID_KEY,
+                       institution_secret=settings.ORCID_SECRET, sandbox=False)
     token = orcAPI.get_token_from_authorization_code(authorization_code,
                                                      redirect_url)
 
     search_token = orcAPI.get_search_token_from_orcid()
     summary = orcAPI.read_record_public(token["orcid"], 'record', search_token)
-    print(summary)
+    profile_name = summary['person']['name']['given-names']['value'] + " " + summary['person']['name']['family-name']['value']
+    
+    keywords = summary['person']['keywords']['keyword']
+    interests = list()
+    for keyword in keywords:
+        interests += keyword['content']
+
+    research_units = summary['activities-summary']['employments']['employment-summary']
+    units = list()
+    for unit in research_units:
+        units += unit['organization']['name']
+
+    orcid_id = token['orcid']
+
+
     return HttpResponseRedirect(settings.RUNNING_HOST + "/user/profile")
-
-
-
 @require_login
 def get_reddit_authentication_url(request):
     reddit = praw.Reddit(client_id=settings.REDDIT_CLIENT_ID,
