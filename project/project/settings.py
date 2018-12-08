@@ -103,6 +103,11 @@ twitter = credentials["TWITTER"]
 TWITTER_KEY = twitter["KEY"]
 TWITTER_SECRET = twitter["SECRET"]
 
+orcid = credentials["ORCID"]
+
+ORCID_KEY = orcid["KEY"]
+ORCID_SECRET = orcid["SECRET"]
+
 smtp = credentials["SMTP"]
 
 EMAIL_HOST = smtp["EMAIL_HOST"]

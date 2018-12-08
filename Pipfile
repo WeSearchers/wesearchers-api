@@ -12,6 +12,10 @@ django-webpack-loader = "*"
 pillow = "*"
 praw = "*"
 tweepy = {git = "https://github.com/Spyder-exe/tweepy.git"}
+"beautifulsoup4" = "*"
+simplejson = "*"
+orcid = "*"
+lxml = "==4.2.5"
 
 [dev-packages]
 
