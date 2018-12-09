@@ -54,7 +54,7 @@ def register(request):
                 profile.user = user
                 profile.save()
                 send_mail("WeSearchers account activation with ORCID",
-                          get_orcid_authentication_url(request),
+                          get_orcid_authentication_url(request,profile.email_guid),
                           "activate@wesearchers.pt", [user.email])
                 return JsonResponse(user.id, safe=False)
             except KeyError as k:
@@ -127,8 +127,6 @@ def update(request):
             institution.save()
         profile.institution = institution
         profile.save()
-
-
 
         return HttpResponse()
     return JsonResponse(error_dict(user_form, profile_form, errors), status=400)
@@ -332,18 +330,19 @@ def resources_by_interest(request):
     final_list = list(map(lambda x: x.serialize(), resources))
     return JsonResponse(final_list, safe=False)
 
-def get_orcid_authentication_url(request):
+def get_orcid_authentication_url(request,guid):
     redirect_url = settings.RUNNING_HOST + "/api/user/saveorcidinfo"
     orcAPI = PublicAPI(institution_key=settings.ORCID_KEY,
                        institution_secret=settings.ORCID_SECRET)
     #url = orcAPI.get_login_url('/read-limited', redirect_url, )
-    url = orcAPI.get_login_url('/authenticate', redirect_url, )
+    url = orcAPI.get_login_url('/authenticate', redirect_url, state=guid)
 
     return url
 
 
 def save_orcid_info(request):
     authorization_code = request.GET.get('code')
+    guid = request.GET.get('state')
     redirect_url = settings.RUNNING_HOST + "/api/user/saveorcidinfo"
     orcAPI = PublicAPI(institution_key=settings.ORCID_KEY,
                        institution_secret=settings.ORCID_SECRET)
@@ -359,9 +358,11 @@ def save_orcid_info(request):
     for x in orcids:
         orcid_final += x
 
-    profile = Profile.objects.filter(orcid = orcid_final).first()
+    profile = Profile.objects.filter(email_guid=guid).first()
     profile.orcid_search_token = search_token
     profile.save()
+
+    print(profile.email_guid)
 
 
     return HttpResponseRedirect(settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid)

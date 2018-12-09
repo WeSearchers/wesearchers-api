@@ -12,6 +12,8 @@ from .guid import new_guid
 from .decorators import require_login
 from .forms import *
 from .models import *
+from .orcid import PublicAPI, MemberAPI
+
 
 Profile = apps.get_model('users', 'Profile')
 UserInterest = apps.get_model('users', 'UserInterest')
@@ -208,6 +210,41 @@ def article_by_interests(request):
 
 
 @require_login
+def get_orcid_info(request):
+    orcAPI = PublicAPI(institution_key=settings.ORCID_KEY,
+                       institution_secret=settings.ORCID_SECRET)
+
+    orcid_id = request.user.profile.orcid
+    orcid_id = '-'.join(orcid_id[i:i+4] for i in range(0, len(orcid_id), 4))
+    summary = orcAPI.read_record_public(orcid_id, 'record', request.user.profile.orcid_search_token)
+
+    profile_name = summary['person']['name']['given-names']['value'] + " " + summary['person']['name']['family-name']['value']
+    
+    keywords = summary['person']['keywords']['keyword']
+    interests = list()
+    for keyword in keywords:
+        interests.append(keyword['content'])
+
+    research_units = summary['activities-summary']['employments']['employment-summary']
+    units = list()
+    for unit in research_units:
+        units.append(unit['organization']['name'])
+
+
+
+
+    final_array = []
+    final_array.append(profile_name)
+    final_array.append(interests)
+    final_array.append(units)
+    final_array.append(orcid_id)
+
+
+
+    return final_array
+
+
+@require_login
 def get_posts(request):
     if request.method == "GET":
         max_posts = 8
@@ -246,8 +283,11 @@ def get_posts(request):
         auth = tweepy.OAuthHandler(
             settings.TWITTER_KEY, settings.TWITTER_SECRET)
         api = tweepy.API(auth)
-        for interest in UserInterest.objects.filter(user=request.user):
-            for tweet in tweepy.Cursor(api.search, tweet_mode="extended", q=("%23" + interest.interest),
+
+        orcid_info = get_orcid_info(request)
+        interests = orcid_info[1]
+        for interest in interests:
+            for tweet in tweepy.Cursor(api.search, tweet_mode="extended", q=("%23" + interest),
                                        result_type='popular').items(
                     max_posts):
                 if hasattr(tweet, 'retweeted_status'):
