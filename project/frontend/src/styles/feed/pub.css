@@ -1,13 +1,15 @@
 .pub1 {
-  width: 60%;
-  height: 100%;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
+  height: 100%;
 }
 .pub2 {
-  width: 60%;
-  height: 60vh;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
 }
-.circle{
+.circle {
   border-radius: 100em;
+}
+.container-pub {
+  max-width: 820px;
+  margin: 0px auto;
+  width: 70%;
 }

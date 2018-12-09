@@ -42,6 +42,11 @@ btn:focus {
   background: #ffc95e;
   border-color: #ffc95e;
 }
+@media only screen and (max-width: 600px) {
+  .pub-btn .btn-seemore {
+    width: 24%;
+  }
+}
 .img-btn {
   width: 50px;
   height: 30px;
