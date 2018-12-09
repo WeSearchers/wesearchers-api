@@ -27,7 +27,7 @@
 
 .error .message .title {
   color: #ffc95e;
-  font-size: 1.5em;
+  font-size: 1em;
   font-weight: 600;
   letter-spacing: 4px;
   text-align: center;
@@ -37,6 +37,6 @@
 .error .message .sub-text {
   color: #fff;
   font-size: 1.1em;
-  letter-spacing: 1px;
   text-align: center;
+  margin-bottom: 40px;
 }
