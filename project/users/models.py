@@ -29,7 +29,7 @@ class Profile(models.Model):
         super().__init__(*args, **kwargs)
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name="profile")
-    orcid = models.CharField(max_length=16)
+    orcid = models.CharField(max_length=16, default=None)
     bio = models.CharField(max_length=240)
     image = models.ImageField(upload_to="media/profile/avatar/")
     email_guid = models.CharField(max_length=40, default=new_guid)
@@ -49,11 +49,6 @@ class Profile(models.Model):
             "bio": p.bio,
             "image_data": path_to_base64(p.image.path),
         }
-
-
-class UserInterest(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="interests")
-    interest = models.CharField(max_length=50)
 
 
 class UserFollow(models.Model):

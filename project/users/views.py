@@ -14,7 +14,7 @@ from .decorators import require_login
 from .forms import ProfileForm, UserCreationForm, UserUpdateForm, ProfileUpdateForm, ResourceForm
 from .responses import HttpResponseUnauthorized
 from .validators import PasswordValidator
-from .models import UserInterest, Profile, UserFollow, Resource, ResourceInterest
+from .models import Profile, UserFollow, Resource, ResourceInterest
 
 """novos"""
 from bs4 import BeautifulSoup
@@ -54,11 +54,12 @@ def register(request):
                 profile.user = user
                 profile.save()
                 send_mail("WeSearchers account activation with ORCID",
-                          get_orcid_authentication_url(request,profile.email_guid),
+                          get_orcid_authentication_url(request, profile.email_guid),
                           "activate@wesearchers.pt", [user.email])
                 return JsonResponse(user.id, safe=False)
             except KeyError as k:
-                return JsonResponse(error_dict(user_form,profile_form,errors,{k.args[0]:"field missing in form"}), status=400)
+                return JsonResponse(error_dict(user_form, profile_form, errors, {k.args[0]: "field missing in form"}),
+                                    status=400)
         else:
             return JsonResponse(error_dict(user_form, profile_form, errors), status=400)
     else:
@@ -74,7 +75,7 @@ def get_user_info(request, user_id):
     interests = orcid_info[1]
     affiliation = orcid_info[2]
     orcid_id = orcid_info[3]
-    
+
     if user_id == 0:
         user = request.user
     else:
@@ -107,26 +108,8 @@ def update(request):
     user_form = UserUpdateForm(request.POST, instance=request.user)
     profile_form = ProfileUpdateForm(
         request.POST, request.FILES, instance=request.user.profile)
-    try:
-        institution = orcid_info[2]
-        interests = orcid_info[1].split()
-    except KeyError as k:
-        return JsonResponse(
-            error_dict(user_form, profile_form, errors, {k.args[0]: "field missing in form"}), status=400)
     if user_form.is_valid() and profile_form.is_valid():
-        for interest in list(UserInterest.objects.filter(user=request.user)):
-            interest.delete()
-        for interest in interests:
-            user_interest = UserInterest(interest=interest)
-            user_interest.user = request.user
-            user_interest.save()
-        user_form.save()
-        profile = profile_form.save(commit=False)
-        if institution is None:
-            institution = Institution(name="No institution")
-            institution.save()
-        profile.institution = institution
-        profile.save()
+        pass
 
         return HttpResponse()
     return JsonResponse(error_dict(user_form, profile_form, errors), status=400)
@@ -330,11 +313,12 @@ def resources_by_interest(request):
     final_list = list(map(lambda x: x.serialize(), resources))
     return JsonResponse(final_list, safe=False)
 
-def get_orcid_authentication_url(request,guid):
+
+def get_orcid_authentication_url(request, guid):
     redirect_url = settings.RUNNING_HOST + "/api/user/saveorcidinfo"
     orcAPI = PublicAPI(institution_key=settings.ORCID_KEY,
                        institution_secret=settings.ORCID_SECRET)
-    #url = orcAPI.get_login_url('/read-limited', redirect_url, )
+    # url = orcAPI.get_login_url('/read-limited', redirect_url, )
     url = orcAPI.get_login_url('/authenticate', redirect_url, state=guid)
 
     return url
@@ -351,7 +335,6 @@ def save_orcid_info(request):
 
     search_token = orcAPI.get_search_token_from_orcid()
 
-
     orcid_id = token['orcid']
     orcids = orcid_id.split("-")
     orcid_final = ""
@@ -362,11 +345,7 @@ def save_orcid_info(request):
     profile.orcid_search_token = search_token
     profile.save()
 
-    print(profile.email_guid)
-
-
     return HttpResponseRedirect(settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid)
-
 
 
 @require_login
@@ -375,11 +354,12 @@ def get_orcid_info(request):
                        institution_secret=settings.ORCID_SECRET)
 
     orcid_id = request.user.profile.orcid
-    orcid_id = '-'.join(orcid_id[i:i+4] for i in range(0, len(orcid_id), 4))
+    orcid_id = '-'.join(orcid_id[i:i + 4] for i in range(0, len(orcid_id), 4))
     summary = orcAPI.read_record_public(orcid_id, 'record', request.user.profile.orcid_search_token)
 
-    profile_name = summary['person']['name']['given-names']['value'] + " " + summary['person']['name']['family-name']['value']
-    
+    profile_name = summary['person']['name']['given-names']['value'] + " " + summary['person']['name']['family-name'][
+        'value']
+
     keywords = summary['person']['keywords']['keyword']
     interests = list()
     for keyword in keywords:
@@ -390,16 +370,11 @@ def get_orcid_info(request):
     for unit in research_units:
         units.append(unit['organization']['name'])
 
-
-
-
     final_array = []
     final_array.append(profile_name)
     final_array.append(interests)
     final_array.append(units)
     final_array.append(orcid_id)
-
-
 
     return final_array
 
@@ -482,6 +457,7 @@ def follow_view(request):
             return JsonResponse({k.args[0]: "field missing in form"}, status=400)
     else:
         return HttpResponseNotAllowed()
+
 
 @require_login
 def is_logged_in(request):

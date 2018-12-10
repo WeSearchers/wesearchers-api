@@ -13,7 +13,7 @@ class UserCreationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ("username", "email", "first_name", "last_name", "password1", "password2")
+        fields = ("username", "email", "password1", "password2")
 
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
@@ -38,16 +38,7 @@ class ProfileForm(ModelForm):
 
     class Meta:
         model = Profile
-        fields = ["orcid", "bio", "image"]
-
-    def clean_orcid(self):
-        orcid = self.cleaned_data.get("orcid")
-        if not orcid.isnumeric() or len(orcid) != 16:
-            raise forms.ValidationError(
-                self.error_messages['orcid_format'],
-                code='orcid_format',
-            )
-        return orcid
+        fields = ["bio", "image"]
 
     def clean_bio(self):
         bio = self.cleaned_data.get("bio")

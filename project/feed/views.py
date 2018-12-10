@@ -16,7 +16,6 @@ from .orcid import PublicAPI, MemberAPI
 
 
 Profile = apps.get_model('users', 'Profile')
-UserInterest = apps.get_model('users', 'UserInterest')
 
 
 def error_dict(*args):
