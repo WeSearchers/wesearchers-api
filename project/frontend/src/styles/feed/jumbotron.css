@@ -124,3 +124,7 @@ opacity */
   transition: background-color 0.15s ease-in-out;
   cursor: pointer;
 }
+
+.loading-icon {
+  margin: auto;
+}

@@ -79,26 +79,17 @@ class ProfileAbout extends Component {
               </div>
             ))}
           </div>
-          <div className="section-title">language</div>
-          <div className="section-card languages">
-            <div className="row">
-              <div className="col-md-3 p10">
-                {/* jmmonteiro colocar linguas faladas pelo utilizador através do fetch  */}
-                {/* FALTA NA BD */}
-                <div className="language">Portuguese</div>
-              </div>
-              <div className="col-md-3 p10">
-                <div className="language">English</div>
-              </div>
-              <div className="col-md-3 p10">
-                <div className="language">Spanish</div>
-              </div>
-              <div className="col-md-3 p10">
-                <div className="language">Germany</div>
-              </div>
-            </div>
-          </div>
           <div className="row col-md-12 connect-buttons-section">
+              {this.props.data.reddit ?
+                  <a
+                      className="connect-profile-btn general-btn yellow-btn"
+                  >
+                      <div className="logo">
+                          <i className="fa fa-check" aria-hidden="true"/>
+                      </div>
+                      <div className="text">connected to reddit</div>
+                  </a>
+                  :
             <a
               className="connect-profile-btn general-btn yellow-btn"
               onClick={this.authReddit}
@@ -107,16 +98,27 @@ class ProfileAbout extends Component {
                 <i class="fa fa-reddit-alien" aria-hidden="true" />
               </div>
               <div className="text">connect with reddit</div>
-            </a>
-            <a
-              className="connect-profile-btn general-btn yellow-btn"
-              onClick={this.authTwitter}
-            >
-              <div className="logo">
-                <i class="fa fa-twitter" aria-hidden="true" />
-              </div>
-              <div className="text">connect with twitter</div>
-            </a>
+            </a>}
+              {this.props.data.twitter ?
+                  <a
+                      className="connect-profile-btn general-btn yellow-btn"
+                  >
+                      <div className="logo">
+                          <i className="fa fa-check" aria-hidden="true"/>
+                      </div>
+                      <div className="text">connected to twitter</div>
+                  </a>
+                  :
+                  <a
+                      className="connect-profile-btn general-btn yellow-btn"
+                      onClick={this.authTwitter}
+                  >
+                      <div className="logo">
+                          <i class="fa fa-twitter" aria-hidden="true"/>
+                      </div>
+                      <div className="text">connect with twitter</div>
+                  </a>
+              }
           </div>
         </div>
         <Popup
