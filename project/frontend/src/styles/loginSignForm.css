@@ -199,22 +199,38 @@
 .login-page .activate-account {
   color: #333;
   margin-top: -100px;
+  width: 70%;
+  min-width: 200px;
 }
 
 .login-page .confirm-account .welcome,
 .login-page .activate-account .title {
   font-size: 30px;
+  margin: 0;
   margin-bottom: 40px;
+  width: 100%;
+  text-align: center;
 }
 
 .login-page .confirm-account .message,
 .login-page .activate-account .message {
   text-align: center;
   font-size: 18px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.message {
-  width: 257px;
+
+.login-page .confirm-account .message a,
+.login-page .activate-account .message a {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #fafafa;
+  border-radius: 5px;
+  width: 200px;
 }
+
 .welcome p,
 .welcome h1 {
   color: #ffc95e;
