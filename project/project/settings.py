@@ -112,6 +112,9 @@ REDDIT_CLIENT_SECRET = os.environ.get("REDDIT_SECRET", '')
 TWITTER_KEY = os.environ.get("TWITTER_KEY", '')
 TWITTER_SECRET = os.environ.get("TWITTER_SECRET", '')
 
+ORCID_KEY = os.environ.get("ORCID_KEY", '')
+ORCID_SECRET = os.environ.get("ORCID_SECRET", '')
+
 EMAIL_HOST = os.environ.get("EMAIL_HOST", '')
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", '')
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", '')
