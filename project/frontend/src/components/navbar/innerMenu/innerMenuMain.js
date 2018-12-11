@@ -24,7 +24,7 @@ class InnerMenuMain extends Component {
     return (
       <React.Fragment>
         <NavBar />
-        <div className="container inner-menu-main">
+        <div className="container max-container inner-menu-main">
           <div className="row ">
             <SideMenuMain
               subMenu={this.state.showSubMenu}

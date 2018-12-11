@@ -3,19 +3,24 @@ import React, { Component } from "react";
 class UserProfileHeader extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    }
+    this.state = {};
   }
 
   render() {
     console.log(this.props.data);
     return (
-      <div className="container user-profile">
+      <div className="container max-container user-profile">
         <div className="row user-header">
-          <div className="user-photo" >
-            <img src={"data:image/png;base64, " + this.props.data.image_data} width={"100%"} style={{"clip-path": "circle(50% at center)"}}/>
-          </div>
+          <div
+            className="user-photo"
+            style={{
+              "background-image":
+                "url('" +
+                "data:image/png;base64, " +
+                this.props.data.image_data +
+                "')"
+            }}
+          />
 
           <div className="user-info section-card">
             <div className="user-name">

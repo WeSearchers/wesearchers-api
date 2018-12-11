@@ -5,7 +5,7 @@ class Url extends Component {
   render() {
     return (
       <div className="url d-flex flex-column justify-content-center align-items-center ">
-        <div className="container ">
+        <div className="container max-container">
           <div className="d-flex flex-column justify-content-center align-items-center">
             <div className="welcome">
               <h1> 404 </h1>

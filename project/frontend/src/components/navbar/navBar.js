@@ -40,45 +40,20 @@ class NavBar extends Component {
   render() {
     return (
       <div className="nav-bar">
-        <div className="container nav-bar-container">
-          <ul className="menu">
-            <li className="logo-nav" id="home" onClick={NavBar.clickButton} />
-            <li id="resources" onClick={NavBar.clickButton}>
-              <i className="fa fa-floppy-o" />
-            </li>
-            <li id="profile" onClick={NavBar.clickButton}>
-              <i className="fa fa-user" />
-            </li>
-          </ul>
-          <div className="hamb-menu">
-            <i className="fa fa-bars" onClick={this.handleClickHamb} />
-            <div className={"hamb-navigation " + this.state.hambState}>
-              <ul>
-                <a>
-                  <span>Requests</span> <i className="fa  fa-chevron-right" />
-                </a>
-                <a>
-                  <span>Network</span> <i className="fa  fa-chevron-right" />
-                </a>
-                <a>
-                  <span>Community</span> <i className="fa  fa-chevron-right" />
-                </a>
-                <a id="settings" onClick={NavBar.clickButton}>
-                  <span>Settings and Privacy</span>{" "}
-                  <i className="fa  fa-chevron-right" />
-                </a>
-                <a>
-                  <span>Help</span> <i className="fa  fa-chevron-right" />
-                </a>
-                <a>
-                  <span>About the Platform</span>{" "}
-                  <i className="fa  fa-chevron-right" />
-                </a>
-                <a onClick={this.logout}>
-                  <span>Logout</span> <i className="fa  fa-chevron-right" />
-                </a>
-              </ul>
-            </div>
+        <div className="container max-container nav-bar-container">
+          <div className="row">
+            <div className="logo-nav" id="home" onClick={NavBar.clickButton} />
+            <ul className="menu">
+              <li id="profile" onClick={NavBar.clickButton}>
+                Profile
+              </li>
+              <li id="resources" onClick={NavBar.clickButton}>
+                Resources
+              </li>
+              <li className="logout" onClick={this.logout}>
+                Logout
+              </li>
+            </ul>
           </div>
         </div>
       </div>

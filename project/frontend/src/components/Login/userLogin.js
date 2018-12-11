@@ -91,7 +91,7 @@ class UserLogin extends Component {
               </a>
             </div>
             <button onClick={this.handleLogin} type="submit">
-              log in
+              Log in
             </button>
             <div className="dont-have-account mb-3">
               <div>Don't you have an account?</div>
