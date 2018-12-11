@@ -10,7 +10,7 @@ class Popup extends Component {
           (this.props.toShow === "show" ? "show" : "hidden")
         }
       >
-        <div className="container resources-popup section-card">
+        <div className="container max-container resources-popup section-card">
           <div onClick={() => this.props.toHide("hide")} className="close">
             <i className="fa fa-window-close" aria-hidden="true" />
           </div>

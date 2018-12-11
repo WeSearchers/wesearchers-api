@@ -30,13 +30,13 @@ class ResourcesMain extends Component {
   updateResources = event => {
     Request.get("api/user/resource").then(response => {
       response.json().then(resources => {
-        this.setState({resources: resources});
-      })
+        this.setState({ resources: resources });
+      });
     });
     Request.get("api/user/resource/gettags").then(response => {
-        response.json().then(tags => {
-            this.setState({checkboxTags: tags});
-        })
+      response.json().then(tags => {
+        this.setState({ checkboxTags: tags });
+      });
     });
   };
 
@@ -56,26 +56,25 @@ class ResourcesMain extends Component {
       clickedTags.splice(clickedTags.indexOf(checkboxtag), 1);
     }
 
-    this.setState({clickedTags: clickedTags});
+    this.setState({ clickedTags: clickedTags });
     let tags = "";
-    for(let i = 0; i < clickedTags.length; i++){
-      tags += clickedTags[i] + ","
+    for (let i = 0; i < clickedTags.length; i++) {
+      tags += clickedTags[i] + ",";
     }
     tags = tags.substring(0, tags.length - 1);
 
-    if (clickedTags.length === 0){
-        Request.get("api/user/resource").then(response => {
-            response.json().then(resources => {
-                this.setState({resources: resources});
-            })
+    if (clickedTags.length === 0) {
+      Request.get("api/user/resource").then(response => {
+        response.json().then(resources => {
+          this.setState({ resources: resources });
         });
-    }
-    else {
-        Request.get("api/user/resource/tags", {tags: tags}).then(response => {
-            response.json().then(resources => {
-                this.setState({resources: resources});
-            })
+      });
+    } else {
+      Request.get("api/user/resource/tags", { tags: tags }).then(response => {
+        response.json().then(resources => {
+          this.setState({ resources: resources });
         });
+      });
     }
   }
 
@@ -83,11 +82,15 @@ class ResourcesMain extends Component {
     return (
       <React.Fragment>
         <NavBar />
-        <Popup toShow={this.state.showPopup} toHide={this.handleShowPopup} update={this.updateResources} />
-        <div className="container resources-main">
+        <Popup
+          toShow={this.state.showPopup}
+          toHide={this.handleShowPopup}
+          update={this.updateResources}
+        />
+        <div className="container max-container resources-main">
           <div className="row ">
             <div className="col-md-12 title">
-              Resources <a onClick={() => this.handleShowPopup("show")}>+</a>
+              RESOURCES <a onClick={() => this.handleShowPopup("show")}>+</a>
             </div>
             <div className="col-md-3">
               <div className="interests-checkbox">
@@ -99,12 +102,15 @@ class ResourcesMain extends Component {
                     toFilter={this.handleShowResource}
                   />
                 ))}
+                {this.state.checkboxTags.length == 0 ? (
+                  <div className="empty-array">No resources were defined.</div>
+                ) : null}
               </div>
             </div>
             <div className="col-md-9 resource-item-container">
               {this.state.resources.map(resource => (
-                  <ResourceItem data={resource} update={this.updateResources}/>
-                ))}
+                <ResourceItem data={resource} update={this.updateResources} />
+              ))}
             </div>
           </div>
         </div>

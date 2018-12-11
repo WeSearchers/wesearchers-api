@@ -119,8 +119,8 @@ class LoginSignUp extends Component {
     return (
       <div className="allpage-signup">
         <div className="container">
-          <div className="main-content-signup pl-5 pr-5">
-            <div className="row ">
+          <div className="main-content-signup">
+            <div className="row register-title">
               <div className="col-xs-5 text-white  mt-4 title mb-4">
                 <h1>
                   <b>WE</b>
@@ -132,7 +132,7 @@ class LoginSignUp extends Component {
               </div>
             </div>
             <div className="row">
-              <div className="col-lg-5 col-md-6 col-sm-12 text-white mb-4">
+              {/* <div className="col-lg-5 col-md-6 col-sm-12 text-white mb-4">
                 <div
                   className="background-image-profile-signup ml-4 mb-2"
                   style={{ "clip-path": "circle(50% at center)" }}
@@ -159,16 +159,16 @@ class LoginSignUp extends Component {
                     </div>
                   ) : null}
                 </div>
-              </div>
+              </div> */}
 
-              <div className="col-lg-6 col-md-6 col-sm-12 text-white mt-4">
-                <div className="username">
+              <div className="col-lg-12 col-md-12 col-sm-12 text-white mt-4">
+                {/* <div className="username">
                   <input
                     type="text"
                     name="username"
                     value={this.state.username}
                     onChange={this.handlechange}
-                    className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
+                    className="form-control-coment z-depth-1 bg-light  p-1 pl-4"
                     id="id"
                     placeholder="Username"
                   />
@@ -178,13 +178,13 @@ class LoginSignUp extends Component {
                   <div className="wrongpass">
                     <p>{this.state.errors.username}</p>
                   </div>
-                ) : null}
+                ) : null} */}
                 <div className="orcid">
                   <input
                     type="text"
                     name="orcid"
                     onChange={this.handlechange}
-                    className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
+                    className="form-control-coment z-depth-1 bg-light  p-1 pl-4 "
                     id="id"
                     placeholder="Orcid ID"
                   />
@@ -197,7 +197,7 @@ class LoginSignUp extends Component {
                 ) : null}
               </div>
             </div>
-            <div className="row">
+            {/* <div className="row">
               <div className="col-md-12 text-white">
                 <div className="first_name ">
                   <input
@@ -217,8 +217,8 @@ class LoginSignUp extends Component {
                   </div>
                 ) : null}
               </div>
-            </div>
-            <div className="row">
+            </div> */}
+            {/* <div className="row">
               <div className="col-md-12 text-white">
                 <div className="last_name ">
                   <input
@@ -238,7 +238,7 @@ class LoginSignUp extends Component {
                   </div>
                 ) : null}
               </div>
-            </div>
+            </div> */}
             <div className="row">
               <div className="col-md-12 text-white">
                 <div className="email ">
@@ -247,7 +247,7 @@ class LoginSignUp extends Component {
                     name="email"
                     value={this.state.email}
                     onChange={this.handlechange}
-                    className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
+                    className="form-control-coment z-depth-1 bg-light p-1 pl-4"
                     id="id"
                     placeholder="Email"
                   />
@@ -268,7 +268,7 @@ class LoginSignUp extends Component {
                     name="password1"
                     value={this.state.password1}
                     onChange={this.handlechange}
-                    className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
+                    className="form-control-coment z-depth-1 bg-light p-1 pl-4"
                     id="id"
                     placeholder="Password"
                   />
@@ -289,7 +289,7 @@ class LoginSignUp extends Component {
                     name="password2"
                     value={this.state.password2}
                     onChange={this.handlechange}
-                    className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
+                    className="form-control-coment z-depth-1 bg-light p-1 pl-4"
                     id="id"
                     placeholder="Confirm password"
                   />
@@ -302,7 +302,7 @@ class LoginSignUp extends Component {
                 ) : null}
               </div>
             </div>
-            <div className="row">
+            {/* <div className="row">
               <div className="col-md-12 text-white">
                 <div className="institution">
                   <input
@@ -322,8 +322,8 @@ class LoginSignUp extends Component {
                   </div>
                 ) : null}
               </div>
-            </div>
-            <div className="row">
+            </div> */}
+            {/* <div className="row">
               <div className="col-md-12 text-white">
                 <div className="bio">
                   <textarea
@@ -344,8 +344,8 @@ class LoginSignUp extends Component {
                   </div>
                 ) : null}
               </div>
-            </div>
-            <div className="row">
+            </div> */}
+            {/* <div className="row">
               <div className="col-md-12 text-white">
                 <div className="hash">
                   <input
@@ -363,7 +363,7 @@ class LoginSignUp extends Component {
                   </div>
                 ) : null}
               </div>
-            </div>
+            </div> */}
             <div class="row ">
               <div className="col-md-12 text-white mb-4">
                 <button
