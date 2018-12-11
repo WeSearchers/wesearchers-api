@@ -58,12 +58,6 @@ class ProfileAbout extends Component {
                 <span className="label">Email</span>
                 {this.props.data.email}
               </li>
-              {/*
-              <li>
-                <span className="label">Skype</span>
-                Não existe em BD
-              </li>
-              */}
             </ul>
           </div>
           <div className="section-title">Biography</div>

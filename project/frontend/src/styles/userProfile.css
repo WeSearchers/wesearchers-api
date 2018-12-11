@@ -39,7 +39,7 @@
 .label {
   color: #999;
   margin-right: 10px;
-  width: 70px;
+  width: 130px;
 }
 
 .edit-profile:hover {
@@ -471,5 +471,9 @@
 
   .user-profile .section-card {
     width: 100%;
+  }
+
+  .connect-buttons-section .connect-profile-btn {
+    width: 265px;
   }
 }
