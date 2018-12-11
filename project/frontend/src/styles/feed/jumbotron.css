@@ -128,3 +128,8 @@ opacity */
 .loading-icon {
   margin: auto;
 }
+
+.file-show {
+  display: flex;
+  top: 10px;
+}

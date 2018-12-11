@@ -7,15 +7,10 @@ class LoginSignUp extends Component {
     this.state = {
       username: "",
       email: "",
-      first_name: "",
-      last_name: "",
       password1: "",
       password2: "",
       bio: "",
-      orcid: "",
       image: "",
-      interests: "",
-      institution: "",
       image_data: null,
       errors: {}
     };
@@ -132,7 +127,7 @@ class LoginSignUp extends Component {
               </div>
             </div>
             <div className="row">
-              {/* <div className="col-lg-5 col-md-6 col-sm-12 text-white mb-4">
+              <div className="col-lg-5 col-md-6 col-sm-12 text-white mb-4">
                 <div
                   className="background-image-profile-signup ml-4 mb-2"
                   style={{ "clip-path": "circle(50% at center)" }}
@@ -159,10 +154,10 @@ class LoginSignUp extends Component {
                     </div>
                   ) : null}
                 </div>
-              </div> */}
+              </div>
 
               <div className="col-lg-12 col-md-12 col-sm-12 text-white mt-4">
-                {/* <div className="username">
+                <div className="username">
                   <input
                     type="text"
                     name="username"
@@ -178,8 +173,8 @@ class LoginSignUp extends Component {
                   <div className="wrongpass">
                     <p>{this.state.errors.username}</p>
                   </div>
-                ) : null} */}
-                <div className="orcid">
+                ) : null}
+                  {/*<div className="orcid">
                   <input
                     type="text"
                     name="orcid"
@@ -194,7 +189,7 @@ class LoginSignUp extends Component {
                   <div className="wrongpass">
                     <p>{this.state.errors.orcid}</p>
                   </div>
-                ) : null}
+                ) : null} */}
               </div>
             </div>
             {/* <div className="row">
@@ -323,7 +318,7 @@ class LoginSignUp extends Component {
                 ) : null}
               </div>
             </div> */}
-            {/* <div className="row">
+            <div className="row">
               <div className="col-md-12 text-white">
                 <div className="bio">
                   <textarea
@@ -344,7 +339,7 @@ class LoginSignUp extends Component {
                   </div>
                 ) : null}
               </div>
-            </div> */}
+            </div>
             {/* <div className="row">
               <div className="col-md-12 text-white">
                 <div className="hash">

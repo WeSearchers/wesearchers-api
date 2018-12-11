@@ -18,7 +18,8 @@ class Jumbotron extends Component {
       text: "",
       filename: null,
       media: null,
-      errors: {}
+      errors: {},
+        profile: null
     };
     this.media = React.createRef();
     this.text = React.createRef();
@@ -26,8 +27,7 @@ class Jumbotron extends Component {
 
   handleChange = ev => {
     if (ev.target.name === "media") {
-      this.setState({ ["media"]: ev.target.files[0] });
-      this.setState({ ["filename"]: ev.target.files[0].name });
+      this.setState({ media: ev.target.files[0], filename: ev.target.files[0].name });
     } else this.setState({ [ev.target.name]: ev.target.value });
   };
 
@@ -53,13 +53,27 @@ class Jumbotron extends Component {
     });
   };
 
-  render() {
+  componentDidMount() {
+    Request.get(
+      "api/user/profile/0",
+      {}
+    ).then(response => {
+      response.json().then(data => {
+        //console.log(data)
+        this.setState({profile: data.image_data});
+      });
+    });
+  }
+
+    render() {
     console.log(this.state.errors);
     return (
       <div className="container-jumb">
         <div className="row write-pub bg-grey justify-content-between">
           <div className="col-md-2 col-sm-12">
-            <div className="background-image-profile mt-4 " />
+            <div className="background-image-profile mt-4 " >
+                
+            </div>
           </div>
           <div className="col-md-9 col-sm-12 mt-4 mr-4">
             <div class="comment">
@@ -72,6 +86,12 @@ class Jumbotron extends Component {
                 onChange={this.handleChange}
                 placeholder="Write here..."
               />
+              {this.state.errors.text !== undefined &&
+              this.state.errors.text !== null ? (
+                <div className="wrongpass">
+                  <p>{this.state.errors.text}</p>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
@@ -87,12 +107,19 @@ class Jumbotron extends Component {
                 onChange={this.handleChange}
               />
               <label for="f02">Upload</label>
+
               {this.state.errors.image !== undefined &&
               this.state.errors.image !== null ? (
                 <div className="wrongpass">
                   <p>{this.state.errors.image}</p>
                 </div>
               ) : null}
+              {this.state.filename !== null ?
+              <div className="file-show">
+                  {"\n"}
+                  <i className="fa fa-paperclip" />
+                  {this.state.filename}
+              </div> : null}
             </div>
           </div>
           <div className="col-md-3 col-sm-4 col-xs-0">
