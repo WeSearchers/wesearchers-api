@@ -49,15 +49,6 @@ class NavBar extends Component {
             <li id="profile" onClick={NavBar.clickButton}>
               <i className="fa fa-user" />
             </li>
-            <li id="" onClick={NavBar.clickButton}>
-              <i className="fa fa-comment" />
-            </li>
-            <li id="" onClick={NavBar.clickButton}>
-              <i className="fa fa-bell" />
-            </li>
-            <li id="" onClick={NavBar.clickButton}>
-              <i className="fa fa-search" />
-            </li>
           </ul>
           <div className="hamb-menu">
             <i className="fa fa-bars" onClick={this.handleClickHamb} />

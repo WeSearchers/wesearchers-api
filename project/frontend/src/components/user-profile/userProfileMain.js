@@ -11,14 +11,15 @@ class UserProfile extends Component {
     this.state = {
       bio: "",
       email: "",
-      first_name: "",
-      last_name: "",
+      name: "",
       image_data: "",
       institution: "",
       orcid: "",
       user_id: "",
       username: "",
-      interests: []
+      interests: [],
+      twitter: false,
+      reddit: false
     };
   }
 
@@ -30,18 +31,7 @@ class UserProfile extends Component {
     ).then(response => {
       response.json().then(data => {
         //console.log(data)
-        this.setState({
-          bio: data.bio,
-          email: data.email,
-          first_name: data.first_name,
-          last_name: data.last_name,
-          image_data: data.image_data,
-          institution: data.institution,
-          orcid: data.orcid,
-          user_id: data.user_id,
-          username: data.username,
-          interests: data.interests
-        });
+        this.setState(data);
       });
     });
   }

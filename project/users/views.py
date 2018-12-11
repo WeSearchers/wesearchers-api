@@ -7,6 +7,9 @@ from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.forms import ModelForm, Form
 from django.http import *
+from prawcore import ResponseException
+from tweepy import TweepError
+
 from .orcid import PublicAPI, MemberAPI
 
 from .guid import new_guid
@@ -14,7 +17,7 @@ from .decorators import require_login
 from .forms import ProfileForm, UserCreationForm, UserUpdateForm, ProfileUpdateForm, ResourceForm
 from .responses import HttpResponseUnauthorized
 from .validators import PasswordValidator
-from .models import Profile, UserFollow, Resource, ResourceInterest
+from .models import Profile, Resource, ResourceInterest
 
 """novos"""
 from bs4 import BeautifulSoup
@@ -68,20 +71,49 @@ def register(request):
 
 @require_login
 def get_user_info(request, user_id):
-    orcid_info = []
     orcid_info = get_orcid_info(request)
-
-    name = orcid_info[0]
-    interests = orcid_info[1]
-    affiliation = orcid_info[2]
-    orcid_id = orcid_info[3]
 
     if user_id == 0:
         user = request.user
     else:
         user = User.objects.filter(id=user_id).first()
+
+    info = user.profile.serialize()
+    info["name"] = orcid_info[0]
+    info["interests"] = orcid_info[1]
+    info["affiliation"] = orcid_info[2]
+    info["orcid_id"] = orcid_info[3]
+
+
+    if user.profile.twitter_access_token is not None and user.profile.twitter_access_token != "":
+        auth = tweepy.OAuthHandler(
+            settings.TWITTER_KEY, settings.TWITTER_SECRET)
+        auth.set_access_token(user.profile.twitter_access_token, user.profile.twitter_access_token_secret)
+        api = tweepy.API(auth)
+        try:
+            api.verify_credentials()
+            info["twitter"] = True
+        except TweepError:
+            info["twitter"] = False
+    else:
+        info["twitter"] = False
+
+    if user.profile.reddit_refresh_token != "" and user.profile.reddit_refresh_token is not None:
+        reddit = praw.Reddit(client_id=settings.REDDIT_CLIENT_ID,
+                             client_secret=settings.REDDIT_CLIENT_SECRET,
+                             refresh_token=user.profile.reddit_refresh_token,
+                             user_agent="web:WeSearchers:v0.1 (by /u/FabioGC)")
+        try:
+            reddit.user.me()
+            info["reddit"] = True
+        except ResponseException:
+            info["reddit"] = False
+    else:
+        info["reddit"] = False
+
+
     if user is not None:
-        return JsonResponse(user.profile.serialize(), safe=False)
+        return JsonResponse(info, safe=False)
     else:
         return HttpResponseNotFound()
 
@@ -201,42 +233,6 @@ def validate(request):
 
 
 @require_login
-def get_followers(request):
-    if request.method == "GET":
-        if "user_id" not in request.GET.keys():
-            followers = list(
-                map(lambda user: user.user.profile.serialize(), UserFollow.objects.filter(followed=request.user)))
-        else:
-            followers = list(map(lambda user: user.user.profile.serialize(),
-                                 UserFollow.objects.filter(followed_id=int(request.GET["user_id"]))))
-        return JsonResponse(followers, safe=False)
-    else:
-        return HttpResponseNotAllowed()
-
-
-@require_login
-def get_following(request):
-    if request.method == "GET":
-        if "user_id" not in request.GET.keys():
-            following = list(
-                map(lambda user: user.followed.profile.serialize(), UserFollow.objects.filter(user=request.user)))
-        else:
-            following = list(map(lambda user: user.followed.profile.serialize(),
-                                 UserFollow.objects.filter(user_id=int(request.GET["user_id"]))))
-        return JsonResponse(following, safe=False)
-    else:
-        return HttpResponseNotAllowed()
-
-
-"""
-@require_login
-def get_collaborators(request):
-    #insert code here
-    return HttpResponse()
-"""
-
-
-@require_login
 def delete_resource(request):
     if request.method == "POST":
         try:
@@ -336,13 +332,9 @@ def save_orcid_info(request):
     search_token = orcAPI.get_search_token_from_orcid()
 
     orcid_id = token['orcid']
-    orcids = orcid_id.split("-")
-    orcid_final = ""
-    for x in orcids:
-        orcid_final += x
-
     profile = Profile.objects.filter(email_guid=guid).first()
     profile.orcid_search_token = search_token
+    profile.orcid = orcid_id
     profile.save()
 
     return HttpResponseRedirect(settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid)
@@ -354,7 +346,6 @@ def get_orcid_info(request):
                        institution_secret=settings.ORCID_SECRET)
 
     orcid_id = request.user.profile.orcid
-    orcid_id = '-'.join(orcid_id[i:i + 4] for i in range(0, len(orcid_id), 4))
     summary = orcAPI.read_record_public(orcid_id, 'record', request.user.profile.orcid_search_token)
 
     profile_name = summary['person']['name']['given-names']['value'] + " " + summary['person']['name']['family-name'][
@@ -440,23 +431,6 @@ def save_twitter_access_tokens(request):
     profile.twitter_access_token_secret = access_token_secret
     profile.save()
     return HttpResponseRedirect(settings.RUNNING_HOST + "/user/profile")
-
-
-@require_login
-def follow_view(request):
-    if request.method == "POST":
-        try:
-            followed = User.objects.filter(id=request.POST["user_id"]).first()
-            if followed is not None:
-                follow = UserFollow(user=request.user, followed=followed)
-                follow.save()
-                return HttpResponse()
-            else:
-                return HttpResponseNotFound()
-        except KeyError as k:
-            return JsonResponse({k.args[0]: "field missing in form"}, status=400)
-    else:
-        return HttpResponseNotAllowed()
 
 
 @require_login
