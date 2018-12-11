@@ -133,6 +133,14 @@ input.input-upload-file:hover::after {
   border: 1px solid #fafafa;
 }
 
+.row {
+  width: 100%;
+}
+
+.max-container {
+  max-width: 915px !important;
+}
+
 /*font*/
 
 @font-face {

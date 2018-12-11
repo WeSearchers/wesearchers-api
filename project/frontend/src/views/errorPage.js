@@ -6,7 +6,7 @@ class ErrorPage extends Component {
     return (
       <React.Fragment>
         <div className="login-page error-page">
-          <div className="container">
+          <div className="container max-container">
             <div className="login-form mt-4">
               <div className="error">
                 <div className="number">

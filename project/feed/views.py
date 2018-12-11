@@ -1,9 +1,10 @@
 import time
+from datetime import datetime
 
 import tweepy
 from django.apps import apps
 from django.conf import settings
-from django.forms import Form
+from django.forms import Form, ModelForm
 from django.http import *
 from os import remove, makedirs, path
 import praw
@@ -11,10 +12,9 @@ import praw
 from .guid import new_guid
 from .decorators import require_login
 from .forms import *
-from .models import *
+from .orcid import PublicAPI, MemberAPI
 
 Profile = apps.get_model('users', 'Profile')
-UserInterest = apps.get_model('users', 'UserInterest')
 
 
 def error_dict(*args):
@@ -68,143 +68,33 @@ def publish(request):
 
 
 @require_login
-def post_comment(request):
-    if request.method == "POST":
-        errors = {}
-        comment_form = CommentPublishingForm(request.POST)
-        try:
-            article = Article.objects.filter(
-                id=int(request.POST["article_id"])).first()
-            if article is not None:
-                if comment_form.is_valid():
-                    comment = comment_form.save(commit=False)
-                    comment.user = request.user
-                    comment.article = article
-                    comment.save()
-                    return JsonResponse(comment.id, safe=False)
-            else:
-                errors["article_id"] = "article does not exist"
-        except KeyError as k:
-            return JsonResponse(
-                error_dict(comment_form, errors, {k.args[0]: "field missing in form"}), status=400)
-        return JsonResponse(
-            error_dict(comment_form, errors), status=400)
-    else:
-        return HttpResponseNotAllowed()
+def get_orcid_info(request):
+    orcAPI = PublicAPI(institution_key=settings.ORCID_KEY,
+                       institution_secret=settings.ORCID_SECRET)
 
+    orcid_id = request.user.profile.orcid
+    summary = orcAPI.read_record_public(orcid_id, 'record', request.user.profile.orcid_search_token)
 
-@require_login
-def get_comment(request, comment_id):
-    if request.method == "GET":
-        comment = Comment.objects.filter(id=comment_id).first()
-        if comment is not None:
-            return JsonResponse(comment.serialize())
-        else:
-            return HttpResponseNotFound()
-    else:
-        return HttpResponseNotAllowed()
+    profile_name = summary['person']['name']['given-names']['value'] + " " + summary['person']['name']['family-name'][
+        'value']
 
+    keywords = summary['person']['keywords']['keyword']
+    interests = list()
+    for keyword in keywords:
+        interests.append(keyword['content'])
 
-@require_login
-def vote_view(request):
-    if request.method == "POST":
-        try:
-            value = int(request.POST["vote"])
-        except ValueError:
-            return JsonResponse({"vote": "vote must be an integer"}, status=400)
-        if any([value == 0, value == -1, value == 1]):
-            article = Article.objects.filter(
-                id=int(request.POST["article_id"])).first()
-            if article is not None:
-                vote = Vote.objects.filter(
-                    user=request.user, article=article).first()
-                if vote is not None:
-                    if value == 0:
-                        vote.delete()
-                    else:
-                        vote.score = value
-                        vote.save()
-                else:
-                    vote = Vote(score=value, user=request.user,
-                                article=article)
-                    vote.save()
-                return JsonResponse(vote.id, safe=False)
-            else:
-                return JsonResponse({"article_id": "article does not exist"}, status=400)
-        else:
-            return JsonResponse({"vote": "vote must be either -1, 0 or 1"}, status=400)
-    else:
-        return HttpResponseNotAllowed("Method not allowed")
+    research_units = summary['activities-summary']['employments']['employment-summary']
+    units = list()
+    for unit in research_units:
+        units.append(unit['organization']['name'])
 
+    final_array = []
+    final_array.append(profile_name)
+    final_array.append(interests)
+    final_array.append(units)
+    final_array.append(orcid_id)
 
-@require_login
-def get_article(request, article_id):
-    if request.method == "GET":
-        article = Article.objects.filter(id=article_id).first()
-        if article is not None:
-            return JsonResponse(article.serialize(request.user))
-        else:
-            return HttpResponseNotFound()
-    else:
-        return HttpResponseNotAllowed()
-
-
-@require_login
-def post_article(request):
-    if request.method == "POST":
-        article_form = ArticlePublishingForm(request.POST)
-        try:
-            if article_form.is_valid():
-                article = article_form.save(commit=False)
-                article.user = request.user
-                article.save()
-                tags = request.POST["tags"].split()
-                for tag in tags:
-                    article_interest = ArticleInterest(interest=tag)
-                    article_interest.article = article
-                    article_interest.save()
-                return JsonResponse(article.id, safe=False)
-            else:
-                return JsonResponse(
-                    error_dict(article_form), status=400)
-        except KeyError as k:
-            return JsonResponse(
-                error_dict(article_form, {k.args[0]: "field missing in form"}), status=400)
-    else:
-        return HttpResponseNotAllowed()
-
-
-@require_login
-def comments_by_article(request, article_id):
-    article = Article.objects.filter(id=article_id).first()
-    if article is not None:
-        comments = list(map(lambda comment: comment.serialize(),
-                            Comment.objects.filter(article=article)))
-        comments.sort(key=lambda x: x["date"], reverse=True)
-        return JsonResponse(comments, safe=False)
-    else:
-        return HttpResponseNotFound()
-
-
-@require_login
-def article_by_interests(request):
-    def intersection_len(l1, l2):
-        temp = set(l2)
-        l3 = [value for value in l1 if value in temp]
-        return len(l3)
-
-    def match_count(interests, article):
-        article_interests = list(
-            map(lambda a: a.interest, ArticleInterest.objects.filter(article=article)))
-        return intersection_len(interests, article_interests)
-
-    user_interests = list(map(lambda interest: interest.interest,
-                              UserInterest.objects.filter(user=request.user)))
-    articles = list(Article.objects.all())
-    articles.sort(key=lambda x: x.calc_score(), reverse=True)
-    articles.sort(key=lambda x: match_count(user_interests, x), reverse=True)
-    final_list = list(map(lambda x: x.serialize(request.user), articles))
-    return JsonResponse(final_list, safe=False)
+    return final_array
 
 
 @require_login
@@ -223,7 +113,8 @@ def get_posts(request):
                 namestr += "+" + sub.display_name
 
             multi = reddit.subreddit(namestr)
-            for submission in multi.hot(limit=30):
+            ls = list(multi.hot(limit=1000))
+            for submission in ls[min(len(subs)*max_posts, 20)*int(request.GET["page"]):min(len(subs)*max_posts, 20)*(int(request.GET["page"])+1)]:
                 submission_dict = {
                     "url": submission.shortlink,
                     "name": submission.author.name,
@@ -232,7 +123,6 @@ def get_posts(request):
                     "date": datetime.fromtimestamp(submission.created),
                     "profile_pic_url": "http://i.imgur.com/sdO8tAw.png",
                     "score": submission.ups,
-                    "ratio": str(round(submission.upvote_ratio * 100)) + "%",
                     "subreddit": submission.subreddit.display_name,
                     "type": "reddit"
                 }
@@ -246,10 +136,12 @@ def get_posts(request):
         auth = tweepy.OAuthHandler(
             settings.TWITTER_KEY, settings.TWITTER_SECRET)
         api = tweepy.API(auth)
-        for interest in UserInterest.objects.filter(user=request.user):
-            for tweet in tweepy.Cursor(api.search, tweet_mode="extended", q=("%23" + interest.interest),
-                                       result_type='popular').items(
-                    max_posts):
+
+        orcid_info = get_orcid_info(request)
+        interests = orcid_info[1]
+        for interest in interests:
+            for tweet in list(tweepy.Cursor(api.search, rpp=max_posts, tweet_mode="extended", q=("%23" + interest),
+                                       result_type='popular').pages(int(request.GET["page"])+1))[-1]:
                 if hasattr(tweet, 'retweeted_status'):
                     tweet = tweet.retweeted_status
                 tags = list()

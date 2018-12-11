@@ -1,3 +1,5 @@
+lxml
+praw
 tweepy
 django
 gunicorn

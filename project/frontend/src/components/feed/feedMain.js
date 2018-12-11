@@ -8,17 +8,42 @@ import AddComent from "./addcoment";
 import Popup from "./popup";
 import TweetPub from "./tweetpub";
 import RedditPub from "./redditpub";
+import loading from "../../images/loading.gif";
 
 class Feed extends Component {
   constructor(props) {
     super(props);
     this.state = {
       userData : null,
-      posts: []
+      posts: [],
+      page: 0,
+      loading: false
     }
   }
 
+  checkEnd = () => {
+    if ( !this.state.loading && (window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 2) {
+      this.getMorePosts()
+    }
+  };
+
+  getMorePosts = () => {
+
+      this.setState({loading: true});
+    Request.get("api/feed/posts", {page:this.state.page}).then( response => {
+      response.json().then( data => {
+        let posts = this.state.posts.concat(data);
+        this.setState({
+          posts: posts,
+            page: this.state.page + 1,
+            loading: false
+        })
+      })
+    });
+  };
+
   componentDidMount() {
+    window.onscroll = this.checkEnd;
     Request.get("api/user/profile/0").then(response => {
       response.json().then(data => {
         this.setState({
@@ -26,13 +51,8 @@ class Feed extends Component {
         });
       });
     });
-    Request.get("api/feed/posts").then( response => {
-      response.json().then( data => {
-        this.setState({
-          posts: data,
-        })
-      })
-    });
+    this.getMorePosts()
+
   }
 
   render() {
@@ -54,6 +74,10 @@ class Feed extends Component {
         <Pub2 />
         <Pub2 />
         */}
+          {this.state.loading ?
+          <img className="loading-icon m-5 bg-grey d-flex flex-column mr-auto ml-auto" src={loading}/>
+            : null
+              }
       </React.Fragment>
     );
   }

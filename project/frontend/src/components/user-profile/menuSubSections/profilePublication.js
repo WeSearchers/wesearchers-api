@@ -7,7 +7,8 @@ class Publication extends Component {
     return (
       <div
         className={
-          "col-md-12 " + (this.props.toShow == "posts" ? "show" : "hidden")
+          "col-md-12 publication " +
+          (this.props.toShow == "posts" ? "show" : "hidden")
         }
       >
         <div className="section-title">

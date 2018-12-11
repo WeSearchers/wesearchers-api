@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import UserProfileMenuSection from "./userProfileMenuSection";
 
 class UserProfileMenu extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       showSection: "about"
-    };  
+    };
   }
- 
+
   handleShowSubSection(section) {
     if (this.state.showSection !== section) {
       this.setState({
@@ -23,7 +23,7 @@ class UserProfileMenu extends Component {
       <React.Fragment>
         {/* jmmonteiro aqui estão as secções que ativam cada sub-secção do perfil de utilizador: about network etc...*/}
         {/* jmmonteiro ao clicar em cada um deve conter já a informação renderizada */}
-        <div className="container profile-menu">
+        <div className="container max-container profile-menu">
           <div className="row menu-row">
             <div className="col-md-3 pd10">
               <a
@@ -69,9 +69,12 @@ class UserProfileMenu extends Component {
                 <i className="fa fa-file-text" />
               </a>
             </div>
-            </div>
+          </div>
         </div>
-        <UserProfileMenuSection data={this.props.data} toShow={this.state.showSection} />
+        <UserProfileMenuSection
+          data={this.props.data}
+          toShow={this.state.showSection}
+        />
       </React.Fragment>
     );
   }

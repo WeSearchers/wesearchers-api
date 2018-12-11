@@ -11,20 +11,26 @@ class Popup extends Component {
     };
   }
 
-  static hashTagify(value, oldValue){
+  static hashTagify(value, oldValue) {
     let str = value.replace(/#/g, "");
     let parts = str.split(" ");
     parts = parts.filter(el => {
       return el !== "";
     });
-    if (oldValue.length < value.length && (value.endsWith(" ") || value.endsWith("#")))
-      parts.push ("");
+    if (
+      oldValue.length < value.length &&
+      (value.endsWith(" ") || value.endsWith("#"))
+    )
+      parts.push("");
     return "#" + parts.join(" #");
   }
 
   handleChange = event => {
-    if (event.target.name === "tags"){
-      event.target.value = Popup.hashTagify(event.target.value, this.state.tags);
+    if (event.target.name === "tags") {
+      event.target.value = Popup.hashTagify(
+        event.target.value,
+        this.state.tags
+      );
     }
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -33,8 +39,7 @@ class Popup extends Component {
     let fd = new FormData();
     for (let elem in this.state) {
       let str = this.state[elem];
-      if (elem === "tags")
-        fd.append(elem, this.state[elem].replace(/#/g, ""));
+      if (elem === "tags") fd.append(elem, this.state[elem].replace(/#/g, ""));
       else fd.append(elem, this.state[elem]);
     }
     Request.post("api/user/resource", fd).then(() => {
@@ -56,7 +61,7 @@ class Popup extends Component {
           (this.props.toShow === "show" ? "show" : "hidden")
         }
       >
-        <div className="container resources-popup section-card">
+        <div className="container max-container resources-popup section-card">
           <div onClick={() => this.props.toHide("hide")} className="close">
             x
           </div>
