@@ -195,6 +195,11 @@
   transition: 0.15s;
 }
 
+.login-page .change-password form > input:hover {
+  background: #222;
+  color: #fafafa;
+}
+
 .wrongpass p {
   color: red;
 }
