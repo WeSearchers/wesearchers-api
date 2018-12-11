@@ -14,6 +14,7 @@ class UserProfile extends Component {
       name: "",
       image_data: "",
       institution: "",
+        research_unit: "",
       orcid: "",
       user_id: "",
       username: "",

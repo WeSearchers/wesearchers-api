@@ -38,7 +38,7 @@ class ProfileForm(ModelForm):
 
     class Meta:
         model = Profile
-        fields = ["bio", "image"]
+        fields = ["bio", "image", "research_unit"]
 
     def clean_bio(self):
         bio = self.cleaned_data.get("bio")

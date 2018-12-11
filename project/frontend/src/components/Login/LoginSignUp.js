@@ -7,6 +7,7 @@ class LoginSignUp extends Component {
     this.state = {
       username: "",
       email: "",
+        research_unit: "",
       password1: "",
       password2: "",
       bio: "",
@@ -213,27 +214,27 @@ class LoginSignUp extends Component {
                 ) : null}
               </div>
             </div> */}
-            {/* <div className="row">
+            <div className="row">
               <div className="col-md-12 text-white">
                 <div className="last_name ">
                   <input
                     type="text"
-                    name="last_name"
+                    name="research_unit"
                     value={this.state.last_name}
                     onChange={this.handlechange}
                     className="form-control-coment z-depth-1 bg-light boder-radius-sm p-1 pl-4 mb-3"
                     id="id"
-                    placeholder="Last Name"
+                    placeholder="Research Unit"
                   />
                 </div>
-                {this.state.errors.last_name !== undefined &&
-                this.state.errors.last_name !== null ? (
+                {this.state.errors.research_unit !== undefined &&
+                this.state.errors.research_unit !== null ? (
                   <div className="wrongpass">
-                    <p>{this.state.errors.last_name}</p>
+                    <p>{this.state.errors.research_unit}</p>
                   </div>
                 ) : null}
               </div>
-            </div> */}
+            </div>
             <div className="row">
               <div className="col-md-12 text-white">
                 <div className="email ">

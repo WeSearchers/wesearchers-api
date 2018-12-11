@@ -32,6 +32,7 @@ class Profile(models.Model):
     orcid = models.CharField(max_length=19, blank=True)
     bio = models.CharField(max_length=240)
     image = models.ImageField(upload_to="media/profile/avatar/")
+    research_unit = models.CharField(max_length=240)
     email_guid = models.CharField(max_length=40, default=new_guid)
     twitter_access_token = models.CharField(max_length=240)
     twitter_access_token_secret = models.CharField(max_length=240)
@@ -46,6 +47,7 @@ class Profile(models.Model):
             "username": u.username,
             "orcid": p.orcid,
             "email": u.email,
+            "research_unit": p.research_unit,
             "bio": p.bio,
             "image_data": path_to_base64(p.image.path),
         }
