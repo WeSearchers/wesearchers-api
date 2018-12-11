@@ -9,6 +9,7 @@ class UserProfileHeader extends Component {
   }
 
   render() {
+    console.log(this.props.data);
     return (
       <div className="container user-profile">
         <div className="row user-header">
@@ -18,7 +19,7 @@ class UserProfileHeader extends Component {
 
           <div className="user-info section-card">
             <div className="user-name">
-              {this.props.data.first_name + " " + this.props.data.last_name}
+              {this.props.data.name}
               <a href="/user/edit" className="edit-profile fa fa-pencil-square-o" />
             </div>
             <ul className="user-aux-info">

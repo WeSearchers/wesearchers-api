@@ -6,10 +6,15 @@ from django.db import models
 
 from .guid import new_guid
 
+"""novos"""
+from bs4 import BeautifulSoup
+import requests
+import simplejson as json
+import sys
+from lxml import etree
+from urllib.parse import urlencode
 
-class Institution(models.Model):
-    name = models.CharField(max_length=255)
-    logo = models.ImageField(upload_to="media/institution/logo/")
+string_types = str,
 
 
 def path_to_base64(path):
@@ -24,14 +29,14 @@ class Profile(models.Model):
         super().__init__(*args, **kwargs)
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name="profile")
-    orcid = models.CharField(max_length=16)
-    institution = models.ForeignKey(Institution, models.CASCADE)
+    orcid = models.CharField(max_length=19, blank=True)
     bio = models.CharField(max_length=240)
     image = models.ImageField(upload_to="media/profile/avatar/")
     email_guid = models.CharField(max_length=40, default=new_guid)
     twitter_access_token = models.CharField(max_length=240)
     twitter_access_token_secret = models.CharField(max_length=240)
     reddit_refresh_token = models.CharField(max_length=240)
+    orcid_search_token = models.CharField(max_length=240)
 
     def serialize(self):
         u = self.user
@@ -39,29 +44,14 @@ class Profile(models.Model):
         return {
             "user_id": u.id,
             "username": u.username,
-            "first_name": u.first_name,
-            "last_name": u.last_name,
-            "email": u.email,
             "orcid": p.orcid,
+            "email": u.email,
             "bio": p.bio,
             "image_data": path_to_base64(p.image.path),
-            "institution": p.institution_id,
-            "interests": list(map(lambda i: i.interest, list(UserInterest.objects.filter(user=u)))),
         }
 
 
-class UserInterest(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="interests")
-    interest = models.CharField(max_length=50)
-
-
-class UserFollow(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following_user")
-    followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followed")
-
-
 class Resource(models.Model):
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     url = models.URLField(blank=True)
@@ -82,10 +72,3 @@ class Resource(models.Model):
 class ResourceInterest(models.Model):
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE, related_name="interests")
     interest = models.CharField(max_length=50)
-
-
-"""
-class UserMentor(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
-    mentor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="mentor")
-"""

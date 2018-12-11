@@ -2,16 +2,30 @@ import tweepy
 import praw
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.forms import ModelForm, Form
 from django.http import *
+from prawcore import ResponseException
+from tweepy import TweepError
 
+from .orcid import PublicAPI, MemberAPI
+
+from .guid import new_guid
 from .decorators import require_login
 from .forms import ProfileForm, UserCreationForm, UserUpdateForm, ProfileUpdateForm, ResourceForm
-from .models import *
 from .responses import HttpResponseUnauthorized
 from .validators import PasswordValidator
+from .models import Profile, Resource, ResourceInterest
+
+"""novos"""
+from bs4 import BeautifulSoup
+import requests
+import simplejson as json
+import sys
+from lxml import etree
+from urllib.parse import urlencode
 
 
 def error_dict(*args):
@@ -35,48 +49,71 @@ def register(request):
         user_form = UserCreationForm(request.POST)
         profile_form = ProfileForm(request.POST, request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
-
-            interests = request.POST["interests"].split()
-            if len(interests) >= 6:
-                try:
-                    institution = Institution.objects.filter(
-                        name=request.POST["institution"]).first()
-                except KeyError as k:
-                    return JsonResponse(
-                        error_dict(user_form, profile_form, errors, {k.args[0]: "field missing in form"}), status=400)
-                if institution is None:
-                    institution = Institution(name=request.POST["institution"])
-                    institution.save()
+            try:
                 user = user_form.save(commit=False)
                 user.is_active = False
                 user.save()
-                for interest in interests:
-                    user_interest = UserInterest(interest=interest)
-                    user_interest.user = user
-                    user_interest.save()
                 profile = profile_form.save(commit=False)
                 profile.user = user
-                profile.institution = institution
                 profile.save()
-                send_mail("WeSearchers account activation",
-                          settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid,
+                send_mail("WeSearchers account activation with ORCID",
+                          get_orcid_authentication_url(request, profile.email_guid),
                           "activate@wesearchers.pt", [user.email])
                 return JsonResponse(user.id, safe=False)
-            else:
-                errors["interests"] = "must select 6 interests or more"
-        return JsonResponse(error_dict(user_form, profile_form, errors), status=400)
+            except KeyError as k:
+                return JsonResponse(error_dict(user_form, profile_form, errors, {k.args[0]: "field missing in form"}),
+                                    status=400)
+        else:
+            return JsonResponse(error_dict(user_form, profile_form, errors), status=400)
     else:
         return HttpResponseNotAllowed("Method not Allowed")
 
 
 @require_login
 def get_user_info(request, user_id):
+    orcid_info = get_orcid_info(request)
+
     if user_id == 0:
         user = request.user
     else:
         user = User.objects.filter(id=user_id).first()
+
+    info = user.profile.serialize()
+    info["name"] = orcid_info[0]
+    info["interests"] = orcid_info[1]
+    info["affiliation"] = orcid_info[2]
+    info["orcid_id"] = orcid_info[3]
+
+
+    if user.profile.twitter_access_token is not None and user.profile.twitter_access_token != "":
+        auth = tweepy.OAuthHandler(
+            settings.TWITTER_KEY, settings.TWITTER_SECRET)
+        auth.set_access_token(user.profile.twitter_access_token, user.profile.twitter_access_token_secret)
+        api = tweepy.API(auth)
+        try:
+            api.verify_credentials()
+            info["twitter"] = True
+        except TweepError:
+            info["twitter"] = False
+    else:
+        info["twitter"] = False
+
+    if user.profile.reddit_refresh_token != "" and user.profile.reddit_refresh_token is not None:
+        reddit = praw.Reddit(client_id=settings.REDDIT_CLIENT_ID,
+                             client_secret=settings.REDDIT_CLIENT_SECRET,
+                             refresh_token=user.profile.reddit_refresh_token,
+                             user_agent="web:WeSearchers:v0.1 (by /u/FabioGC)")
+        try:
+            reddit.user.me()
+            info["reddit"] = True
+        except ResponseException:
+            info["reddit"] = False
+    else:
+        info["reddit"] = False
+
+
     if user is not None:
-        return JsonResponse(user.profile.serialize(), safe=False)
+        return JsonResponse(info, safe=False)
     else:
         return HttpResponseNotFound()
 
@@ -103,31 +140,10 @@ def update(request):
     user_form = UserUpdateForm(request.POST, instance=request.user)
     profile_form = ProfileUpdateForm(
         request.POST, request.FILES, instance=request.user.profile)
-    try:
-        institution = Institution.objects.filter(
-            id=int(request.POST["institution"])).first()
-        interests = request.POST["interests"].split()
-    except KeyError as k:
-        return JsonResponse(
-            error_dict(user_form, profile_form, errors, {k.args[0]: "field missing in form"}), status=400)
     if user_form.is_valid() and profile_form.is_valid():
-        if len(interests) >= 6:
-            for interest in list(UserInterest.objects.filter(user=request.user)):
-                interest.delete()
-            for interest in interests:
-                user_interest = UserInterest(interest=interest)
-                user_interest.user = request.user
-                user_interest.save()
-            user_form.save()
-            profile = profile_form.save(commit=False)
-            if institution is None:
-                institution = Institution(name=request.POST["institution"])
-                institution.save()
-            profile.institution = institution
-            profile.save()
-            return HttpResponse()
-        else:
-            errors["interests"] = "must select 6 interests or more"
+        pass
+
+        return HttpResponse()
     return JsonResponse(error_dict(user_form, profile_form, errors), status=400)
 
 
@@ -217,42 +233,6 @@ def validate(request):
 
 
 @require_login
-def get_followers(request):
-    if request.method == "GET":
-        if "user_id" not in request.GET.keys():
-            followers = list(
-                map(lambda user: user.user.profile.serialize(), UserFollow.objects.filter(followed=request.user)))
-        else:
-            followers = list(map(lambda user: user.user.profile.serialize(),
-                                 UserFollow.objects.filter(followed_id=int(request.GET["user_id"]))))
-        return JsonResponse(followers, safe=False)
-    else:
-        return HttpResponseNotAllowed()
-
-
-@require_login
-def get_following(request):
-    if request.method == "GET":
-        if "user_id" not in request.GET.keys():
-            following = list(
-                map(lambda user: user.followed.profile.serialize(), UserFollow.objects.filter(user=request.user)))
-        else:
-            following = list(map(lambda user: user.followed.profile.serialize(),
-                                 UserFollow.objects.filter(user_id=int(request.GET["user_id"]))))
-        return JsonResponse(following, safe=False)
-    else:
-        return HttpResponseNotAllowed()
-
-
-"""
-@require_login
-def get_collaborators(request):
-    #insert code here
-    return HttpResponse()
-"""
-
-
-@require_login
 def delete_resource(request):
     if request.method == "POST":
         try:
@@ -322,11 +302,75 @@ def resources_by_interest(request):
     resources = list()
     for tag in tags:
         resources += list(
-            filter(lambda x: x.user == request.user, map(lambda r: r.resource, ResourceInterest.objects.filter(interest=tag))))
+            filter(lambda x: x.user == request.user,
+                   map(lambda r: r.resource, ResourceInterest.objects.filter(interest=tag))))
     resources = list({v.id: v for v in resources}.values())
     resources.sort(key=lambda x: x.date, reverse=True)
     final_list = list(map(lambda x: x.serialize(), resources))
     return JsonResponse(final_list, safe=False)
+
+
+def get_orcid_authentication_url(request, guid):
+    redirect_url = settings.RUNNING_HOST + "/api/user/saveorcidinfo"
+    orcAPI = PublicAPI(institution_key=settings.ORCID_KEY,
+                       institution_secret=settings.ORCID_SECRET)
+    # url = orcAPI.get_login_url('/read-limited', redirect_url, )
+    url = orcAPI.get_login_url('/authenticate', redirect_url, state=guid)
+
+    return url
+
+
+def save_orcid_info(request):
+    if 'error' in request.GET.keys():
+        return HttpResponseRedirect(settings.RUNNING_HOST)    
+    else:
+        authorization_code = request.GET.get('code')
+        guid = request.GET.get('state')
+        redirect_url = settings.RUNNING_HOST + "/api/user/saveorcidinfo"
+        orcAPI = PublicAPI(institution_key=settings.ORCID_KEY,
+                           institution_secret=settings.ORCID_SECRET)
+        token = orcAPI.get_token_from_authorization_code(authorization_code,
+                                                         redirect_url)
+
+        search_token = orcAPI.get_search_token_from_orcid()
+
+    orcid_id = token['orcid']
+    profile = Profile.objects.filter(email_guid=guid).first()
+    profile.orcid_search_token = search_token
+    profile.orcid = orcid_id
+    profile.save()
+
+    return HttpResponseRedirect(settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid)
+
+
+@require_login
+def get_orcid_info(request):
+    orcAPI = PublicAPI(institution_key=settings.ORCID_KEY,
+                       institution_secret=settings.ORCID_SECRET)
+
+    orcid_id = request.user.profile.orcid
+    summary = orcAPI.read_record_public(orcid_id, 'record', request.user.profile.orcid_search_token)
+
+    profile_name = summary['person']['name']['given-names']['value'] + " " + summary['person']['name']['family-name'][
+        'value']
+
+    keywords = summary['person']['keywords']['keyword']
+    interests = list()
+    for keyword in keywords:
+        interests.append(keyword['content'])
+
+    research_units = summary['activities-summary']['employments']['employment-summary']
+    units = list()
+    for unit in research_units:
+        units.append(unit['organization']['name'])
+
+    final_array = []
+    final_array.append(profile_name)
+    final_array.append(interests)
+    final_array.append(units)
+    final_array.append(orcid_id)
+
+    return final_array
 
 
 @require_login
@@ -390,23 +434,6 @@ def save_twitter_access_tokens(request):
     profile.twitter_access_token_secret = access_token_secret
     profile.save()
     return HttpResponseRedirect(settings.RUNNING_HOST + "/user/profile")
-
-
-@require_login
-def follow_view(request):
-    if request.method == "POST":
-        try:
-            followed = User.objects.filter(id=request.POST["user_id"]).first()
-            if followed is not None:
-                follow = UserFollow(user=request.user, followed=followed)
-                follow.save()
-                return HttpResponse()
-            else:
-                return HttpResponseNotFound()
-        except KeyError as k:
-            return JsonResponse({k.args[0]: "field missing in form"}, status=400)
-    else:
-        return HttpResponseNotAllowed()
 
 
 @require_login

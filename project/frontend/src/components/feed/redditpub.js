@@ -139,13 +139,6 @@ class RedditPub extends React.Component {
                 ? this.props.data.score
                 : null}{" "}
             </p>
-            <i className="fa fa-balance-scale" />
-            <p>
-              {" "}
-              {this.props.data !== undefined && this.props.data !== null
-                ? this.props.data.ratio
-                : null}{" "}
-            </p>
           </div>
           <div className=" d-flex flex-row justify-content-end hashtags mr-4">
             {this.props.data !== undefined && this.props.data !== null
