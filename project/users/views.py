@@ -341,31 +341,35 @@ def get_orcid_authentication_url(request,guid):
 
 
 def save_orcid_info(request):
-    authorization_code = request.GET.get('code')
-    guid = request.GET.get('state')
-    redirect_url = settings.RUNNING_HOST + "/api/user/saveorcidinfo"
-    orcAPI = PublicAPI(institution_key=settings.ORCID_KEY,
-                       institution_secret=settings.ORCID_SECRET)
-    token = orcAPI.get_token_from_authorization_code(authorization_code,
-                                                     redirect_url)
+    if 'error' in request.GET.keys():
+        return HttpResponseRedirect(settings.RUNNING_HOST)    
+    else:
+        authorization_code = request.GET.get('code')
+        guid = request.GET.get('state')
+        redirect_url = settings.RUNNING_HOST + "/api/user/saveorcidinfo"
+        orcAPI = PublicAPI(institution_key=settings.ORCID_KEY,
+                           institution_secret=settings.ORCID_SECRET)
+        token = orcAPI.get_token_from_authorization_code(authorization_code,
+                                                         redirect_url)
 
-    search_token = orcAPI.get_search_token_from_orcid()
-
-
-    orcid_id = token['orcid']
-    orcids = orcid_id.split("-")
-    orcid_final = ""
-    for x in orcids:
-        orcid_final += x
-
-    profile = Profile.objects.filter(email_guid=guid).first()
-    profile.orcid_search_token = search_token
-    profile.save()
-
-    print(profile.email_guid)
+        search_token = orcAPI.get_search_token_from_orcid()
 
 
-    return HttpResponseRedirect(settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid)
+        orcid_id = token['orcid']
+        orcids = orcid_id.split("-")
+        orcid_final = ""
+        for x in orcids:
+            orcid_final += x
+
+        profile = Profile.objects.filter(email_guid=guid).first()
+        profile.orcid_search_token = search_token
+        profile.save()
+
+        print(profile.email_guid)
+
+
+        return HttpResponseRedirect(settings.RUNNING_HOST + "/activate?guid=" + profile.email_guid)
+        
 
 
 
