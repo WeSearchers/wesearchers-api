@@ -60,7 +60,7 @@ class App extends Component {
                   component={ChangePassword}
                 />
                 <Route exact path="/feed" component={Feed} />
-                <Route exact path="/" component={Feed} />
+                <Route exact path="/" component={Email} />
                 <Route component={ErrorPage} />
               </Switch>
             </div>

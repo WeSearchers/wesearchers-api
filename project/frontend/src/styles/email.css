@@ -1,7 +1,16 @@
+.background-email {
+  min-height: 100vh;
+  background: #002f54;
+  padding: 20px 0;
+}
+
 .container-email {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: #fafafa;
+  height: calc(100vh - 40px);
+  border-radius: 10px;
 }
 
 .container-email .main,
@@ -10,7 +19,7 @@
 }
 
 .container-email .header {
-  margin-top: 5em;
+  margin-top: -2em;
   margin-bottom: 2em;
 }
 
