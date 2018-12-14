@@ -57,6 +57,7 @@ li {
 
 .menu > li.logout {
   color: #ffc95e;
+  transition: 0.2s;
 }
 
 .menu > li:first-child {
@@ -92,5 +93,14 @@ li {
 
   .nav-bar-container .row .logo-nav {
     margin: 7px 0;
+  }
+
+  .menu li.logout {
+    position: absolute;
+    top: 20px;
+    left: calc((100% - 53.8px) / 2);
+    transform: translateX(-114px);
+    font-size: 15px;
+    margin: 0;
   }
 }

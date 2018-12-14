@@ -50,6 +50,9 @@ class NavBar extends Component {
               <li id="resources" onClick={NavBar.clickButton}>
                 Resources
               </li>
+              <li id="settings" onClick={NavBar.clickButton}>
+                Settings
+              </li>
               <li className="logout" onClick={this.logout}>
                 Logout
               </li>
