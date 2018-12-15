@@ -16,7 +16,7 @@ class ProfileAbout extends Component {
     Request.get("api/user/twitterauth").then(response => {
       response.json().then(url => {
         window.location.assign(url);
-      })
+      });
     });
   }
 
@@ -24,7 +24,7 @@ class ProfileAbout extends Component {
     Request.get("api/user/redditauth").then(response => {
       response.json().then(url => {
         window.location.assign(url);
-      })
+      });
     });
   }
 

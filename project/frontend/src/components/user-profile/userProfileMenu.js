@@ -36,7 +36,7 @@ class UserProfileMenu extends Component {
                 <i className="fa fa-user" />
               </a>
             </div>
-            <div className="col-md-3 pd10">
+            {/* <div className="col-md-3 pd10">
               <a
                 className={
                   "menu-item " +
@@ -46,8 +46,8 @@ class UserProfileMenu extends Component {
               >
                 <i className="fa fa-users" />
               </a>
-            </div>
-            <div className="col-md-3 pd10">
+            </div> */}
+            {/* <div className="col-md-3 pd10">
               <a
                 className={
                   "menu-item " +
@@ -57,8 +57,8 @@ class UserProfileMenu extends Component {
               >
                 <i className="fa fa-archive" />
               </a>
-            </div>
-            <div className="col-md-3 pd10">
+            </div> */}
+            {/* <div className="col-md-3 pd10">
               <a
                 className={
                   "menu-item " +
@@ -68,7 +68,7 @@ class UserProfileMenu extends Component {
               >
                 <i className="fa fa-file-text" />
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
         <UserProfileMenuSection

@@ -41,7 +41,7 @@ class ActivateAccount extends Component {
                   </div>
                 </div>
               ) : (
-                <div>
+                <React.Fragment>
                   <div className="title text-white">
                     <b>Oops!</b>
                   </div>
@@ -49,7 +49,7 @@ class ActivateAccount extends Component {
                     Something went wrong, this page is not available. To login
                     click <a href="/">here</a>
                   </div>
-                </div>
+                </React.Fragment>
               )
             ) : (
               <div>

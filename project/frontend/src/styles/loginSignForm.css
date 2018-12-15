@@ -148,49 +148,114 @@
   font-weight: 500;
 }
 
-.login-page .change-password .title {
-  align-self: center;
-  margin-bottom: 35px;
-  font-size: 30px;
+.change-password {
+  width: 90%;
+  min-width: 200px;
+  align-items: center;
+  justify-content: center;
 }
 
-.login-page .change-password form button {
-  margin: auto;
+.login-page .change-password .title {
+  color: #ffc95e;
+  font-size: 40px;
+  margin: 0;
+  font-family: avenir-light;
 }
+
+.login-page .change-password .sub-title {
+  margin-bottom: 25px;
+  color: white;
+  font-size: 18px;
+  font-weight: 100;
+}
+
+.login-page .change-password input {
+  background: #ffffff;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  margin: 40px 0;
+  text-align: center;
+  padding: 0;
+}
+
+.login-page .change-password form {
+  width: 90%;
+}
+
+.login-page .change-password form > div input {
+  width: 100%;
+}
+
+.login-page .change-password form > input {
+  margin: auto;
+  width: 200px;
+  background: #ffc95e;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.login-page .change-password form > input:hover {
+  background: #222;
+  color: #fafafa;
+}
+
 .wrongpass p {
   color: red;
 }
 
 /*FORGOT PASSWORD*/
 
+.forgot-password {
+  width: 90%;
+  min-width: 200px;
+  align-items: center;
+  justify-content: center;
+}
+
 .forgot-password .title {
   color: #ffc95e;
-  font-size: 30px;
-  margin-bottom: 2px;
-  align-self: flex-start;
+  font-size: 40px;
+  margin: 0;
   font-family: avenir-light;
 }
 
 .forgot-password .sub-title {
-  margin-bottom: 5px;
+  margin-bottom: 25px;
   color: white;
+  font-size: 18px;
+  font-weight: 100;
 }
 
 .forgot-password .input-email {
-  background: transparent;
-  border: transparent;
-  color: white;
-  border-bottom: 1px solid #999;
-  border-radius: 0;
-  box-shadow: 0px 2px 0px 0px #eee;
-  height: fit-content;
+  background: #ffffff;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
   margin: 40px 0;
   text-align: center;
   padding: 0;
 }
 
-.login-page .forgot-password form button {
+.login-page .forgot-password form {
+  width: 90%;
+}
+
+.login-page .forgot-password form input {
+  width: 100%;
+}
+
+.login-page .forgot-password form input:last-child {
   margin: auto;
+  width: 200px;
+  background: #ffc95e;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.login-page .forgot-password form input:last-child:hover {
+  background: #222;
+  color: #fafafa;
 }
 
 /* ConfirmAccount / ActivateAccount*/
@@ -199,22 +264,38 @@
 .login-page .activate-account {
   color: #333;
   margin-top: -100px;
+  width: 70%;
+  min-width: 200px;
 }
 
 .login-page .confirm-account .welcome,
 .login-page .activate-account .title {
   font-size: 30px;
+  margin: 0;
   margin-bottom: 40px;
+  width: 100%;
+  text-align: center;
 }
 
 .login-page .confirm-account .message,
 .login-page .activate-account .message {
   text-align: center;
   font-size: 18px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.message {
-  width: 257px;
+
+.login-page .confirm-account .message a,
+.login-page .activate-account .message a {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #fafafa;
+  border-radius: 5px;
+  width: 200px;
 }
+
 .welcome p,
 .welcome h1 {
   color: #ffc95e;
